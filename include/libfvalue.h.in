@@ -1,0 +1,1211 @@
+/*
+ * Library to support support file format date and time values
+ *
+ * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ *
+ * Refer to AUTHORS for acknowledgements.
+ *
+ * This software is free software: you can redistribute it and/or modisoy
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this software.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#if !defined( _LIBFVALUE_H )
+#define _LIBFVALUE_H
+
+#include <libfvalue/codepage.h>
+#include <libfvalue/definitions.h>
+#include <libfvalue/error.h>
+#include <libfvalue/extern.h>
+#include <libfvalue/features.h>
+#include <libfvalue/types.h>
+
+#include <stdio.h>
+
+#if defined( __cplusplus )
+extern "C" {
+#endif
+
+/* -------------------------------------------------------------------------
+ * Support functions
+ * ------------------------------------------------------------------------- */
+
+/* Returns the library version
+ */
+LIBFVALUE_EXTERN \
+const char *libfvalue_get_version(
+             void );
+
+/* -------------------------------------------------------------------------
+ * Error functions
+ * ------------------------------------------------------------------------- */
+
+/* Frees an error
+ */
+LIBFVALUE_EXTERN \
+void libfvalue_error_free(
+      libfvalue_error_t **error );
+
+/* Prints a descriptive string of the error to the stream
+ * Returns the amount of printed characters if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_error_fprint(
+     libfvalue_error_t *error,
+     FILE *stream );
+
+/* Prints a descriptive string of the error to the string
+ * The end-of-string character is not included in the return value
+ * Returns the amount of printed characters if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_error_sprint(
+     libfvalue_error_t *error,
+     char *string,
+     size_t size );
+
+/* Prints a backtrace of the error to the stream
+ * Returns the amount of printed characters if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_error_backtrace_fprint(
+     libfvalue_error_t *error,
+     FILE *stream );
+
+/* Prints a backtrace of the error to the string
+ * The end-of-string character is not included in the return value
+ * Returns the amount of printed characters if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_error_backtrace_sprint(
+     libfvalue_error_t *error,
+     char *string,
+     size_t size );
+
+/* -------------------------------------------------------------------------
+ * Data handle functions
+ * ------------------------------------------------------------------------- */
+
+/* Creates a data handle
+ * Make sure the value data_handle is referencing, is set to NULL
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_initialize(
+     libfvalue_data_handle_t **data_handle,
+     libfvalue_error_t **error );
+
+/* Frees a data handle
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_free(
+     libfvalue_data_handle_t **data_handle,
+     libfvalue_error_t **error );
+
+/* Clones a data handle
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_clone(
+     libfvalue_data_handle_t **destination_data_handle,
+     libfvalue_data_handle_t *source_data_handle,
+     libfvalue_error_t **error );
+
+/* Retrieves the data
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_get_data(
+     libfvalue_data_handle_t *data_handle,
+     uint8_t **data,
+     size_t *data_size,
+     int *encoding,
+     libfvalue_error_t **error );
+
+/* Sets the data
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_set_data(
+     libfvalue_data_handle_t *data_handle,
+     const uint8_t *data,
+     size_t data_size,
+     int encoding,
+     uint8_t flags,
+     libfvalue_error_t **error );
+
+/* Retrieves the data flags
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_get_data_flags(
+     libfvalue_data_handle_t *data_handle,
+     uint32_t *data_flags,
+     libfvalue_error_t **error );
+
+/* Sets the data flags
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_set_data_flags(
+     libfvalue_data_handle_t *data_handle,
+     uint32_t data_flags,
+     libfvalue_error_t **error );
+
+/* Retrieves the number of value entries
+ * Returns if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_get_number_of_value_entries(
+     libfvalue_data_handle_t *data_handle,
+     int *number_of_value_entries,
+     libfvalue_error_t **error );
+
+/* Retrieves a specific value entry
+ * Returns if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_get_value_entry_data(
+     libfvalue_data_handle_t *data_handle,
+     int value_entry_index,
+     uint8_t **value_entry_data,
+     size_t *value_entry_data_size,
+     int *encoding,
+     libfvalue_error_t **error );
+
+/* Sets a specific value entry
+ * Returns if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_set_value_entry_data(
+     libfvalue_data_handle_t *data_handle,
+     int value_entry_index,
+     const uint8_t *value_entry_data,
+     size_t value_entry_data_size,
+     int encoding,
+     libfvalue_error_t **error );
+
+/* Appends a value entry
+ * Returns if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_append_value_entry_data(
+     libfvalue_data_handle_t *data_handle,
+     int *value_entry_index,
+     const uint8_t *value_entry_data,
+     size_t value_entry_data_size,
+     int encoding,
+     libfvalue_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * Integer functions
+ * ------------------------------------------------------------------------- */
+
+/* Determines the size of a string of an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_string_size_from_integer(
+     size_t *string_size,
+     uint64_t integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-8 encoded string from an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf8_string_copy_from_integer(
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     uint64_t integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-8 encoded string of from integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf8_string_with_index_copy_from_integer(
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     size_t *utf8_string_index,
+     uint64_t integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-8 encoded string to an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf8_string_copy_to_integer(
+     const uint8_t *utf8_string,
+     size_t utf8_string_length,
+     uint64_t *integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-8 encoded string to an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf8_string_with_index_copy_to_integer(
+     const uint8_t *utf8_string,
+     size_t utf8_string_length,
+     size_t *utf8_string_index,
+     uint64_t *integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-16 encoded string of an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf16_string_copy_from_integer(
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     uint64_t integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-16 encoded string of an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf16_string_with_index_copy_from_integer(
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     size_t *utf16_string_index,
+     uint64_t integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-16 encoded string to an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf16_string_copy_to_integer(
+     const uint16_t *utf16_string,
+     size_t utf16_string_length,
+     uint64_t *integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-16 encoded string to an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf16_string_with_index_copy_to_integer(
+     const uint16_t *utf16_string,
+     size_t utf16_string_length,
+     size_t *utf16_string_index,
+     uint64_t *integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-32 encoded string of an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf32_string_copy_from_integer(
+     uint32_t *utf32_string,
+     size_t utf32_string_size,
+     uint64_t integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-32 encoded string of an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf32_string_with_index_copy_from_integer(
+     uint32_t *utf32_string,
+     size_t utf32_string_size,
+     size_t *utf32_string_index,
+     uint64_t integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-32 encoded string to an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf32_string_copy_to_integer(
+     const uint32_t *utf32_string,
+     size_t utf32_string_length,
+     uint64_t *integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* Copies an UTF-32 encoded string to an integer value
+ * The integer value size is in bits
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf32_string_with_index_copy_to_integer(
+     const uint32_t *utf32_string,
+     size_t utf32_string_length,
+     size_t *utf32_string_index,
+     uint64_t *integer_value,
+     size_t integer_value_size,
+     uint32_t string_format_flags,
+     libfvalue_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * String functions
+ * ------------------------------------------------------------------------- */
+
+/* Splits an UTF-8 string
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf8_string_split(
+     const uint8_t *utf8_string,
+     size_t utf8_string_size,
+     uint8_t delimiter,
+     libfvalue_split_utf8_string_t **split_string,
+     libfvalue_error_t **error );
+
+/* Splits an UTF-16 string
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_utf16_string_split(
+     const uint16_t *utf16_string,
+     size_t utf16_string_size,
+     uint16_t delimiter,
+     libfvalue_split_utf16_string_t **split_string,
+     libfvalue_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * Table functions
+ * ------------------------------------------------------------------------- */
+
+/* Creates a values table
+ * Make sure the value table is referencing, is set to NULL
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_initialize(
+     libfvalue_table_t **table,
+     int number_of_values,
+     libfvalue_error_t **error );
+
+/* Frees a table
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_free(
+     libfvalue_table_t **table,
+     libfvalue_error_t **error );
+
+/* Empties the values table
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_empty(
+     libfvalue_table_t *table,
+     libfvalue_error_t **error );
+
+/* Resizes the values table
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_resize(
+     libfvalue_table_t *table,
+     int number_of_values,
+     libfvalue_error_t **error );
+
+/* Clones a table
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_clone(
+     libfvalue_table_t **destination_table,
+     libfvalue_table_t *source_table,
+     libfvalue_error_t **error );
+
+/* Retrieves the number of values
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_get_number_of_values(
+     libfvalue_table_t *table,
+     int *number_of_values,
+     libfvalue_error_t **error );
+
+/* Retrieves the index for an identifier
+ *
+ * When LIBFVALUE_TABLE_FLAG_ALLOW_PARTIAL_MATCH is set a match
+ * of the first part of the identifier is allowed.
+ *
+ * Returns 1 if successful, 0 if no index was found or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_get_index_by_identifier(
+     libfvalue_table_t *table,
+     const uint8_t *identifier,
+     size_t identifier_size,
+     int *value_index,
+     uint8_t flags,
+     libfvalue_error_t **error );
+
+/* Retrieves a specific value
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_get_value_by_index(
+     libfvalue_table_t *table,
+     int value_index,
+     libfvalue_value_t **value,
+     libfvalue_error_t **error );
+
+/* Retrieves a value for the specific identifier
+ *
+ * When LIBFVALUE_TABLE_FLAG_ALLOW_PARTIAL_MATCH is set a match
+ * of the first part of the identifier is allowed.
+ *
+ * Returns 1 if successful, 0 if value not available or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_get_value_by_identifier(
+     libfvalue_table_t *table,
+     const uint8_t *identifier,
+     size_t identifier_size,
+     libfvalue_value_t **value,
+     uint8_t flags,
+     libfvalue_error_t **error );
+
+/* Sets a specific value
+ * Frees the stored value if necessary
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_set_value_by_index(
+     libfvalue_table_t *table,
+     int value_index,
+     libfvalue_value_t *value,
+     libfvalue_error_t **error );
+
+/* Sets a value in the values table
+ * This function appends a new value or replaces an existing value
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_set_value(
+     libfvalue_table_t *table,
+     libfvalue_value_t *value,
+     libfvalue_error_t **error );
+
+/* Copies the values table from an UTF-8 encoded XML string
+ * Returns 1 if successful, 0 if the requested section could not be found or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_table_copy_from_utf8_xml_string(
+     libfvalue_table_t *table,
+     const uint8_t *utf8_string,
+     size_t utf8_string_size,
+     const uint8_t *table_name,
+     size_t table_name_length,
+     libfvalue_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * Value functions
+ * ------------------------------------------------------------------------- */
+
+/* Creates a value
+ * Make sure the value value is referencing, is set to NULL
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_initialize(
+     libfvalue_value_t **value,
+     const char *type_string,
+     const char *type_description,
+     libfvalue_data_handle_t *data_handle,
+     int (*initialize_instance)(
+           intptr_t **instance,
+           libfvalue_error_t **error ),
+     int (*free_instance)(
+           intptr_t **instance,
+           libfvalue_error_t **error ),
+     int (*clone_instance)(
+           intptr_t **destination_instance,
+           intptr_t *source_instance,
+           libfvalue_error_t **error ),
+     int (*copy_from_byte_stream)(
+           intptr_t *instance,
+           const uint8_t *byte_stream,
+           size_t byte_stream_size,
+           int encoding,
+           libfvalue_error_t **error ),
+     int (*copy_to_byte_stream)(
+           intptr_t *instance,
+           uint8_t *byte_stream,
+           size_t byte_stream_size,
+           int encoding,
+           libfvalue_error_t **error ),
+     int (*copy_from_integer)(
+           intptr_t *instance,
+           uint64_t integer_value,
+           size_t integer_value_size,
+           libfvalue_error_t **error ),
+     int (*copy_to_integer)(
+           intptr_t *instance,
+           uint64_t *integer_value,
+           size_t *integer_value_size,
+           libfvalue_error_t **error ),
+     int (*copy_from_floating_point)(
+           intptr_t *instance,
+           double floating_point_value,
+           size_t floating_point_value_size,
+           libfvalue_error_t **error ),
+     int (*copy_to_floating_point)(
+           intptr_t *instance,
+           double *floating_point_value,
+           size_t *floating_point_value_size,
+           libfvalue_error_t **error ),
+     int (*copy_from_utf8_string_with_index)(
+           intptr_t *instance,
+           const uint8_t *utf8_string,
+           size_t utf8_string_length,
+           size_t *utf8_string_index,
+           uint32_t string_format_flags,
+           libfvalue_error_t **error ),
+     int (*get_utf8_string_size)(
+           intptr_t *instance,
+           size_t *utf8_string_size,
+           uint32_t string_format_flags,
+           libfvalue_error_t **error ),
+     int (*copy_to_utf8_string_with_index)(
+           intptr_t *instance,
+           uint8_t *utf8_string,
+           size_t utf8_string_size,
+           size_t *utf8_string_index,
+           uint32_t string_format_flags,
+           libfvalue_error_t **error ),
+     int (*copy_from_utf16_string_with_index)(
+           intptr_t *instance,
+           const uint16_t *utf16_string,
+           size_t utf16_string_length,
+           size_t *utf16_string_index,
+           uint32_t string_format_flags,
+           libfvalue_error_t **error ),
+     int (*get_utf16_string_size)(
+           intptr_t *instance,
+           size_t *utf16_string_size,
+           uint32_t string_format_flags,
+           libfvalue_error_t **error ),
+     int (*copy_to_utf16_string_with_index)(
+           intptr_t *instance,
+           uint16_t *utf16_string,
+           size_t utf16_string_size,
+           size_t *utf16_string_index,
+           uint32_t string_format_flags,
+           libfvalue_error_t **error ),
+     int (*copy_from_utf32_string_with_index)(
+           intptr_t *instance,
+           const uint32_t *utf32_string,
+           size_t utf32_string_length,
+           size_t *utf32_string_index,
+           uint32_t string_format_flags,
+           libfvalue_error_t **error ),
+     int (*get_utf32_string_size)(
+           intptr_t *instance,
+           size_t *utf32_string_size,
+           uint32_t string_format_flags,
+           libfvalue_error_t **error ),
+     int (*copy_to_utf32_string_with_index)(
+           intptr_t *instance,
+           uint32_t *utf32_string,
+           size_t utf32_string_size,
+           size_t *utf32_string_index,
+           uint32_t string_format_flags,
+           libfvalue_error_t **error ),
+     uint8_t flags,
+     libfvalue_error_t **error );
+
+/* Frees a value
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_free(
+     libfvalue_value_t **value,
+     libfvalue_error_t **error );
+
+/* Clones a value
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_clone(
+     libfvalue_value_t **destination_value,
+     libfvalue_value_t *source_value,
+     libfvalue_error_t **error );
+
+/* Retrieves the value type
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_type(
+     libfvalue_value_t *value,
+     int *value_type,
+     libfvalue_error_t **error );
+
+/* Retrieves the identifier
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_identifier(
+     libfvalue_value_t *value,
+     uint8_t **identifier,
+     size_t *identifier_size,
+     libfvalue_error_t **error );
+
+/* Sets the identifier
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_set_identifier(
+     libfvalue_value_t *value,
+     const uint8_t *identifier,
+     size_t identifier_size,
+     uint8_t flags,
+     libfvalue_error_t **error );
+
+/* Retrieves the value data flags
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_data_flags(
+     libfvalue_value_t *value,
+     uint32_t *data_flags,
+     libfvalue_error_t **error );
+
+/* Sets the value data flags
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_set_data_flags(
+     libfvalue_value_t *value,
+     uint32_t data_flags,
+     libfvalue_error_t **error );
+
+/* Determines if the value has data
+ * Returns 1 if the value has data, 0 if not or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_has_data(
+     libfvalue_value_t *value,
+     libfvalue_error_t **error );
+
+/* Initializes the data
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_initialize_data(
+     libfvalue_value_t *value,
+     size_t data_size,
+     libfvalue_error_t **error );
+
+/* Retrieves the data size
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_data_size(
+     libfvalue_value_t *value,
+     size_t *data_size,
+     libfvalue_error_t **error );
+
+/* Retrieves the data
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_data(
+     libfvalue_value_t *value,
+     uint8_t **data,
+     size_t *data_size,
+     int *encoding,
+     libfvalue_error_t **error );
+
+/* Sets the data
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_set_data(
+     libfvalue_value_t *value,
+     const uint8_t *data,
+     size_t data_size,
+     int encoding,
+     uint8_t flags,
+     libfvalue_error_t **error );
+
+/* Copies the data
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_data(
+     libfvalue_value_t *value,
+     uint8_t *data,
+     size_t data_size,
+     libfvalue_error_t **error );
+
+/* Retrieves the format flags
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_format_flags(
+     libfvalue_value_t *value,
+     uint32_t *format_flags,
+     libfvalue_error_t **error );
+
+/* Sets the format flags
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_set_format_flags(
+     libfvalue_value_t *value,
+     uint32_t format_flags,
+     libfvalue_error_t **error );
+
+/* Retrieves the number of values entries
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_number_of_value_entries(
+     libfvalue_value_t *value,
+     int *number_of_value_entries,
+     libfvalue_error_t **error );
+
+/* Retrieves the entry data
+ * Returns 1 if successful, 0 if the value has no data or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_entry_data(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint8_t **entry_data,
+     size_t *entry_data_size,
+     int *encoding,
+     libfvalue_error_t **error );
+
+/* Sets the entry data
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_set_entry_data(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     const uint8_t *entry_data,
+     size_t entry_data_size,
+     int encoding,
+     libfvalue_error_t **error );
+
+/* Appends the entry data
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_append_entry_data(
+     libfvalue_value_t *value,
+     int *value_entry_index,
+     const uint8_t *entry_data,
+     size_t entry_data_size,
+     int encoding,
+     libfvalue_error_t **error );
+
+/* Copies the value data from a boolean value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_from_boolean(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint8_t value_boolean,
+     libfvalue_error_t **error );
+
+/* Copies the value data to a boolean value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_boolean(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint8_t *value_boolean,
+     libfvalue_error_t **error );
+
+/* Copies the value data from an 8-bit value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_from_8bit(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint8_t value_8bit,
+     libfvalue_error_t **error );
+
+/* Copies the value data to an 8-bit value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_8bit(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint8_t *value_8bit,
+     libfvalue_error_t **error );
+
+/* Copies the value data from an 16-bit value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_from_16bit(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint16_t value_16bit,
+     libfvalue_error_t **error );
+
+/* Copies the value data to an 16-bit value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_16bit(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint16_t *value_16bit,
+     libfvalue_error_t **error );
+
+/* Copies the value data from an 32-bit value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_from_32bit(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint32_t value_32bit,
+     libfvalue_error_t **error );
+
+/* Copies the value data to an 32-bit value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_32bit(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint32_t *value_32bit,
+     libfvalue_error_t **error );
+
+/* Copies the value data from an 64-bit value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_from_64bit(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint64_t value_64bit,
+     libfvalue_error_t **error );
+
+/* Copies the value data to an 64-bit value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_64bit(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint64_t *value_64bit,
+     libfvalue_error_t **error );
+
+/* Copies the value data from a float value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_from_float(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     float value_float,
+     libfvalue_error_t **error );
+
+/* Copies the value data to a float value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_float(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     float *value_float,
+     libfvalue_error_t **error );
+
+/* Copies the value data from a double value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_from_double(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     double value_double,
+     libfvalue_error_t **error );
+
+/* Copies the value data to a double value
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_double(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     double *value_double,
+     libfvalue_error_t **error );
+
+/* Copies the value data from an UTF-8 encoded string
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_from_utf8_string(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     const uint8_t *utf8_string,
+     size_t utf8_string_length,
+     libfvalue_error_t **error );
+
+/* Retrieves the size of an UTF-8 encoded string of the value data
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_utf8_string_size(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     size_t *utf8_string_size,
+     libfvalue_error_t **error );
+
+/* Copies the value data to an UTF-8 encoded string
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_utf8_string(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     libfvalue_error_t **error );
+
+/* Copies the value data to an UTF-8 encoded string
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_utf8_string_with_index(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     size_t *utf8_string_index,
+     libfvalue_error_t **error );
+
+/* Copies the value data from an UTF-16 encoded string
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_from_utf16_string(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     const uint16_t *utf16_string,
+     size_t utf16_string_length,
+     libfvalue_error_t **error );
+
+/* Retrieves the size of an UTF-16 encoded string of the value data
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_utf16_string_size(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     size_t *utf16_string_size,
+     libfvalue_error_t **error );
+
+/* Copies the value data to an UTF-16 encoded string
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_utf16_string(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     libfvalue_error_t **error );
+
+/* Copies the value data to an UTF-16 encoded string
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_utf16_string_with_index(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     size_t *utf16_string_index,
+     libfvalue_error_t **error );
+
+/* Copies the value data from an UTF-32 encoded string
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_from_utf32_string(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     const uint32_t *utf32_string,
+     size_t utf32_string_length,
+     libfvalue_error_t **error );
+
+/* Retrieves the size of an UTF-32 encoded string of the value data
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_utf32_string_size(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     size_t *utf32_string_size,
+     libfvalue_error_t **error );
+
+/* Copies the value data to an UTF-32 encoded string
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_utf32_string(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint32_t *utf32_string,
+     size_t utf32_string_size,
+     libfvalue_error_t **error );
+
+/* Copies the value data to an UTF-32 encoded string
+ * Returns 1 if successful, 0 if value could not be set or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_to_utf32_string_with_index(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint32_t *utf32_string,
+     size_t utf32_string_size,
+     size_t *utf32_string_index,
+     libfvalue_error_t **error );
+
+#ifdef TODO
+/* Reads the value data from a file stream
+ * Returns the number of bytes read or -1 on error
+ */
+LIBFVALUE_EXTERN \
+ssize_t libfvalue_value_read_from_file_stream(
+         libfvalue_value_t *value,
+         FILE *file_stream,
+         libfvalue_error_t **error );
+#endif
+
+/* Writes the value data to a file stream
+ * Returns the number of bytes written or -1 on error
+ */
+LIBFVALUE_EXTERN \
+ssize_t libfvalue_value_write_to_file_stream(
+         libfvalue_value_t *value,
+         FILE *file_stream,
+         libfvalue_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * Value type functions
+ * ------------------------------------------------------------------------- */
+
+/* Creates a value of a specific type
+ * Make sure the value value is referencing, is set to NULL
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_type_initialize(
+     libfvalue_value_t **value,
+     int type,
+     libfvalue_error_t **error );
+
+/* Initialize a value of a specific type with a custom data handle
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_type_initialize_with_data_handle(
+     libfvalue_value_t **value,
+     int type,
+     libfvalue_data_handle_t *data_handle,
+     uint8_t flags,
+     libfvalue_error_t **error );
+
+/* Sets the data of a variable sized string
+ * This function will look for a end-of-string character as the indicator
+ * of the end of the string upto data size
+ * Returns data size of the string if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+ssize_t libfvalue_value_type_set_data_string(
+         libfvalue_value_t *value,
+         const uint8_t *data,
+         size_t data_size,
+         int encoding,
+         uint8_t flags,
+         libfvalue_error_t **error );
+
+/* Append the data of a variable sized string
+ * This function will look for a end-of-string character as the indicator
+ * of the end of the string upto data size
+ * Returns data size of the string if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+ssize_t libfvalue_value_type_append_data_string(
+         libfvalue_value_t *value,
+         const uint8_t *data,
+         size_t data_size,
+         int encoding,
+         libfvalue_error_t **error );
+
+/* Sets the data of an array of variable sized strings
+ * This function will look for a NUL-character as the indicator of
+ * the end of the string upto data_size
+ * Returns data size of the string array if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+ssize_t libfvalue_value_type_set_data_strings_array(
+         libfvalue_value_t *value,
+         const uint8_t *data,
+         size_t data_size,
+         int encoding,
+         libfvalue_error_t **error );
+
+#if defined( __cplusplus )
+}
+#endif
+
+#endif
+

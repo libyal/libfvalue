@@ -1,0 +1,179 @@
+TODO
+* implement libfvalue_value_copy_entry_data
+  - add to include header
+* fix append value entry and pointing to stale data
+* data handle
+  - add flag to manage data handle ?
+  - fix libfvalue_data_handle_append_value_entry_data
+* integer, use index to work from back-to-front instead of
+  divider to work from front-to-back ?
+
+* create data handle data when copy functions
+  are invoked on an empty value
+* binary data:
+  - add support for hexdump
+* add fixed point support
+* add multi instance support
+* implement floating point support (+/-)
+* Use libfvalue_value_type_set_data_string or put the functionality
+  in a data handle ?
+* add support for boolean integer string formatting
+* copy_from_integer, copy_to_integer add format flags?
+* implement libfvalue_value_copy_entry_data ?
+* what about having value entry functions
+  - fix libfvalue_value_set_data_strings_array
+  - create string array value
+* is integer value size sufficient ? or is an additional value needed
+  - make sure the right value size is passed
+* add from string functions for fdatetime, fguid, fwnt
+* update man pages
+* add msvscpp files
+
+20140928
+* removed README.macosx
+* changes for project site move
+
+20140406
+* worked on refactor
+
+20140317
+* worked on refactor
+
+20140314
+* worked on tests
+
+20140313
+* worked on tests
+
+20140308
+* worked on multi value support
+
+20140305
+* worked on multi value support
+
+20140105
+* 2014 update
+* updated dependencies
+* added libcthreads
+
+20130928
+* added filetime from/to integer functionality
+
+20130908
+* Code clean up
+* Bug fixes
+
+20130713
+* Added copy floating point from/to float functions
+* Added value initialize data function
+
+20130520
+* Bug fix in table
+
+20130420
+* worked on data handle
+
+20130415
+* worked on data handle
+
+20130414
+* added user defined data handle flag definitions
+
+20130413
+* 2013 update
+* updated dependencies
+
+20121214
+* code clean up
+* fix for termination of binary data string representation
+
+20121028
+* string format flags fix in integer
+* updated libfguid
+* added copy from byte stream support in value
+
+20121022
+* small changes
+
+20121021
+* added timezone indicator support
+
+20120920
+* updated dependencies
+* changes for libcdata support
+
+20120806
+* bug fix in table
+
+20120805
+* bug fix for value clone
+
+20120712
+* changes for non-set data
+
+20120709
+* changes for non-set data
+
+20120705
+* changes for non-set data
+
+20120701
+* updated libfwnt
+* added support for hexadecimal integer without base indicator
+
+20120630
+* applied updates
+* binary data added support for:
+  - base32
+  - base64
+
+20120523
+* small changes
+
+20120522
+* update libfdatetime
+* added support for date and time values
+
+20120519
+* worked on libfvalue_value_write_to_file_stream
+
+20120517
+* removed metadata
+
+20120510
+* small changes for msvscpp build
+
+20120507
+* updated dependencies
+
+20120429
+* worked on multi value support
+* worked on floating point support
+
+20120428
+* changes for msvscpp build
+* worked on floating point support
+* worked on multi value support
+
+20120426
+* fixes for pkg-config detection of libraries
+
+20120422
+* rewrite to improve flexibility
+* worked on string value
+  - removed string format flags
+  - added encoding
+  - added UTF-7 support
+
+20120421
+* rewrite to improve flexibility
+
+20120420
+* rewrite to improve flexibility
+
+20120419
+* rewrite to improve flexibility
+
+20120418
+* Created stand-alone version of version used in libesesdb
+

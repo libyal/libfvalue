@@ -1,0 +1,30 @@
+Source: libfvalue
+Section: unknown
+Priority: extra
+Maintainer: Joachim Metz <joachim.metz@gmail.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://code.google.com/p/libfvalue/
+
+Package: libfvalue
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Suggests: libfvalue-dbg
+Description: Library to support various format value types
+ libfvalue is a library to support various format value types.
+
+Package: libfvalue-dbg
+Architecture: any
+Section: debug
+Depends: libfvalue (= ${Source-Version}), ${misc:Depends}
+Description: Debugging symbols for libfvalue
+ Debugging symbols for libfvalue.
+
+Package: libfvalue-dev
+Section: libdevel
+Architecture: any
+Depends: libfvalue (= ${Source-Version})
+Description: Header files and libraries for developing applications for libfvalue
+ Header files and libraries for developing applications for libfvalue.
+
