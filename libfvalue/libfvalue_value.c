@@ -1070,7 +1070,7 @@ int libfvalue_value_initialize_data(
 	     data,
 	     data_size,
 	     LIBFVALUE_ENDIAN_NATIVE,
-	     LIBFVALUE_VALUE_DATA_FLAG_MANAGED,
+	     LIBFVALUE_VALUE_DATA_FLAG_MANAGED | LIBFVALUE_VALUE_DATA_FLAG_CLONE_BY_REFERENCE,
 	     error ) != 1 )
 	{
 		libcerror_error_set(
