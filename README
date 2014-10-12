@@ -1,5 +1,9 @@
 libfvalue is a library for generic file value functions.
 
+Project information:
+* Status: experimental
+* Licence: LGPLv3+
+
 For more information see:
 * Project documentation: https://github.com/libyal/libfvalue/wiki/Home
 * How to build from source: https://github.com/libyal/libfvalue/wiki/Building
