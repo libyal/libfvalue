@@ -31,6 +31,7 @@ TODO
 
 20141020
 * changes for deployment
+* fixes for missing include headers for strict compilation
 
 20141018
 * changes for deployment

@@ -20,6 +20,7 @@
  */
 
 #include <common.h>
+#include <memory.h>
 #include <types.h>
 
 #include "libfvalue_codepage.h"
