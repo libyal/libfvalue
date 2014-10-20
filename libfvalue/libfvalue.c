@@ -25,9 +25,9 @@
 #include <windows.h>
 #endif
 
-#include "libfdatetime_unused.h"
+#include "libfvalue_unused.h"
 
-/* Define HAVE_LOCAL_LIBFVALUE for local use of libfdatetime
+/* Define HAVE_LOCAL_LIBFVALUE for local use of libfvalue
  */
 #if !defined( HAVE_LOCAL_LIBFVALUE )
 
@@ -68,7 +68,7 @@ BOOL WINAPI DllMain(
 /* Function that indicates the library is a DLL
  * Returns 1
  */
-int libfdatetime_is_dll(
+int libfvalue_is_dll(
      void )
 {
 	return( 1 );
