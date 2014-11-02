@@ -27,7 +27,10 @@ TODO
   - make sure the right value size is passed
 * add from string functions for fdatetime, fguid, fwnt
 * update man pages
-* add msvscpp files
+
+20141102
+* added msvscpp files
+* bug fix in table
 
 20141020
 * changes for deployment

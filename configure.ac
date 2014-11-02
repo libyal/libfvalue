@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [libfvalue],
- [20141020],
+ [20141102],
  [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
@@ -161,6 +161,7 @@ AC_CONFIG_FILES([libfvalue/Makefile])
 AC_CONFIG_FILES([po/Makefile.in])
 AC_CONFIG_FILES([po/Makevars])
 AC_CONFIG_FILES([manuals/Makefile])
+AC_CONFIG_FILES([msvscpp/Makefile])
 AC_CONFIG_FILES([tests/Makefile])
 dnl Have configure make the include files
 AC_CONFIG_FILES([include/libfvalue.h])

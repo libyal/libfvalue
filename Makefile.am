@@ -15,6 +15,7 @@ SUBDIRS = \
 	libfvalue \
 	po \
 	manuals	\
+	msvscpp	\
 	tests
 
 DPKG_FILES = \

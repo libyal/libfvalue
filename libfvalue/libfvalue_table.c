@@ -1285,7 +1285,7 @@ int libfvalue_table_copy_from_utf8_xml_string(
 				     (uint8_t *) value_data,
 				     value_data_length + 1,
 				     LIBFVALUE_CODEPAGE_UTF8,
-				     LIBFVALUE_VALUE_FLAG_DATA_MANAGED | LIBFVALUE_VALUE_DATA_FLAG_CLONE_BY_REFERENCE,
+				     LIBFVALUE_VALUE_DATA_FLAG_MANAGED | LIBFVALUE_VALUE_DATA_FLAG_CLONE_BY_REFERENCE,
 				     error ) != 1 )
 				{
 					libcerror_error_set(
