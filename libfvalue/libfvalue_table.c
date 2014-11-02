@@ -1186,7 +1186,7 @@ int libfvalue_table_copy_from_utf8_xml_string(
 					     value,
 					     value_identifier,
 					     value_identifier_length + 1,
-					     LIBFVALUE_VALUE_FLAG_IDENTIFIER_MANAGED,
+					     LIBFVALUE_VALUE_IDENTIFIER_FLAG_MANAGED,
 					     error ) != 1 )
 					{
 						libcerror_error_set(
