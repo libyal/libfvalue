@@ -9,6 +9,7 @@ TESTS = \
 	test_value.sh
 
 check_SCRIPTS = \
+	test_runner.sh \
 	test_value.sh
 
 EXTRA_DIST = \
