@@ -102,6 +102,13 @@ int libfvalue_error_backtrace_sprint(
 LIBFVALUE_EXTERN \
 int libfvalue_data_handle_initialize(
      libfvalue_data_handle_t **data_handle,
+     int (*read_value_entries)(
+            libfvalue_data_handle_t *data_handle,
+            const uint8_t *data,
+            size_t data_size,
+            int encoding,
+            uint32_t data_flags,
+            libfvalue_error_t **error ),
      libfvalue_error_t **error );
 
 /* Frees a data handle

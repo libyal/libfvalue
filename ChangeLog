@@ -28,6 +28,12 @@ TODO
 * add from string functions for fdatetime, fguid, fwnt
 * update man pages
 
+20141110
+* bug fix in include header
+
+20141109
+* code clean up
+
 20141102
 * added msvscpp files
 * bug fix in table

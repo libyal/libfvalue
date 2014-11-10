@@ -125,12 +125,12 @@ int fvalue_test_value_integer_64bit(
      const uint8_t *value_data,
      size_t value_data_size,
      int encoding,
-     int64_t expected_integer_64bit )
+     uint64_t expected_integer_64bit )
 {
 	libcerror_error_t *error = NULL;
 	libfvalue_value_t *value = NULL;
 	static char *function    = "fvalue_test_value_integer_64bit";
-	int64_t integer_64bit    = 0;
+	uint64_t integer_64bit   = 0;
 	int result               = -1;
 
 	value = NULL;
@@ -249,7 +249,7 @@ int fvalue_test_value_utf8_string(
      const uint8_t *expected_utf8_string,
      size_t expected_utf8_string_size )
 {
-	uint8_t *utf8_string[ 128 ];
+	uint8_t utf8_string[ 128 ];
 
 	libcerror_error_t *error = NULL;
 	libfvalue_value_t *value = NULL;
@@ -397,7 +397,7 @@ int fvalue_test_value_utf16_string(
      const uint16_t *expected_utf16_string,
      size_t expected_utf16_string_size )
 {
-	uint16_t *utf16_string[ 128 ];
+	uint16_t utf16_string[ 128 ];
 
 	libcerror_error_t *error = NULL;
 	libfvalue_value_t *value = NULL;
@@ -545,7 +545,7 @@ int fvalue_test_value_utf32_string(
      const uint32_t *expected_utf32_string,
      size_t expected_utf32_string_size )
 {
-	uint32_t *utf32_string[ 128 ];
+	uint32_t utf32_string[ 128 ];
 
 	libcerror_error_t *error = NULL;
 	libfvalue_value_t *value = NULL;
@@ -783,7 +783,7 @@ int main( int argc, char * const argv[] FVALUE_TEST_ATTRIBUTE_UNUSED )
 	     int8_data1,
 	     1,
 	     LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN,
-	     (int64_t) 0 ) != 1 )
+	     (uint64_t) 0 ) != 1 )
 	{
 		fprintf(
 		 stderr,
@@ -795,7 +795,7 @@ int main( int argc, char * const argv[] FVALUE_TEST_ATTRIBUTE_UNUSED )
 	     int8_data2,
 	     1,
 	     LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN,
-	     (int64_t) 1 ) != 1 )
+	     (uint64_t) 1 ) != 1 )
 	{
 		fprintf(
 		 stderr,
@@ -807,7 +807,7 @@ int main( int argc, char * const argv[] FVALUE_TEST_ATTRIBUTE_UNUSED )
 	     int8_data3,
 	     1,
 	     LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN,
-	     (int64_t) 127 ) != 1 )
+	     (uint64_t) 127 ) != 1 )
 	{
 		fprintf(
 		 stderr,
@@ -819,7 +819,7 @@ int main( int argc, char * const argv[] FVALUE_TEST_ATTRIBUTE_UNUSED )
 	     int8_data4,
 	     1,
 	     LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN,
-	     (int64_t) 255 ) != 1 )
+	     (uint64_t) 255 ) != 1 )
 	{
 		fprintf(
 		 stderr,
@@ -831,7 +831,7 @@ int main( int argc, char * const argv[] FVALUE_TEST_ATTRIBUTE_UNUSED )
 	     int8_data5,
 	     1,
 	     LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN,
-	     (int64_t) 129 ) != 1 )
+	     (uint64_t) 129 ) != 1 )
 	{
 		fprintf(
 		 stderr,
@@ -843,7 +843,7 @@ int main( int argc, char * const argv[] FVALUE_TEST_ATTRIBUTE_UNUSED )
 	     int8_data6,
 	     1,
 	     LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN,
-	     (int64_t) 128 ) != 1 )
+	     (uint64_t) 128 ) != 1 )
 	{
 		fprintf(
 		 stderr,
