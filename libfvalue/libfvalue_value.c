@@ -492,7 +492,7 @@ int libfvalue_value_clone(
 		     *destination_value,
 		     internal_source_value->identifier,
 		     internal_source_value->identifier_size,
-		     LIBFVALUE_VALUE_FLAG_IDENTIFIER_MANAGED,
+		     LIBFVALUE_VALUE_IDENTIFIER_FLAG_MANAGED,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
