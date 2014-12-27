@@ -28,6 +28,9 @@ TODO
 * add from string functions for fdatetime, fguid, fwnt
 * update man pages
 
+20141227
+* changes for Borland C compiler
+
 20141203
 * bug fix in libfvalue_value_clone
 

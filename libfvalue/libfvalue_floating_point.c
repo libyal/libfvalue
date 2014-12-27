@@ -994,17 +994,31 @@ int libfvalue_string_size_from_floating_point(
 				break;
 
 			case 64:
+#if defined( __BORLANDC__ )
+				if( floating_point_value == 0x7ff0000000000000UL )
+#else
 				if( floating_point_value == 0x7ff0000000000000ULL )
+#endif
 				{
 					is_infinite = 1;
 				}
+#if defined( __BORLANDC__ )
+				else if( ( is_signed != 0 )
+				      && ( floating_point_value == 0x7ff8000000000000UL ) )
+#else
 				else if( ( is_signed != 0 )
 				      && ( floating_point_value == 0x7ff8000000000000ULL ) )
+#endif
 				{
 					is_indeterminate = 1;
 				}
+#if defined( __BORLANDC__ )
+				else if( ( floating_point_value >= 0x7ff0000000000001UL )
+				      && ( floating_point_value <= 0x7fffffffffffffffUL ) )
+#else
 				else if( ( floating_point_value >= 0x7ff0000000000001ULL )
 				      && ( floating_point_value <= 0x7fffffffffffffffULL ) )
+#endif
 				{
 					is_not_a_number = 1;
 				}
@@ -1042,8 +1056,12 @@ int libfvalue_string_size_from_floating_point(
 					{
 						exponent -= 1023;
 					}
+#if defined( __BORLANDC__ )
+					floating_point_value &= 0x000fffffffffffffUL;
+#else
 					floating_point_value &= 0x000fffffffffffffULL;
-					bit_shift             = 52;
+#endif
+					bit_shift = 52;
 				}
 				else
 				{
@@ -1396,17 +1414,31 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 				break;
 
 			case 64:
+#if defined( __BORLANDC__ )
+				if( floating_point_value == 0x7ff0000000000000UL )
+#else
 				if( floating_point_value == 0x7ff0000000000000ULL )
+#endif
 				{
 					is_infinite = 1;
 				}
+#if defined( __BORLANDC__ )
+				else if( ( is_signed != 0 )
+				      && ( floating_point_value == 0x7ff8000000000000UL ) )
+#else
 				else if( ( is_signed != 0 )
 				      && ( floating_point_value == 0x7ff8000000000000ULL ) )
+#endif
 				{
 					is_indeterminate = 1;
 				}
+#if defined( __BORLANDC__ )
+				else if( ( floating_point_value >= 0x7ff0000000000001UL )
+				      && ( floating_point_value <= 0x7fffffffffffffffUL ) )
+#else
 				else if( ( floating_point_value >= 0x7ff0000000000001ULL )
 				      && ( floating_point_value <= 0x7fffffffffffffffULL ) )
+#endif
 				{
 					is_not_a_number = 1;
 				}
@@ -1444,8 +1476,12 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 					{
 						exponent -= 1023;
 					}
+#if defined( __BORLANDC__ )
+					floating_point_value &= 0x000fffffffffffffUL;
+#else
 					floating_point_value &= 0x000fffffffffffffULL;
-					bit_shift             = 52;
+#endif
+					bit_shift = 52;
 				}
 				else
 				{
@@ -2241,17 +2277,31 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 				break;
 
 			case 64:
+#if defined( __BORLANDC__ )
+				if( floating_point_value == 0x7ff0000000000000UL )
+#else
 				if( floating_point_value == 0x7ff0000000000000ULL )
+#endif
 				{
 					is_infinite = 1;
 				}
+#if defined( __BORLANDC__ )
+				else if( ( is_signed != 0 )
+				      && ( floating_point_value == 0x7ff8000000000000UL ) )
+#else
 				else if( ( is_signed != 0 )
 				      && ( floating_point_value == 0x7ff8000000000000ULL ) )
+#endif
 				{
 					is_indeterminate = 1;
 				}
+#if defined( __BORLANDC__ )
+				else if( ( floating_point_value >= 0x7ff0000000000001UL )
+				      && ( floating_point_value <= 0x7fffffffffffffffUL ) )
+#else
 				else if( ( floating_point_value >= 0x7ff0000000000001ULL )
 				      && ( floating_point_value <= 0x7fffffffffffffffULL ) )
+#endif
 				{
 					is_not_a_number = 1;
 				}
@@ -2289,8 +2339,12 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 					{
 						exponent -= 1023;
 					}
+#if defined( __BORLANDC__ )
+					floating_point_value &= 0x000fffffffffffffUL;
+#else
 					floating_point_value &= 0x000fffffffffffffULL;
-					bit_shift             = 52;
+#endif
+					bit_shift = 52;
 				}
 				else
 				{
@@ -3086,17 +3140,31 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 				break;
 
 			case 64:
+#if defined( __BORLANDC__ )
+				if( floating_point_value == 0x7ff0000000000000UL )
+#else
 				if( floating_point_value == 0x7ff0000000000000ULL )
+#endif
 				{
 					is_infinite = 1;
 				}
+#if defined( __BORLANDC__ )
+				else if( ( is_signed != 0 )
+				      && ( floating_point_value == 0x7ff8000000000000UL ) )
+#else
 				else if( ( is_signed != 0 )
 				      && ( floating_point_value == 0x7ff8000000000000ULL ) )
+#endif
 				{
 					is_indeterminate = 1;
 				}
+#if defined( __BORLANDC__ )
+				else if( ( floating_point_value >= 0x7ff0000000000001UL )
+				      && ( floating_point_value <= 0x7fffffffffffffffUL ) )
+#else
 				else if( ( floating_point_value >= 0x7ff0000000000001ULL )
 				      && ( floating_point_value <= 0x7fffffffffffffffULL ) )
+#endif
 				{
 					is_not_a_number = 1;
 				}
@@ -3134,8 +3202,12 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 					{
 						exponent -= 1023;
 					}
+#if defined( __BORLANDC__ )
+					floating_point_value &= 0x000fffffffffffffUL;
+#else
 					floating_point_value &= 0x000fffffffffffffULL;
-					bit_shift             = 52;
+#endif
+					bit_shift = 52;
 				}
 				else
 				{
