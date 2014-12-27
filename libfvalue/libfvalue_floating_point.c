@@ -994,7 +994,7 @@ int libfvalue_string_size_from_floating_point(
 				break;
 
 			case 64:
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				if( floating_point_value == 0x7ff0000000000000UL )
 #else
 				if( floating_point_value == 0x7ff0000000000000ULL )
@@ -1002,7 +1002,7 @@ int libfvalue_string_size_from_floating_point(
 				{
 					is_infinite = 1;
 				}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				else if( ( is_signed != 0 )
 				      && ( floating_point_value == 0x7ff8000000000000UL ) )
 #else
@@ -1012,7 +1012,7 @@ int libfvalue_string_size_from_floating_point(
 				{
 					is_indeterminate = 1;
 				}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				else if( ( floating_point_value >= 0x7ff0000000000001UL )
 				      && ( floating_point_value <= 0x7fffffffffffffffUL ) )
 #else
@@ -1056,7 +1056,7 @@ int libfvalue_string_size_from_floating_point(
 					{
 						exponent -= 1023;
 					}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 					floating_point_value &= 0x000fffffffffffffUL;
 #else
 					floating_point_value &= 0x000fffffffffffffULL;
@@ -1414,7 +1414,7 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 				break;
 
 			case 64:
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				if( floating_point_value == 0x7ff0000000000000UL )
 #else
 				if( floating_point_value == 0x7ff0000000000000ULL )
@@ -1422,7 +1422,7 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 				{
 					is_infinite = 1;
 				}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				else if( ( is_signed != 0 )
 				      && ( floating_point_value == 0x7ff8000000000000UL ) )
 #else
@@ -1432,7 +1432,7 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 				{
 					is_indeterminate = 1;
 				}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				else if( ( floating_point_value >= 0x7ff0000000000001UL )
 				      && ( floating_point_value <= 0x7fffffffffffffffUL ) )
 #else
@@ -1476,7 +1476,7 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 					{
 						exponent -= 1023;
 					}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 					floating_point_value &= 0x000fffffffffffffUL;
 #else
 					floating_point_value &= 0x000fffffffffffffULL;
@@ -2277,7 +2277,7 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 				break;
 
 			case 64:
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				if( floating_point_value == 0x7ff0000000000000UL )
 #else
 				if( floating_point_value == 0x7ff0000000000000ULL )
@@ -2285,7 +2285,7 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 				{
 					is_infinite = 1;
 				}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				else if( ( is_signed != 0 )
 				      && ( floating_point_value == 0x7ff8000000000000UL ) )
 #else
@@ -2295,7 +2295,7 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 				{
 					is_indeterminate = 1;
 				}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				else if( ( floating_point_value >= 0x7ff0000000000001UL )
 				      && ( floating_point_value <= 0x7fffffffffffffffUL ) )
 #else
@@ -2339,7 +2339,7 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 					{
 						exponent -= 1023;
 					}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 					floating_point_value &= 0x000fffffffffffffUL;
 #else
 					floating_point_value &= 0x000fffffffffffffULL;
@@ -3140,7 +3140,7 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 				break;
 
 			case 64:
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				if( floating_point_value == 0x7ff0000000000000UL )
 #else
 				if( floating_point_value == 0x7ff0000000000000ULL )
@@ -3148,7 +3148,7 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 				{
 					is_infinite = 1;
 				}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				else if( ( is_signed != 0 )
 				      && ( floating_point_value == 0x7ff8000000000000UL ) )
 #else
@@ -3158,7 +3158,7 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 				{
 					is_indeterminate = 1;
 				}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 				else if( ( floating_point_value >= 0x7ff0000000000001UL )
 				      && ( floating_point_value <= 0x7fffffffffffffffUL ) )
 #else
@@ -3202,7 +3202,7 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 					{
 						exponent -= 1023;
 					}
-#if defined( __BORLANDC__ )
+#if defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
 					floating_point_value &= 0x000fffffffffffffUL;
 #else
 					floating_point_value &= 0x000fffffffffffffULL;
