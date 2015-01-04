@@ -28,6 +28,9 @@ TODO
 * add from string functions for fdatetime, fguid, fwnt
 * update man pages
 
+20150104
+* 2015 update
+
 20141227
 * changes for Borland C compiler
 
