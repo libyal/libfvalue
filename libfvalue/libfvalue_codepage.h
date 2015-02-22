@@ -89,7 +89,7 @@ enum LIBFVALUE_CODEPAGES
 	/* A special codepage to indicate codepage 1200 that uses ASCII strings as well.
 	 * This has primarily been seen in the ESE database format and could be SCSU.
 	 */
-	LIBFVALUE_CODEPAGE_1200_MIXED			= 0x800004b0
+	LIBFVALUE_CODEPAGE_1200_MIXED			= (int) 0x800004b0
 };
 
 #endif
