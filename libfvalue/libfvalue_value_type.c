@@ -48,7 +48,7 @@
 #include "libfvalue_libfwnt.h"
 #endif
 
-const char *libfvalue_value_type_strings[ 27 ] = {
+const char *libfvalue_value_type_strings[ 28 ] = {
 	NULL,
 
 	"binary-data",
@@ -69,6 +69,8 @@ const char *libfvalue_value_type_strings[ 27 ] = {
 	"float32",
 	"float64",
 
+	"NULL",
+
 	"byte-stream-string",
 	"utf8-string",
 	"utf16-string",
@@ -87,7 +89,7 @@ const char *libfvalue_value_type_strings[ 27 ] = {
 	"nt-sid",
 };
 
-const char *libfvalue_value_type_descriptions[ 27 ] = {
+const char *libfvalue_value_type_descriptions[ 28 ] = {
 	NULL,
 
 	"Binary data",
@@ -107,6 +109,8 @@ const char *libfvalue_value_type_descriptions[ 27 ] = {
 
 	"Floating point 32-bit (single precision)",
 	"Floating point 64-bit (double precision)",
+
+	"Null (None)",
 
 	"Byte stream string",
 	"UTF-8 string",
@@ -297,6 +301,43 @@ int libfvalue_value_type_initialize_with_data_handle(
 			          (int (*)(intptr_t *, const uint32_t *, size_t, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_integer_copy_from_utf32_string_with_index,
 			          (int (*)(intptr_t *, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_integer_get_string_size,
 			          (int (*)(intptr_t *, uint32_t *, size_t, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_integer_copy_to_utf32_string_with_index,
+
+			          flags,
+			          error );
+			break;
+
+		case LIBFVALUE_VALUE_TYPE_NULL:
+			result = libfvalue_value_initialize(
+			          value,
+			          libfvalue_value_type_strings[ type ],
+			          libfvalue_value_type_descriptions[ type ],
+
+			          data_handle,
+
+			          NULL,
+			          NULL,
+			          NULL,
+
+			          NULL,
+			          NULL,
+
+			          NULL,
+			          NULL,
+
+			          NULL,
+			          NULL,
+
+			          NULL,
+			          NULL,
+			          NULL,
+
+			          NULL,
+			          NULL,
+			          NULL,
+
+			          NULL,
+			          NULL,
+			          NULL,
 
 			          flags,
 			          error );

@@ -211,19 +211,22 @@ int libfvalue_value_initialize(
 
 		return( -1 );
 	}
-	if( libcdata_array_initialize(
-	     &( internal_value->value_instances ),
-	     1,
-	     error ) != 1 )
+	if( free_instance != NULL )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to create value instances array.",
-		 function );
+		if( libcdata_array_initialize(
+		     &( internal_value->value_instances ),
+		     1,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to create value instances array.",
+			 function );
 
-		goto on_error;
+			goto on_error;
+		}
 	}
 	if( data_handle == NULL )
 	{
@@ -351,30 +354,33 @@ int libfvalue_value_free(
 			}
 			internal_value->flags &= ~( LIBFVALUE_VALUE_FLAG_DATA_HANDLE_MANAGED );
 		}
-		if( internal_value->free_instance == NULL )
+		if( internal_value->value_instances != NULL )
 		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-			 "%s: invalid value - missing free instance function.",
-			 function );
+			if( internal_value->free_instance == NULL )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+				 "%s: invalid value - missing free instance function.",
+				 function );
 
-			result = -1;
-		}
-		if( libcdata_array_free(
-		     &( internal_value->value_instances ),
-		     internal_value->free_instance,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free value instances array.",
-			 function );
+				result = -1;
+			}
+			if( libcdata_array_free(
+			     &( internal_value->value_instances ),
+			     internal_value->free_instance,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+				 "%s: unable to free value instances array.",
+				 function );
 
-			result = -1;
+				result = -1;
+			}
 		}
 		memory_free(
 		 internal_value );
@@ -1453,27 +1459,30 @@ int libfvalue_value_get_value_instance_by_index(
 
 		return( -1 );
 	}
-	if( internal_value->free_instance == NULL )
+	if( internal_value->value_instances != NULL )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid value - missing free instance function.",
-		 function );
+		if( internal_value->free_instance == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+			 "%s: invalid value - missing free instance function.",
+			 function );
 
-		return( -1 );
-	}
-	if( internal_value->copy_from_byte_stream == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid value - missing free copy from byte stream function.",
-		 function );
+			return( -1 );
+		}
+		if( internal_value->copy_from_byte_stream == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+			 "%s: invalid value - missing free copy from byte stream function.",
+			 function );
 
-		return( -1 );
+			return( -1 );
+		}
 	}
 	if( value_instance == NULL )
 	{
@@ -1911,6 +1920,17 @@ int libfvalue_value_append_entry(
 	}
 	internal_value = (libfvalue_internal_value_t *) value;
 
+	if( internal_value->free_instance == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid value - missing free instance function.",
+		 function );
+
+		return( -1 );
+	}
 	if( value_entry_index == NULL )
 	{
 		libcerror_error_set(
@@ -2243,6 +2263,17 @@ int libfvalue_value_append_entry_data(
 	}
 	internal_value = (libfvalue_internal_value_t *) value;
 
+	if( internal_value->free_instance == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid value - missing free instance function.",
+		 function );
+
+		return( -1 );
+	}
 	if( value_entry_index == NULL )
 	{
 		libcerror_error_set(
