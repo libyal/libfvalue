@@ -710,8 +710,8 @@ int libfvalue_string_get_utf8_string_size(
      libcerror_error_t **error )
 {
 	static char *function = "libfvalue_string_get_utf8_string_size";
-	int byte_order         = 0;
-	int result             = 0;
+	int byte_order        = 0;
+	int result            = 0;
 
 	if( string == NULL )
 	{
@@ -932,8 +932,8 @@ int libfvalue_string_copy_to_utf8_string_with_index(
      libcerror_error_t **error )
 {
 	static char *function = "libfvalue_string_copy_to_utf8_string_with_index";
-	int byte_order         = 0;
-	int result             = 0;
+	int byte_order        = 0;
+	int result            = 0;
 
 	if( string == NULL )
 	{
@@ -1544,8 +1544,8 @@ int libfvalue_string_get_utf16_string_size(
      libcerror_error_t **error )
 {
 	static char *function = "libfvalue_string_get_utf16_string_size";
-	int byte_order         = 0;
-	int result             = 0;
+	int byte_order        = 0;
+	int result            = 0;
 
 	if( string == NULL )
 	{
@@ -1766,8 +1766,8 @@ int libfvalue_string_copy_to_utf16_string_with_index(
      libcerror_error_t **error )
 {
 	static char *function = "libfvalue_string_copy_to_utf16_string_with_index";
-	int byte_order         = 0;
-	int result             = 0;
+	int byte_order        = 0;
+	int result            = 0;
 
 	if( string == NULL )
 	{
@@ -2600,8 +2600,8 @@ int libfvalue_string_copy_to_utf32_string_with_index(
      libcerror_error_t **error )
 {
 	static char *function = "libfvalue_string_copy_to_utf32_string_with_index";
-	int byte_order         = 0;
-	int result             = 0;
+	int byte_order        = 0;
+	int result            = 0;
 
 	if( string == NULL )
 	{
