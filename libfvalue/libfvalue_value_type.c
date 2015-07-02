@@ -763,6 +763,17 @@ ssize_t libfvalue_value_type_get_string_size(
 
 		return( -1 );
 	}
+	if( data_size > (size_t) SSIZE_MAX )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid data size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
 	if( data != NULL )
 	{
 		if( ( internal_value->type == LIBFVALUE_VALUE_TYPE_STRING_BYTE_STREAM )
@@ -781,7 +792,7 @@ ssize_t libfvalue_value_type_get_string_size(
 		}
 		else if( internal_value->type == LIBFVALUE_VALUE_TYPE_STRING_UTF16 )
 		{
-			while( ( data_index + 1 ) < data_size )
+			while( data_index <= ( data_size - 2 ) )
 			{
 				if( ( data[ data_index ] == 0 )
 				 && ( data[ data_index + 1 ] == 0 ) )
@@ -795,7 +806,7 @@ ssize_t libfvalue_value_type_get_string_size(
 		}
 		else if( internal_value->type == LIBFVALUE_VALUE_TYPE_STRING_UTF32 )
 		{
-			while( ( data_index + 3 ) < data_size )
+			while( data_index <= ( data_size - 4 ) )
 			{
 				if( ( data[ data_index ] == 0 )
 				 && ( data[ data_index + 1 ] == 0 )

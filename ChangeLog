@@ -28,6 +28,9 @@ TODO
 * add from string functions for fdatetime, fguid, fwnt
 * update man pages
 
+20150702
+* code clean up
+
 20150322
 * code clean up
 * added NULL type
