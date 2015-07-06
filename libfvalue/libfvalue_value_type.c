@@ -792,6 +792,17 @@ ssize_t libfvalue_value_type_get_string_size(
 		}
 		else if( internal_value->type == LIBFVALUE_VALUE_TYPE_STRING_UTF16 )
 		{
+			if( data_size < 2 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+				 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+				 "%s: invalid data size value too small.",
+				 function );
+
+				return( -1 );
+			}
 			while( data_index <= ( data_size - 2 ) )
 			{
 				if( ( data[ data_index ] == 0 )
@@ -806,6 +817,17 @@ ssize_t libfvalue_value_type_get_string_size(
 		}
 		else if( internal_value->type == LIBFVALUE_VALUE_TYPE_STRING_UTF32 )
 		{
+			if( data_size < 4 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+				 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+				 "%s: invalid data size value too small.",
+				 function );
+
+				return( -1 );
+			}
 			while( data_index <= ( data_size - 4 ) )
 			{
 				if( ( data[ data_index ] == 0 )
