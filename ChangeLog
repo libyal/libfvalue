@@ -28,6 +28,10 @@ TODO
 * add from string functions for fdatetime, fguid, fwnt
 * update man pages
 
+20151226
+* applied updates
+* added value clear function
+
 20150706
 * code clean up
 

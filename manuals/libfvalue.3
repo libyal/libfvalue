@@ -1,4 +1,4 @@
-.Dd January  4, 2015
+.Dd December 26, 2015
 .Dt libfvalue 3
 .Os libfvalue
 .Sh NAME
@@ -116,6 +116,8 @@ Value functions
 .Fn libfvalue_value_free "libfvalue_value_t **value, libfvalue_error_t **error"
 .Ft int
 .Fn libfvalue_value_clone "libfvalue_value_t **destination_value, libfvalue_value_t *source_value, libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_value_clear "libfvalue_value_t *value, libfvalue_error_t **error"
 .Ft int
 .Fn libfvalue_value_get_type "libfvalue_value_t *value, int *value_type, libfvalue_error_t **error"
 .Ft int

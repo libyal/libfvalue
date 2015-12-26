@@ -683,6 +683,14 @@ int libfvalue_value_clone(
      libfvalue_value_t *source_value,
      libfvalue_error_t **error );
 
+/* Clears a value
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_clear(
+     libfvalue_value_t *value,
+     libfvalue_error_t **error );
+
 /* Retrieves the value type
  * Returns 1 if successful or -1 on error
  */

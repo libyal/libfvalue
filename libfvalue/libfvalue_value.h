@@ -349,6 +349,11 @@ int libfvalue_value_clone(
      libfvalue_value_t *source_value,
      libcerror_error_t **error );
 
+LIBFVALUE_EXTERN \
+int libfvalue_value_clear(
+     libfvalue_value_t *value,
+     libcerror_error_t **error );
+
 int libfvalue_compare_identifier(
      intptr_t *first_value,
      intptr_t *second_value,

@@ -325,18 +325,22 @@ int libfvalue_value_free(
 	}
 	if( *value != NULL )
 	{
+		if( libfvalue_value_clear(
+		     *value,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free data handle.",
+			 function );
+
+			result = -1;
+		}
 		internal_value = (libfvalue_internal_value_t *) *value;
 		*value         = NULL;
 
-		if( ( internal_value->flags & LIBFVALUE_VALUE_FLAG_IDENTIFIER_MANAGED ) != 0 )
-		{
-			if( internal_value->identifier != NULL )
-			{
-				memory_free(
-				 internal_value->identifier );
-			}
-			internal_value->flags &= ~( LIBFVALUE_VALUE_FLAG_IDENTIFIER_MANAGED );
-		}
 		if( ( internal_value->flags & LIBFVALUE_VALUE_FLAG_DATA_HANDLE_MANAGED ) != 0 )
 		{
 			if( libfvalue_data_handle_free(
@@ -353,34 +357,6 @@ int libfvalue_value_free(
 				result = -1;
 			}
 			internal_value->flags &= ~( LIBFVALUE_VALUE_FLAG_DATA_HANDLE_MANAGED );
-		}
-		if( internal_value->value_instances != NULL )
-		{
-			if( internal_value->free_instance == NULL )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-				 "%s: invalid value - missing free instance function.",
-				 function );
-
-				result = -1;
-			}
-			if( libcdata_array_free(
-			     &( internal_value->value_instances ),
-			     internal_value->free_instance,
-			     error ) != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-				 "%s: unable to free value instances array.",
-				 function );
-
-				result = -1;
-			}
 		}
 		memory_free(
 		 internal_value );
@@ -529,6 +505,69 @@ on_error:
 		 NULL );
 	}
 	return( -1 );
+}
+
+/* Clears a value
+ * Returns 1 if successful or -1 on error
+ */
+int libfvalue_value_clear(
+     libfvalue_value_t *value,
+     libcerror_error_t **error )
+{
+	libfvalue_internal_value_t *internal_value = NULL;
+	static char *function                      = "libfvalue_value_clear";
+
+	if( value == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid value.",
+		 function );
+
+		return( -1 );
+	}
+	internal_value = (libfvalue_internal_value_t *) value;
+
+	if( ( internal_value->flags & LIBFVALUE_VALUE_FLAG_IDENTIFIER_MANAGED ) != 0 )
+	{
+		if( internal_value->identifier != NULL )
+		{
+			memory_free(
+			 internal_value->identifier );
+		}
+		internal_value->flags &= ~( LIBFVALUE_VALUE_FLAG_IDENTIFIER_MANAGED );
+	}
+	if( internal_value->value_instances != NULL )
+	{
+		if( internal_value->free_instance == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+			 "%s: invalid value - missing free instance function.",
+			 function );
+
+			return( -1 );
+		}
+		if( libcdata_array_free(
+		     &( internal_value->value_instances ),
+		     internal_value->free_instance,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free value instances array.",
+			 function );
+
+			return( -1 );
+		}
+	}
+	return( 1 );
 }
 
 /* Retrieves the value type
