@@ -552,8 +552,8 @@ int libfvalue_value_clear(
 
 			return( -1 );
 		}
-		if( libcdata_array_free(
-		     &( internal_value->value_instances ),
+		if( libcdata_array_empty(
+		     internal_value->value_instances,
 		     internal_value->free_instance,
 		     error ) != 1 )
 		{
@@ -561,7 +561,7 @@ int libfvalue_value_clear(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free value instances array.",
+			 "%s: unable to empty value instances array.",
 			 function );
 
 			return( -1 );
