@@ -288,6 +288,54 @@ on_error:
 	return( -1 );
 }
 
+/* Clears a data handle
+ * Returns 1 if successful or -1 on error
+ */
+int libfvalue_data_handle_clear(
+     libfvalue_data_handle_t *data_handle,
+     libcerror_error_t **error )
+{
+	libfvalue_internal_data_handle_t *internal_data_handle = NULL;
+	static char *function                                  = "libfvalue_data_handle_clear";
+
+	if( data_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data handle.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_handle = (libfvalue_internal_data_handle_t *) data_handle;
+
+	if( internal_data_handle->value_entries != NULL )
+	{
+		if( libcdata_array_empty(
+		     internal_data_handle->value_entries,
+		     (int (*)(intptr_t **, libcerror_error_t **)) &libfvalue_value_entry_free,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to empty value instances array.",
+			 function );
+
+			return( -1 );
+		}
+	}
+	internal_data_handle->data       = NULL;
+	internal_data_handle->data_size  = 0;
+	internal_data_handle->encoding   = 0;
+	internal_data_handle->data_flags = 0;
+
+	return( 1 );
+}
+
 /* Retrieves the data
  * Returns 1 if successful or -1 on error
  */

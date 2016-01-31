@@ -539,6 +539,19 @@ int libfvalue_value_clear(
 		}
 		internal_value->flags &= ~( LIBFVALUE_VALUE_FLAG_IDENTIFIER_MANAGED );
 	}
+	if( libfvalue_data_handle_clear(
+	     internal_value->data_handle,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+		 "%s: unable to clear data handle.",
+		 function );
+
+		return( -1 );
+	}
 	if( internal_value->value_instances != NULL )
 	{
 		if( internal_value->free_instance == NULL )
@@ -1944,6 +1957,7 @@ int libfvalue_value_append_entry(
 	libfvalue_internal_value_t *internal_value = NULL;
 	intptr_t *value_instance                   = NULL;
 	static char *function                      = "libfvalue_value_append_entry";
+	int entry_index                            = 0;
 	int number_of_value_entries                = 0;
 
 	if( value == NULL )
@@ -1999,13 +2013,13 @@ int libfvalue_value_append_entry(
 	 * and the value instances reference this data make sure that no stale
 	 * value instances are kept around.
 	 */
-	for( *value_entry_index = 0;
-	     *value_entry_index < number_of_value_entries;
-	     *value_entry_index += 1 )
+	for( entry_index = 0;
+	     entry_index < number_of_value_entries;
+	     entry_index += 1 )
 	{
 		if( libcdata_array_get_entry_by_index(
 		     internal_value->value_instances,
-		     *value_entry_index,
+		     entry_index,
 		     &value_instance,
 		     error ) != 1 )
 		{
@@ -2015,7 +2029,7 @@ int libfvalue_value_append_entry(
 			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve entry: %d from values instances array.",
 			 function,
-			 *value_entry_index );
+			 entry_index );
 
 			return( -1 );
 		}
@@ -2023,7 +2037,7 @@ int libfvalue_value_append_entry(
 		{
 			if( libcdata_array_set_entry_by_index(
 			     internal_value->value_instances,
-			     *value_entry_index,
+			     entry_index,
 			     NULL,
 			     error ) != 1 )
 			{
@@ -2033,7 +2047,7 @@ int libfvalue_value_append_entry(
 				 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 				 "%s: unable to set entry: %d in values instances array.",
 				 function,
-				 *value_entry_index );
+				 entry_index );
 
 				return( -1 );
 			}
@@ -2047,7 +2061,7 @@ int libfvalue_value_append_entry(
 				 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 				 "%s: unable to free value instance: %d.",
 				 function,
-				 *value_entry_index );
+				 entry_index );
 
 				return( -1 );
 			}

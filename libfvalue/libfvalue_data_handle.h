@@ -97,6 +97,11 @@ int libfvalue_data_handle_clone(
      libcerror_error_t **error );
 
 LIBFVALUE_EXTERN \
+int libfvalue_data_handle_clear(
+     libfvalue_data_handle_t *data_handle,
+     libcerror_error_t **error );
+
+LIBFVALUE_EXTERN \
 int libfvalue_data_handle_get_data(
      libfvalue_data_handle_t *data_handle,
      uint8_t **data,
