@@ -1,13 +1,13 @@
 include_HEADERS = \
-        libfvalue.h
+	libfvalue.h
 
 pkginclude_HEADERS = \
-        libfvalue/codepage.h \
-        libfvalue/definitions.h \
-        libfvalue/error.h \
-        libfvalue/extern.h \
-        libfvalue/features.h \
-        libfvalue/types.h
+	libfvalue/codepage.h \
+	libfvalue/definitions.h \
+	libfvalue/error.h \
+	libfvalue/extern.h \
+	libfvalue/features.h \
+	libfvalue/types.h
 
 EXTRA_DIST = \
 	libfvalue.h.in \
