@@ -92,11 +92,11 @@ enum LIBFVALUE_CODEPAGES
 	LIBFVALUE_CODEPAGE_1200_MIXED			= (int) 0x800004b0
 };
 
-#endif
+#endif /* !defined( HAVE_LOCAL_LIBFVALUE ) */
 
 #if defined( __cplusplus )
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_INTERNAL_CODEPAGE_H ) */
 

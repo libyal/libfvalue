@@ -3,7 +3,7 @@
 .Os libfvalue
 .Sh NAME
 .Nm libfvalue.h
-.Nd Library to support support file format date and time values
+.Nd Library to support various format value types
 .Sh LIBRARY
 .Lb libfvalue
 .Sh SYNOPSIS
@@ -206,7 +206,7 @@ Value functions
 .Fn libfvalue_value_copy_to_utf32_string_with_index "libfvalue_value_t *value, int value_entry_index, uint32_t *utf32_string, size_t utf32_string_size, size_t *utf32_string_index, libfvalue_error_t **error"
 .Ft ssize_t
 .Fn libfvalue_value_read_from_file_stream "libfvalue_value_t *value, FILE *file_stream, libfvalue_error_t **error"
-.Ft #endif ssize_t
+.Ft ssize_t
 .Fn libfvalue_value_write_to_file_stream "libfvalue_value_t *value, FILE *file_stream, libfvalue_error_t **error"
 .Pp
 Value type functions

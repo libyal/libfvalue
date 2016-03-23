@@ -19,13 +19,19 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBFVALUE_TYPES_H )
-#define _LIBFVALUE_TYPES_H
+#if !defined( _LIBFVALUE_INTERNAL_TYPES_H )
+#define _LIBFVALUE_INTERNAL_TYPES_H
 
 #include <common.h>
 #include <types.h>
 
-/* External value type definition hides internal structure
+/* Define HAVE_LOCAL_LIBFVALUE for local use of libfvalue
+ * The definitions in <libfvalue/types.h> are copied here
+ * for local use of libfvalue
+ */
+#if defined( HAVE_LOCAL_LIBFVALUE )
+
+/* The following type definitions hide internal data structures
  */
 #if defined( HAVE_DEBUG_OUTPUT ) && !defined( WINAPI )
 typedef struct libfvalue_data_handle {}		libfvalue_data_handle_t;
@@ -41,7 +47,9 @@ typedef intptr_t libfvalue_split_utf16_string_t;
 typedef intptr_t libfvalue_table_t;
 typedef intptr_t libfvalue_value_t;
 
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) && !defined( WINAPI ) */
 
-#endif
+#endif /* defined( HAVE_LOCAL_LIBFVALUE ) */
+
+#endif /* !defined( _LIBFVALUE_INTERNAL_TYPES_H ) */
 

@@ -20,9 +20,8 @@
  */
 
 #include <common.h>
+#include <file_stream.h>
 #include <types.h>
-
-#include <stdio.h>
 
 #include "libfvalue_error.h"
 #include "libfvalue_libcerror.h"
@@ -51,6 +50,7 @@ int libfvalue_error_fprint(
 }
 
 /* Prints a descriptive string of the error to the string
+ * The end-of-string character is not included in the return value
  * Returns the number of printed characters if successful or -1 on error
  */
 int libfvalue_error_sprint(
@@ -77,6 +77,7 @@ int libfvalue_error_backtrace_fprint(
 }
 
 /* Prints a backtrace of the error to the string
+ * The end-of-string character is not included in the return value
  * Returns the number of printed characters if successful or -1 on error
  */
 int libfvalue_error_backtrace_sprint(
@@ -90,5 +91,5 @@ int libfvalue_error_backtrace_sprint(
 	         size ) );
 }
 
-#endif
+#endif /* !defined( HAVE_LOCAL_LIBFVALUE ) */
 
