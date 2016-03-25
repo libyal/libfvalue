@@ -341,6 +341,23 @@ int libfvalue_value_free(
 		internal_value = (libfvalue_internal_value_t *) *value;
 		*value         = NULL;
 
+		if( internal_value->value_instances != NULL )
+		{
+			if( libcdata_array_free(
+			     &( internal_value->value_instances ),
+			     internal_value->free_instance,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+				 "%s: unable to free value instances array.",
+				 function );
+
+				result = -1;
+			}
+		}
 		if( ( internal_value->flags & LIBFVALUE_VALUE_FLAG_DATA_HANDLE_MANAGED ) != 0 )
 		{
 			if( libfvalue_data_handle_free(

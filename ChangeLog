@@ -28,6 +28,9 @@ TODO
 * add from string functions for fdatetime, fguid, fwnt
 * update man pages
 
+20160325
+* fixed leaks in value and data handle
+
 20160109
 * fix in clear function
 

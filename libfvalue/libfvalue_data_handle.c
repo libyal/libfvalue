@@ -140,14 +140,6 @@ int libfvalue_data_handle_free(
 		internal_data_handle = (libfvalue_internal_data_handle_t *) *data_handle;
 		*data_handle         = NULL;
 
-		if( ( internal_data_handle->flags & LIBFVALUE_VALUE_DATA_FLAG_MANAGED ) != 0 )
-		{
-			if( internal_data_handle->data != NULL )
-			{
-				memory_free(
-				 internal_data_handle->data );
-			}
-		}
 		if( internal_data_handle->value_entries != NULL )
 		{
 			if( libcdata_array_free(
@@ -163,6 +155,14 @@ int libfvalue_data_handle_free(
 				 function );
 
 				result = -1;
+			}
+		}
+		if( ( internal_data_handle->flags & LIBFVALUE_VALUE_DATA_FLAG_MANAGED ) != 0 )
+		{
+			if( internal_data_handle->data != NULL )
+			{
+				memory_free(
+				 internal_data_handle->data );
 			}
 		}
 		memory_free(
@@ -326,6 +326,14 @@ int libfvalue_data_handle_clear(
 			 function );
 
 			return( -1 );
+		}
+	}
+	if( ( internal_data_handle->flags & LIBFVALUE_VALUE_DATA_FLAG_MANAGED ) != 0 )
+	{
+		if( internal_data_handle->data != NULL )
+		{
+			memory_free(
+			 internal_data_handle->data );
 		}
 	}
 	internal_data_handle->data       = NULL;
