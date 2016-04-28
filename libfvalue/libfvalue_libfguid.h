@@ -32,7 +32,9 @@
 #include <libfguid_identifier.h>
 #include <libfguid_types.h>
 
-#else
+/* Note that libfvalue does not require to have libfguid support
+ */
+#elif defined( HAVE_LIBFGUID_H )
 
 /* If libtool DLL support is enabled set LIBFGUID_DLL_IMPORT
  * before including libfguid.h
@@ -43,7 +45,7 @@
 
 #include <libfguid.h>
 
-#endif
+#endif /* defined( HAVE_LOCAL_LIBFGUID ) */
 
-#endif
+#endif /* !defined( _LIBFVALUE_LIBFGUID_H ) */
 

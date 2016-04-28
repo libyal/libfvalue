@@ -25,20 +25,26 @@
 #include <common.h>
 
 #if !defined( FVALUE_TEST_ATTRIBUTE_UNUSED )
+
 #if defined( __GNUC__ ) && __GNUC__ >= 3
 #define FVALUE_TEST_ATTRIBUTE_UNUSED	__attribute__ ((__unused__))
+
 #else
 #define FVALUE_TEST_ATTRIBUTE_UNUSED
-#endif
-#endif
+
+#endif /* defined( __GNUC__ ) && __GNUC__ >= 3 */
+
+#endif /* !defined( FVALUE_TEST_ATTRIBUTE_UNUSED ) */
 
 #if defined( _MSC_VER )
 #define FVALUE_TEST_UNREFERENCED_PARAMETER( parameter ) \
 	UNREFERENCED_PARAMETER( parameter );
+
 #else
 #define FVALUE_TEST_UNREFERENCED_PARAMETER( parameter ) \
 	/* parameter */
-#endif
 
-#endif
+#endif /* defined( _MSC_VER ) */
+
+#endif /* !defined( _FVALUE_TEST_UNUSED_H ) */
 
