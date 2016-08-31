@@ -18,13 +18,26 @@ EXTRA_DIST = \
 	$(check_SCRIPTS)
 
 check_PROGRAMS = \
+	fvalue_test_error \
 	fvalue_test_get_version \
 	fvalue_test_value
+
+fvalue_test_error_SOURCES = \
+	fvalue_test_error.c \
+	fvalue_test_libcstring.h \
+	fvalue_test_libfvalue.h \
+	fvalue_test_macros.h \
+	fvalue_test_unused.h
+
+fvalue_test_error_LDADD = \
+	../libfvalue/libfvalue.la \
+	@LIBCSTRING_LIBADD@
 
 fvalue_test_get_version_SOURCES = \
 	fvalue_test_get_version.c \
 	fvalue_test_libcstring.h \
 	fvalue_test_libfvalue.h \
+	fvalue_test_macros.h \
 	fvalue_test_unused.h
 
 fvalue_test_get_version_LDADD = \

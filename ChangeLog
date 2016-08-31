@@ -28,6 +28,9 @@ TODO
 * add from string functions for fdatetime, fguid, fwnt
 * update man pages
 
+20160831
+* worked on tests
+
 20160325
 * fixed leaks in value and data handle
 

@@ -119,6 +119,7 @@ stamp-h[1-9]
 /include/libfvalue/types.h
 /libfvalue/libfvalue.rc
 /libfvalue/libfvalue_definitions.h
+/tests/fvalue_test_error
 /tests/fvalue_test_get_version
 /tests/fvalue_test_value
 /tests/tmp*
