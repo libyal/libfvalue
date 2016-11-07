@@ -187,14 +187,14 @@ typedef int64_t off64_t;
  */
 #if !defined( __USE_UNIX98 )
 #define __USE_UNIX98
-#define LIBCSTRING_DEFINITION_UNIX98
+#define LIBFVALUE_DEFINITION_UNIX98
 #endif
 
 #include <wchar.h>
 
-#if defined( LIBCSTRING_DEFINITION_UNIX98 )
+#if defined( LIBFVALUE_DEFINITION_UNIX98 )
 #undef __USE_UNIX98
-#undef LIBCSTRING_DEFINITION_UNIX98
+#undef LIBFVALUE_DEFINITION_UNIX98
 #endif
 
 #endif
@@ -211,5 +211,5 @@ typedef intptr_t libfvalue_value_t;
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_TYPES_H ) */
 

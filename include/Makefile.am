@@ -21,6 +21,7 @@ MAINTAINERCLEANFILES = \
 distclean: clean
 	/bin/rm -f libfvalue.h
 	/bin/rm -f libfvalue/definitions.h
+	/bin/rm -f libfvalue/features.h
 	/bin/rm -f libfvalue/types.h
 	/bin/rm -f Makefile
 

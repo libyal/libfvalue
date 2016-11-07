@@ -1,11 +1,10 @@
 MSVSCPP_FILES = \
 	fvalue_test_error/fvalue_test_error.vcproj \
-	fvalue_test_get_version/fvalue_test_get_version.vcproj \
+	fvalue_test_support/fvalue_test_support.vcproj \
 	fvalue_test_value/fvalue_test_value.vcproj \
 	libcdata/libcdata.vcproj \
 	libcerror/libcerror.vcproj \
 	libcnotify/libcnotify.vcproj \
-	libcstring/libcstring.vcproj \
 	libcthreads/libcthreads.vcproj \
 	libfdatetime/libfdatetime.vcproj \
 	libfguid/libfguid.vcproj \

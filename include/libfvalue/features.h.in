@@ -24,10 +24,6 @@
 
 /* The libfvalue type support features
  */
-#if defined( WINAPI ) || @HAVE_WIDE_CHARACTER_TYPE@
-#define LIBFVALUE_HAVE_WIDE_CHARACTER_TYPE	1
-#endif
-
 #if !defined( LIBFVALUE_DEPRECATED )
 #if defined( __GNUC__ ) && __GNUC__ >= 3
 #define LIBFVALUE_DEPRECATED	__attribute__ ((__deprecated__))
@@ -38,5 +34,5 @@
 #endif
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_FEATURES_H ) */
 

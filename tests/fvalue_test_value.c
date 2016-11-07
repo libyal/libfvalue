@@ -20,16 +20,16 @@
  */
 
 #include <common.h>
+#include <file_stream.h>
+#include <memory.h>
+#include <types.h>
 
 #if defined( HAVE_STDLIB_H ) || defined( WINAPI )
 #include <stdlib.h>
 #endif
 
-#include <stdio.h>
-
 #include "fvalue_test_libfvalue.h"
 #include "fvalue_test_libcerror.h"
-#include "fvalue_test_libcstring.h"
 #include "fvalue_test_unused.h"
 
 /* Tests initializing the value
@@ -685,7 +685,7 @@ on_error:
 
 /* The main program
  */
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 int wmain( int argc, wchar_t * const argv[] FVALUE_TEST_ATTRIBUTE_UNUSED )
 #else
 int main( int argc, char * const argv[] FVALUE_TEST_ATTRIBUTE_UNUSED )

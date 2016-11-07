@@ -20,6 +20,8 @@
  */
 
 #include <common.h>
+#include <file_stream.h>
+#include <types.h>
 
 #if defined( HAVE_STDLIB_H ) || defined( WINAPI )
 #include <stdlib.h>
@@ -108,7 +110,7 @@ int fvalue_test_error_backtrace_sprint(
 
 /* The main program
  */
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 int wmain(
      int argc FVALUE_TEST_ATTRIBUTE_UNUSED,
      wchar_t * const argv[] FVALUE_TEST_ATTRIBUTE_UNUSED )
@@ -123,23 +125,23 @@ int main(
 
 	FVALUE_TEST_RUN(
 	 "libfvalue_error_free",
-	 fvalue_test_error_free() )
+	 fvalue_test_error_free );
 
 	FVALUE_TEST_RUN(
 	 "libfvalue_error_fprint",
-	 fvalue_test_error_fprint() )
+	 fvalue_test_error_fprint );
 
 	FVALUE_TEST_RUN(
 	 "libfvalue_error_sprint",
-	 fvalue_test_error_sprint() )
+	 fvalue_test_error_sprint );
 
 	FVALUE_TEST_RUN(
 	 "libfvalue_error_backtrace_fprint",
-	 fvalue_test_error_backtrace_fprint() )
+	 fvalue_test_error_backtrace_fprint );
 
 	FVALUE_TEST_RUN(
 	 "libfvalue_error_backtrace_sprint",
-	 fvalue_test_error_backtrace_sprint() )
+	 fvalue_test_error_backtrace_sprint );
 
 	return( EXIT_SUCCESS );
 

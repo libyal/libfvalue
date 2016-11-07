@@ -24,7 +24,6 @@
 #include <types.h>
 
 #include "libfvalue_libcerror.h"
-#include "libfvalue_libcstring.h"
 #include "libfvalue_split_string.h"
 #include "libfvalue_types.h"
 

@@ -1,5 +1,5 @@
 /*
- * Library get version test program
+ * Library support functions test program
  *
  * Copyright (C) 2010-2016, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -20,17 +20,19 @@
  */
 
 #include <common.h>
+#include <file_stream.h>
+#include <narrow_string.h>
+#include <types.h>
 
 #if defined( HAVE_STDLIB_H ) || defined( WINAPI )
 #include <stdlib.h>
 #endif
 
-#include "fvalue_test_libcstring.h"
 #include "fvalue_test_libfvalue.h"
 #include "fvalue_test_macros.h"
 #include "fvalue_test_unused.h"
 
-/* Tests retrieving the library version
+/* Tests the libfvalue_get_version function
  * Returns 1 if successful or 0 if not
  */
 int fvalue_test_get_version(
@@ -41,7 +43,7 @@ int fvalue_test_get_version(
 
 	version_string = libfvalue_get_version();
 
-	result = libcstring_narrow_string_compare(
+	result = narrow_string_compare(
 	          version_string,
 	          LIBFVALUE_VERSION_STRING,
 	          9 );
@@ -59,7 +61,7 @@ on_error:
 
 /* The main program
  */
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 int wmain(
      int argc FVALUE_TEST_ATTRIBUTE_UNUSED,
      wchar_t * const argv[] FVALUE_TEST_ATTRIBUTE_UNUSED )
@@ -74,7 +76,7 @@ int main(
 
 	FVALUE_TEST_RUN(
 	 "libfvalue_get_version",
-	 fvalue_test_get_version() )
+	 fvalue_test_get_version );
 
 	return( EXIT_SUCCESS );
 
