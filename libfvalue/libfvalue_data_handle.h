@@ -191,5 +191,5 @@ int libfvalue_data_handle_append_value_entry_data(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_INTERNAL_DATA_HANDLE_H ) */
 

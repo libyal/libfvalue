@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="fvalue_test_error"
-	ProjectGUID="{3E3FDDD6-5CAC-4F01-90A1-6075FF079F4F}"
-	RootNamespace="fvalue_test_error"
+	Name="fvalue_test_floating_point"
+	ProjectGUID="{F99A3253-D5B5-46F6-B915-6F1609A499AB}"
+	RootNamespace="fvalue_test_floating_point"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -176,7 +176,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\tests\fvalue_test_error.c"
+				RelativePath="..\..\tests\fvalue_test_floating_point.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\tests\fvalue_test_memory.c"
 				>
 			</File>
 		</Filter>
@@ -186,11 +190,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\..\tests\fvalue_test_libcerror.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\tests\fvalue_test_libfvalue.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\tests\fvalue_test_macros.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\tests\fvalue_test_memory.h"
 				>
 			</File>
 			<File

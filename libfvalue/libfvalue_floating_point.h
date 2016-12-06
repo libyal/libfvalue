@@ -242,5 +242,5 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_FLOATING_POINT_H ) */
 

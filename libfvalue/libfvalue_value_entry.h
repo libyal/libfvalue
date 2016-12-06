@@ -61,5 +61,5 @@ int libfvalue_value_entry_clone(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_VALUE_ENTRY_H ) */
 

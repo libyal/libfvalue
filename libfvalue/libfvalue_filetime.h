@@ -52,5 +52,5 @@ int libfvalue_filetime_copy_to_integer(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_FILETIME_H ) */
 

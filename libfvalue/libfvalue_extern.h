@@ -38,9 +38,9 @@
 #include <libfvalue/extern.h>
 
 #else
-#define LIBFVALUE_EXTERN	extern
+#define LIBFVALUE_EXTERN	/* extern */
 
-#endif
+#endif /* !defined( HAVE_LOCAL_LIBFVALUE ) */
 
 #endif /* !defined( _LIBFVALUE_INTERNAL_EXTERN_H ) */
 

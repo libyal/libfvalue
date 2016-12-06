@@ -132,5 +132,5 @@ int libfvalue_table_copy_from_utf8_xml_string(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_INTERNAL_TABLE_H ) */
 

@@ -169,5 +169,5 @@ int libfvalue_split_utf16_string_set_segment_by_index(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_INTERNAL_SPLIT_STRING_H ) */
 

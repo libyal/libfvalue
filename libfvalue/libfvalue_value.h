@@ -749,5 +749,5 @@ int libfvalue_value_print(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_INTERNAL_VALUE_H ) */
 

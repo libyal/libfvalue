@@ -84,5 +84,5 @@ ssize_t libfvalue_value_type_set_data_strings_array(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_INTERNAL_VALUE_TYPE_H ) */
 

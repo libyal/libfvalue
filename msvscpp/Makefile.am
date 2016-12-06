@@ -1,7 +1,14 @@
 MSVSCPP_FILES = \
+	fvalue_test_binary_data/fvalue_test_binary_data.vcproj \
+	fvalue_test_data_handle/fvalue_test_data_handle.vcproj \
 	fvalue_test_error/fvalue_test_error.vcproj \
+	fvalue_test_floating_point/fvalue_test_floating_point.vcproj \
+	fvalue_test_integer/fvalue_test_integer.vcproj \
+	fvalue_test_string/fvalue_test_string.vcproj \
 	fvalue_test_support/fvalue_test_support.vcproj \
+	fvalue_test_table/fvalue_test_table.vcproj \
 	fvalue_test_value/fvalue_test_value.vcproj \
+	fvalue_test_value_entry/fvalue_test_value_entry.vcproj \
 	libcdata/libcdata.vcproj \
 	libcerror/libcerror.vcproj \
 	libcnotify/libcnotify.vcproj \

@@ -43,5 +43,5 @@ const char *libfvalue_get_version(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_SUPPORT_H ) */
 

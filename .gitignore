@@ -120,9 +120,16 @@ stamp-h[1-9]
 /include/libfvalue/types.h
 /libfvalue/libfvalue.rc
 /libfvalue/libfvalue_definitions.h
+/tests/fvalue_test_binary_data
+/tests/fvalue_test_data_handle
 /tests/fvalue_test_error
+/tests/fvalue_test_floating_point
+/tests/fvalue_test_integer
+/tests/fvalue_test_string
 /tests/fvalue_test_support
+/tests/fvalue_test_table
 /tests/fvalue_test_value
+/tests/fvalue_test_value_entry
 /tests/tmp*
 
 # Local library dependencies specific files

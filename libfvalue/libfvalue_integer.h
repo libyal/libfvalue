@@ -257,5 +257,5 @@ int libfvalue_utf32_string_with_index_copy_to_integer(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBFVALUE_INTEGER_H ) */
 
