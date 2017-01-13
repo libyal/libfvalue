@@ -2,6 +2,7 @@ include_HEADERS = \
 	libfvalue.h
 
 pkginclude_HEADERS = \
+	libfvalue/codepage.h \
 	libfvalue/definitions.h \
 	libfvalue/error.h \
 	libfvalue/extern.h \
