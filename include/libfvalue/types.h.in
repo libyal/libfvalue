@@ -202,8 +202,8 @@ typedef int64_t off64_t;
 /* The following type definitions hide internal data structures
  */
 typedef intptr_t libfvalue_data_handle_t;
-typedef intptr_t libfvalue_split_utf8_string_t;
 typedef intptr_t libfvalue_split_utf16_string_t;
+typedef intptr_t libfvalue_split_utf8_string_t;
 typedef intptr_t libfvalue_table_t;
 typedef intptr_t libfvalue_value_t;
 
