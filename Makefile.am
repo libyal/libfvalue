@@ -23,10 +23,9 @@ DPKG_FILES = \
 	dpkg/compat \
 	dpkg/control \
 	dpkg/copyright \
-	dpkg/copyright.in \
 	dpkg/rules \
-	dpkg/libfvalue-dev.docs \
-	dpkg/libfvalue.docs \
+	dpkg/libfvalue-dev.install \
+	dpkg/libfvalue.install \
 	dpkg/source/format
 
 GETTEXT_FILES = \

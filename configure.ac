@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [libfvalue],
- [20170326],
+ [20170512],
  [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
@@ -171,7 +171,6 @@ AC_CONFIG_FILES([libfvalue/libfvalue_definitions.h])
 dnl Have configure make distribution specific files
 AC_CONFIG_FILES([common/types.h])
 AC_CONFIG_FILES([dpkg/changelog])
-AC_CONFIG_FILES([dpkg/copyright])
 AC_CONFIG_FILES([libfvalue/libfvalue.rc])
 AC_CONFIG_FILES([libfvalue.pc])
 AC_CONFIG_FILES([libfvalue.spec])
