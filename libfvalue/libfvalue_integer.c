@@ -1515,7 +1515,7 @@ int libfvalue_utf8_string_with_index_copy_to_integer(
 			value_64bit *= 10;
 
 			if( ( utf8_string[ string_index ] < (uint8_t) '0' )
-			 && ( utf8_string[ string_index ] > (uint8_t) '9' ) )
+			 || ( utf8_string[ string_index ] > (uint8_t) '9' ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -2171,7 +2171,7 @@ int libfvalue_utf16_string_with_index_copy_to_integer(
 			value_64bit *= 10;
 
 			if( ( utf16_string[ string_index ] < (uint16_t) '0' )
-			 && ( utf16_string[ string_index ] > (uint16_t) '9' ) )
+			 || ( utf16_string[ string_index ] > (uint16_t) '9' ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -2827,7 +2827,7 @@ int libfvalue_utf32_string_with_index_copy_to_integer(
 			value_64bit *= 10;
 
 			if( ( utf32_string[ string_index ] < (uint32_t) '0' )
-			 && ( utf32_string[ string_index ] > (uint32_t) '9' ) )
+			 || ( utf32_string[ string_index ] > (uint32_t) '9' ) )
 			{
 				libcerror_error_set(
 				 error,
