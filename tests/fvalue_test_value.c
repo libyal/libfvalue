@@ -122,11 +122,11 @@ int main(
 
 	/* TODO: add tests for libfvalue_value_set_format_flags */
 
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT )
 
 	/* TODO: add tests for libfvalue_value_get_value_instance_by_index */
 
-#endif /* defined( __GNUC__ ) */
+#endif /* #if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 	/* TODO: add tests for libfvalue_value_get_number_of_value_entries */
 
@@ -200,11 +200,11 @@ int main(
 
 	/* TODO: add tests for libfvalue_value_write_to_file_stream */
 
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT )
 
 	/* TODO: add tests for libfvalue_value_print */
 
-#endif /* defined( __GNUC__ ) */
+#endif /* #if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 	return( EXIT_SUCCESS );
 

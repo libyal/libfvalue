@@ -35,7 +35,7 @@
 
 #include "../libfvalue/libfvalue_value_entry.h"
 
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT )
 
 /* Tests the libfvalue_value_entry_initialize function
  * Returns 1 if successful or 0 if not
@@ -416,7 +416,7 @@ on_error:
 	return( 0 );
 }
 
-#endif /* defined( __GNUC__ ) */
+#endif /* #if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 /* The main program
  */
@@ -433,7 +433,7 @@ int main(
 	FVALUE_TEST_UNREFERENCED_PARAMETER( argc )
 	FVALUE_TEST_UNREFERENCED_PARAMETER( argv )
 
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT )
 
 	FVALUE_TEST_RUN(
 	 "libfvalue_value_entry_initialize",
@@ -447,7 +447,7 @@ int main(
 	 "libfvalue_value_entry_clone",
 	 fvalue_test_value_entry_clone );
 
-#endif /* defined( __GNUC__ ) */
+#endif /* #if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 	return( EXIT_SUCCESS );
 
