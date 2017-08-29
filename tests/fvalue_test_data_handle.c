@@ -53,9 +53,9 @@ int fvalue_test_data_handle_free(
 	 result,
 	 -1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );

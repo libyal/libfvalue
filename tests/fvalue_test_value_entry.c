@@ -64,13 +64,13 @@ int fvalue_test_value_entry_initialize(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "value_entry",
-         value_entry );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value_entry",
+	 value_entry );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	result = libfvalue_value_entry_free(
 	          &value_entry,
@@ -81,13 +81,13 @@ int fvalue_test_value_entry_initialize(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "value_entry",
-         value_entry );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value_entry",
+	 value_entry );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test error cases
 	 */
@@ -100,9 +100,9 @@ int fvalue_test_value_entry_initialize(
 	 result,
 	 -1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -118,9 +118,9 @@ int fvalue_test_value_entry_initialize(
 	 result,
 	 -1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -252,9 +252,9 @@ int fvalue_test_value_entry_free(
 	 result,
 	 -1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -292,13 +292,13 @@ int fvalue_test_value_entry_clone(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "source_value_entry",
-         source_value_entry );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "source_value_entry",
+	 source_value_entry );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test regular cases
 	 */
@@ -312,13 +312,13 @@ int fvalue_test_value_entry_clone(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "destination_value_entry",
-         destination_value_entry );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "destination_value_entry",
+	 destination_value_entry );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	result = libfvalue_value_entry_free(
 	          &destination_value_entry,
@@ -329,13 +329,13 @@ int fvalue_test_value_entry_clone(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "destination_value_entry",
-         destination_value_entry );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "destination_value_entry",
+	 destination_value_entry );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	result = libfvalue_value_entry_clone(
 	          &destination_value_entry,
@@ -347,13 +347,13 @@ int fvalue_test_value_entry_clone(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "destination_value_entry",
-         destination_value_entry );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "destination_value_entry",
+	 destination_value_entry );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test error cases
 	 */
@@ -367,9 +367,9 @@ int fvalue_test_value_entry_clone(
 	 result,
 	 -1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -385,13 +385,13 @@ int fvalue_test_value_entry_clone(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "source_value_entry",
-         source_value_entry );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "source_value_entry",
+	 source_value_entry );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	return( 1 );
 

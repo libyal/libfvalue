@@ -64,13 +64,13 @@ int fvalue_test_floating_point_initialize(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "floating_point",
-         floating_point );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "floating_point",
+	 floating_point );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	result = libfvalue_floating_point_free(
 	          &floating_point,
@@ -81,13 +81,13 @@ int fvalue_test_floating_point_initialize(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "floating_point",
-         floating_point );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "floating_point",
+	 floating_point );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test error cases
 	 */
@@ -100,9 +100,9 @@ int fvalue_test_floating_point_initialize(
 	 result,
 	 -1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -118,9 +118,9 @@ int fvalue_test_floating_point_initialize(
 	 result,
 	 -1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -252,9 +252,9 @@ int fvalue_test_floating_point_free(
 	 result,
 	 -1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -292,13 +292,13 @@ int fvalue_test_floating_point_clone(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "source_floating_point",
-         source_floating_point );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "source_floating_point",
+	 source_floating_point );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test regular cases
 	 */
@@ -312,13 +312,13 @@ int fvalue_test_floating_point_clone(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "destination_floating_point",
-         destination_floating_point );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "destination_floating_point",
+	 destination_floating_point );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	result = libfvalue_floating_point_free(
 	          &destination_floating_point,
@@ -329,13 +329,13 @@ int fvalue_test_floating_point_clone(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "destination_floating_point",
-         destination_floating_point );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "destination_floating_point",
+	 destination_floating_point );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	result = libfvalue_floating_point_clone(
 	          &destination_floating_point,
@@ -347,13 +347,13 @@ int fvalue_test_floating_point_clone(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "destination_floating_point",
-         destination_floating_point );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "destination_floating_point",
+	 destination_floating_point );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test error cases
 	 */
@@ -367,9 +367,9 @@ int fvalue_test_floating_point_clone(
 	 result,
 	 -1 );
 
-        FVALUE_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -385,13 +385,13 @@ int fvalue_test_floating_point_clone(
 	 result,
 	 1 );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "source_floating_point",
-         source_floating_point );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "source_floating_point",
+	 source_floating_point );
 
-        FVALUE_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	return( 1 );
 
