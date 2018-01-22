@@ -33,6 +33,8 @@
 #include "fvalue_test_memory.h"
 #include "fvalue_test_unused.h"
 
+#include "../libfvalue/libfvalue_value.h"
+
 /* Tests the libfvalue_value_free function
  * Returns 1 if successful or 0 if not
  */
@@ -126,7 +128,7 @@ int main(
 
 	/* TODO: add tests for libfvalue_value_get_value_instance_by_index */
 
-#endif /* #if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 	/* TODO: add tests for libfvalue_value_get_number_of_value_entries */
 
@@ -204,7 +206,7 @@ int main(
 
 	/* TODO: add tests for libfvalue_value_print */
 
-#endif /* #if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 	return( EXIT_SUCCESS );
 

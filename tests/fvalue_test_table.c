@@ -96,7 +96,7 @@ int main(
 
 	/* TODO: add tests for libfvalue_table_free_as_value */
 
-#endif /* #if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 	/* TODO: add tests for libfvalue_table_empty */
 

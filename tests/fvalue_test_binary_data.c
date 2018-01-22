@@ -416,7 +416,7 @@ on_error:
 	return( 0 );
 }
 
-#endif /* #if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 /* The main program
  */
@@ -461,7 +461,7 @@ int main(
 
 	/* TODO: add tests for libfvalue_binary_data_copy_to_utf32_string_with_index */
 
-#endif /* #if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 	return( EXIT_SUCCESS );
 
