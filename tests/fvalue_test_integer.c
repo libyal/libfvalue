@@ -518,6 +518,216 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the libfvalue_utf8_string_copy_to_integer function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_utf8_string_copy_to_integer(
+     void )
+{
+	const uint8_t invalid_source_string[] = {'/', ':', '\0'};
+	const uint8_t valid_source_string[]   = {'4', '8', '9', '0', '\0'};
+
+	libcerror_error_t *error              = NULL;
+	uint64_t integer_value                = 0;
+	int result                            = 0;
+
+	/* Test a valid conversion
+	 */
+	result = libfvalue_utf8_string_copy_to_integer(
+	          valid_source_string,
+	          sizeof( valid_source_string ),
+	          &integer_value,
+	          64,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_UNSIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer_value",
+	 integer_value,
+	 (uint64_t) 4890 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test an invalid conversion
+	 */
+	result = libfvalue_utf8_string_copy_to_integer(
+	          invalid_source_string,
+	          sizeof( valid_source_string ),
+	          &integer_value,
+	          64,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_UNSIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_utf16_string_copy_to_integer function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_utf16_string_copy_to_integer(
+     void )
+{
+	const uint16_t invalid_source_string[] = {'/', ':', '\0'};
+	const uint16_t valid_source_string[]   = {'4', '8', '9', '0', '\0'};
+
+	libcerror_error_t *error               = NULL;
+	uint64_t integer_value                 = 0;
+	int result                             = 0;
+
+	/* Test a valid conversion
+	 */
+	result = libfvalue_utf16_string_copy_to_integer(
+	          valid_source_string,
+	          sizeof( valid_source_string ),
+	          &integer_value,
+	          64,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_UNSIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer_value",
+	 integer_value,
+	 (uint64_t) 4890 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test an invalid conversion
+	 */
+	result = libfvalue_utf16_string_copy_to_integer(
+	          invalid_source_string,
+	          sizeof( valid_source_string ),
+	          &integer_value,
+	          64,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_UNSIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_utf32_string_copy_to_integer function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_utf32_string_copy_to_integer(
+     void )
+{
+	const uint32_t invalid_source_string[] = {'/', ':', '\0'};
+	const uint32_t valid_source_string[]   = {'4', '8', '9', '0', '\0'};
+
+	libcerror_error_t *error               = NULL;
+	uint64_t integer_value                 = 0;
+	int result                             = 0;
+
+	/* Test a valid conversion
+	 */
+	result = libfvalue_utf32_string_copy_to_integer(
+	          valid_source_string,
+	          sizeof( valid_source_string ),
+	          &integer_value,
+	          64,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_UNSIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer_value",
+	 integer_value,
+	 (uint64_t) 4890 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test an invalid conversion
+	 */
+	result = libfvalue_utf32_string_copy_to_integer(
+	          invalid_source_string,
+	          sizeof( valid_source_string ),
+	          &integer_value,
+	          64,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_UNSIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	return( 0 );
+}
+
 #endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 /* The main program
@@ -568,6 +778,18 @@ int main(
 	/* TODO: add tests for libfvalue_integer_copy_from_utf32_string_with_index */
 
 	/* TODO: add tests for libfvalue_integer_copy_to_utf32_string_with_index */
+
+	FVALUE_TEST_RUN(
+	 "libfvalue_utf8_string_copy_to_integer",
+	 fvalue_test_utf8_string_copy_to_integer );
+
+	FVALUE_TEST_RUN(
+	 "libfvalue_utf16_string_copy_to_integer",
+	 fvalue_test_utf16_string_copy_to_integer );
+
+	FVALUE_TEST_RUN(
+	 "libfvalue_utf32_string_copy_to_integer",
+	 fvalue_test_utf32_string_copy_to_integer );
 
 #endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
