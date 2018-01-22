@@ -400,7 +400,7 @@ int libfvalue_utf32_string_with_index_copy_to_integer(
      libfvalue_error_t **error );
 
 /* -------------------------------------------------------------------------
- * String functions
+ * UTF-8 string functions
  * ------------------------------------------------------------------------- */
 
 /* Splits an UTF-8 string
@@ -414,6 +414,63 @@ int libfvalue_utf8_string_split(
      libfvalue_split_utf8_string_t **split_string,
      libfvalue_error_t **error );
 
+/* -------------------------------------------------------------------------
+ * Split UTF-8 string functions
+ * ------------------------------------------------------------------------- */
+
+/* Frees a split UTF-8 string
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_split_utf8_string_free(
+     libfvalue_split_utf8_string_t **split_string,
+     libfvalue_error_t **error );
+
+/* Retrieves the UTF-8 string
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_split_utf8_string_get_string(
+     libfvalue_split_utf8_string_t *split_string,
+     uint8_t **utf8_string,
+     size_t *utf8_string_size,
+     libfvalue_error_t **error );
+
+/* Retrieves the number of segments
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_split_utf8_string_get_number_of_segments(
+     libfvalue_split_utf8_string_t *split_string,
+     int *number_of_segments,
+     libfvalue_error_t **error );
+
+/* Retrieves a specific segment
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_split_utf8_string_get_segment_by_index(
+     libfvalue_split_utf8_string_t *split_string,
+     int segment_index,
+     uint8_t **utf8_string_segment,
+     size_t *utf8_string_segment_size,
+     libfvalue_error_t **error );
+
+/* Sets a specific segment
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_split_utf8_string_set_segment_by_index(
+     libfvalue_split_utf8_string_t *split_string,
+     int segment_index,
+     uint8_t *utf8_string_segment,
+     size_t utf8_string_segment_size,
+     libfvalue_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * UTF-16 string functions
+ * ------------------------------------------------------------------------- */
+
 /* Splits an UTF-16 string
  * Returns 1 if successful or -1 on error
  */
@@ -423,6 +480,59 @@ int libfvalue_utf16_string_split(
      size_t utf16_string_size,
      uint16_t delimiter,
      libfvalue_split_utf16_string_t **split_string,
+     libfvalue_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * Split UTF-16 string functions
+ * ------------------------------------------------------------------------- */
+
+/* Frees a split UTF-16 string
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_split_utf16_string_free(
+     libfvalue_split_utf16_string_t **split_string,
+     libfvalue_error_t **error );
+
+/* Retrieves the UTF-16 string
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_split_utf16_string_get_string(
+     libfvalue_split_utf16_string_t *split_string,
+     uint16_t **utf16_string,
+     size_t *utf16_string_size,
+     libfvalue_error_t **error );
+
+/* Retrieves the number of segments
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_split_utf16_string_get_number_of_segments(
+     libfvalue_split_utf16_string_t *split_string,
+     int *number_of_segments,
+     libfvalue_error_t **error );
+
+/* Retrieves a specific segment
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_split_utf16_string_get_segment_by_index(
+     libfvalue_split_utf16_string_t *split_string,
+     int segment_index,
+     uint16_t **utf16_string_segment,
+     size_t *utf16_string_segment_size,
+     libfvalue_error_t **error );
+
+/* Sets a specific segment
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_split_utf16_string_set_segment_by_index(
+     libfvalue_split_utf16_string_t *split_string,
+     int segment_index,
+     uint16_t *utf16_string_segment,
+     size_t utf16_string_segment_size,
      libfvalue_error_t **error );
 
 /* -------------------------------------------------------------------------

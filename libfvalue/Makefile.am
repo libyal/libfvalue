@@ -31,7 +31,8 @@ libfvalue_la_SOURCES = \
 	libfvalue_libfguid.h \
 	libfvalue_libfwnt.h \
 	libfvalue_libuna.h \
-	libfvalue_split_string.c libfvalue_split_string.h \
+	libfvalue_split_utf16_string.c libfvalue_split_utf16_string.h \
+	libfvalue_split_utf8_string.c libfvalue_split_utf8_string.h \
 	libfvalue_string.c libfvalue_string.h \
 	libfvalue_types.h \
 	libfvalue_table.c libfvalue_table.h \
@@ -39,7 +40,9 @@ libfvalue_la_SOURCES = \
 	libfvalue_value_entry.c libfvalue_value_entry.h \
 	libfvalue_value_type.c libfvalue_value_type.h \
 	libfvalue_support.c libfvalue_support.h \
-	libfvalue_unused.h
+	libfvalue_unused.h \
+	libfvalue_utf16_string.c libfvalue_utf16_string.h \
+	libfvalue_utf8_string.c libfvalue_utf8_string.h
 
 libfvalue_la_LIBADD = \
 	@LIBCERROR_LIBADD@ \

@@ -161,5 +161,5 @@ int libfvalue_utf16_string_split(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBVALUE_STRING_H ) */
 

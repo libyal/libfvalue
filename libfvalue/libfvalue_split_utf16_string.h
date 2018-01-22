@@ -1,5 +1,5 @@
 /*
- * Split string functions
+ * Split UTF-16 string functions
  *
  * Copyright (C) 2010-2018, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,8 +19,8 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBFVALUE_INTERNAL_SPLIT_STRING_H )
-#define _LIBFVALUE_INTERNAL_SPLIT_STRING_H
+#if !defined( _LIBFVALUE_SPLIT_UTF16_STRING_H )
+#define _LIBFVALUE_SPLIT_UTF16_STRING_H
 
 #include <common.h>
 #include <types.h>
@@ -32,31 +32,6 @@
 #if defined( __cplusplus )
 extern "C" {
 #endif
-
-typedef struct libfvalue_internal_split_utf8_string libfvalue_internal_split_utf8_string_t;
-
-struct libfvalue_internal_split_utf8_string
-{
-	/* The number of string segments
-	 */
-	int number_of_segments;
-
-	/* The string
-	 */
-	uint8_t *string;
-
-	/* The string size
-	 */
-	size_t string_size;
-
-	/* The segments
-	 */
-	uint8_t **segments;
-
-	/* The segment sizes
-	 */
-	size_t *segment_sizes;
-};
 
 typedef struct libfvalue_internal_split_utf16_string libfvalue_internal_split_utf16_string_t;
 
@@ -82,47 +57,6 @@ struct libfvalue_internal_split_utf16_string
 	 */
 	size_t *segment_sizes;
 };
-
-int libfvalue_split_utf8_string_initialize(
-     libfvalue_split_utf8_string_t **split_string,
-     const uint8_t *utf8_string,
-     size_t utf8_string_size,
-     int number_of_segments,
-     libcerror_error_t **error );
-
-LIBFVALUE_EXTERN \
-int libfvalue_split_utf8_string_free(
-     libfvalue_split_utf8_string_t **split_string,
-     libcerror_error_t **error );
-
-LIBFVALUE_EXTERN \
-int libfvalue_split_utf8_string_get_string(
-     libfvalue_split_utf8_string_t *split_string,
-     uint8_t **utf8_string,
-     size_t *utf8_string_size,
-     libcerror_error_t **error );
-
-LIBFVALUE_EXTERN \
-int libfvalue_split_utf8_string_get_number_of_segments(
-     libfvalue_split_utf8_string_t *split_string,
-     int *number_of_segments,
-     libcerror_error_t **error );
-
-LIBFVALUE_EXTERN \
-int libfvalue_split_utf8_string_get_segment_by_index(
-     libfvalue_split_utf8_string_t *split_string,
-     int segment_index,
-     uint8_t **utf8_string_segment,
-     size_t *utf8_string_segment_size,
-     libcerror_error_t **error );
-
-LIBFVALUE_EXTERN \
-int libfvalue_split_utf8_string_set_segment_by_index(
-     libfvalue_split_utf8_string_t *split_string,
-     int segment_index,
-     uint8_t *utf8_string_segment,
-     size_t utf8_string_segment_size,
-     libcerror_error_t **error );
 
 int libfvalue_split_utf16_string_initialize(
      libfvalue_split_utf16_string_t **split_string,
@@ -169,5 +103,5 @@ int libfvalue_split_utf16_string_set_segment_by_index(
 }
 #endif
 
-#endif /* !defined( _LIBFVALUE_INTERNAL_SPLIT_STRING_H ) */
+#endif /* !defined( _LIBFVALUE_SPLIT_UTF16_STRING_H ) */
 

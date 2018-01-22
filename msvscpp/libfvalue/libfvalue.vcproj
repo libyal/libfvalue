@@ -198,7 +198,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfvalue\libfvalue_split_string.c"
+				RelativePath="..\..\libfvalue\libfvalue_split_utf16_string.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfvalue\libfvalue_split_utf8_string.c"
 				>
 			</File>
 			<File
@@ -211,6 +215,14 @@
 			</File>
 			<File
 				RelativePath="..\..\libfvalue\libfvalue_table.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfvalue\libfvalue_utf16_string.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfvalue\libfvalue_utf8_string.c"
 				>
 			</File>
 			<File
@@ -296,7 +308,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfvalue\libfvalue_split_string.h"
+				RelativePath="..\..\libfvalue\libfvalue_split_utf16_string.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfvalue\libfvalue_split_utf8_string.h"
 				>
 			</File>
 			<File
@@ -317,6 +333,14 @@
 			</File>
 			<File
 				RelativePath="..\..\libfvalue\libfvalue_unused.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfvalue\libfvalue_utf16_string.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfvalue\libfvalue_utf8_string.h"
 				>
 			</File>
 			<File
