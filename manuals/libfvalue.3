@@ -1,4 +1,4 @@
-.Dd January 13, 2017
+.Dd January 22, 2018
 .Dt libfvalue 3
 .Os libfvalue
 .Sh NAME
@@ -77,11 +77,37 @@ Integer functions
 .Ft int
 .Fn libfvalue_utf32_string_with_index_copy_to_integer "const uint32_t *utf32_string, size_t utf32_string_length, size_t *utf32_string_index, uint64_t *integer_value, size_t integer_value_size, uint32_t string_format_flags, libfvalue_error_t **error"
 .Pp
-String functions
+UTF-8 string functions
 .Ft int
 .Fn libfvalue_utf8_string_split "const uint8_t *utf8_string, size_t utf8_string_size, uint8_t delimiter, libfvalue_split_utf8_string_t **split_string, libfvalue_error_t **error"
+.Pp
+Split UTF-8 string functions
+.Ft int
+.Fn libfvalue_split_utf8_string_free "libfvalue_split_utf8_string_t **split_string, libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_split_utf8_string_get_string "libfvalue_split_utf8_string_t *split_string, uint8_t **utf8_string, size_t *utf8_string_size, libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_split_utf8_string_get_number_of_segments "libfvalue_split_utf8_string_t *split_string, int *number_of_segments, libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_split_utf8_string_get_segment_by_index "libfvalue_split_utf8_string_t *split_string, int segment_index, uint8_t **utf8_string_segment, size_t *utf8_string_segment_size, libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_split_utf8_string_set_segment_by_index "libfvalue_split_utf8_string_t *split_string, int segment_index, uint8_t *utf8_string_segment, size_t utf8_string_segment_size, libfvalue_error_t **error"
+.Pp
+UTF-16 string functions
 .Ft int
 .Fn libfvalue_utf16_string_split "const uint16_t *utf16_string, size_t utf16_string_size, uint16_t delimiter, libfvalue_split_utf16_string_t **split_string, libfvalue_error_t **error"
+.Pp
+Split UTF-16 string functions
+.Ft int
+.Fn libfvalue_split_utf16_string_free "libfvalue_split_utf16_string_t **split_string, libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_split_utf16_string_get_string "libfvalue_split_utf16_string_t *split_string, uint16_t **utf16_string, size_t *utf16_string_size, libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_split_utf16_string_get_number_of_segments "libfvalue_split_utf16_string_t *split_string, int *number_of_segments, libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_split_utf16_string_get_segment_by_index "libfvalue_split_utf16_string_t *split_string, int segment_index, uint16_t **utf16_string_segment, size_t *utf16_string_segment_size, libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_split_utf16_string_set_segment_by_index "libfvalue_split_utf16_string_t *split_string, int segment_index, uint16_t *utf16_string_segment, size_t utf16_string_segment_size, libfvalue_error_t **error"
 .Pp
 Table functions
 .Ft int

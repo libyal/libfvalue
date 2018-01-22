@@ -4,6 +4,8 @@ MSVSCPP_FILES = \
 	fvalue_test_error/fvalue_test_error.vcproj \
 	fvalue_test_floating_point/fvalue_test_floating_point.vcproj \
 	fvalue_test_integer/fvalue_test_integer.vcproj \
+	fvalue_test_split_utf16_string/fvalue_test_split_utf16_string.vcproj \
+	fvalue_test_split_utf8_string/fvalue_test_split_utf8_string.vcproj \
 	fvalue_test_string/fvalue_test_string.vcproj \
 	fvalue_test_support/fvalue_test_support.vcproj \
 	fvalue_test_table/fvalue_test_table.vcproj \
