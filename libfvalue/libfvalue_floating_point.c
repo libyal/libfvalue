@@ -1659,18 +1659,10 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 		{
 			if( use_value_string != 0 )
 			{
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 0 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 1 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 2 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 3 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 4 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 5 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 6 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 7 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 8 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 9 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 10 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 11 ];
+        int i;
+        for (i = 0; i < print_count; ++i, ++string_index) {
+				  utf8_string[string_index] = (uint8_t) value_string[i];
+        }
 			}
 			else
 			{
@@ -2521,19 +2513,11 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 		else if( is_zero == 0 )
 		{
 			if( use_value_string != 0 )
-			{
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 0 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 1 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 2 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 3 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 4 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 5 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 6 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 7 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 8 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 9 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 10 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 11 ];
+ 			{
+        int i;
+        for (i = 0; i < print_count; ++i, ++string_index) {
+				  utf16_string[string_index] = (uint16_t) value_string[i];
+        }
 			}
 			else
 			{
@@ -3385,18 +3369,10 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 		{
 			if( use_value_string != 0 )
 			{
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 0 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 1 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 2 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 3 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 4 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 5 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 6 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 7 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 8 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 9 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 10 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 11 ];
+        int i;
+        for (i = 0; i < print_count; ++i, ++string_index) {
+				  utf32_string[string_index] = (uint32_t) value_string[i];
+        }
 			}
 			else
 			{
