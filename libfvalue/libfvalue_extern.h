@@ -28,17 +28,13 @@
  */
 #if !defined( HAVE_LOCAL_LIBFVALUE )
 
-/* If libtool DLL support is enabled set LIBFVALUE_DLL_EXPORT
- * before including libfvalue/extern.h
- */
-#if defined( _WIN32 ) && defined( DLL_EXPORT )
-#define LIBFVALUE_DLL_EXPORT
-#endif
-
 #include <libfvalue/extern.h>
 
+#define LIBFVALUE_EXTERN_VARIABLE	LIBFVALUE_EXTERN
+
 #else
-#define LIBFVALUE_EXTERN	/* extern */
+#define LIBFVALUE_EXTERN		/* extern */
+#define LIBFVALUE_EXTERN_VARIABLE	extern
 
 #endif /* !defined( HAVE_LOCAL_LIBFVALUE ) */
 

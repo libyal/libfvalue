@@ -1,5 +1,5 @@
 /*
- * The internal libfvalue header
+ * The libfvalue header wrapper
  *
  * Copyright (C) 2010-2018, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -23,13 +23,6 @@
 #define _FVALUE_TEST_LIBFVALUE_H
 
 #include <common.h>
-
-/* If Cygwin libtool DLL support is enabled and do not want to create static
- * executables set LIBFVALUE_DLL_IMPORT before including libfvalue.h
- */
-#if defined( _WIN32 ) && defined( DLL_EXPORT ) && !defined( HAVE_STATIC_EXECUTABLES )
-#define LIBFVALUE_DLL_IMPORT
-#endif
 
 #include <libfvalue.h>
 
