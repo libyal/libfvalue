@@ -21,6 +21,7 @@
 
 #include <common.h>
 #include <file_stream.h>
+#include <memory.h>
 #include <types.h>
 
 #if defined( HAVE_STDLIB_H ) || defined( WINAPI )
@@ -113,6 +114,8 @@ int fvalue_test_binary_data_initialize(
 	          &binary_data,
 	          &error );
 
+	binary_data = NULL;
+
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -124,8 +127,6 @@ int fvalue_test_binary_data_initialize(
 
 	libcerror_error_free(
 	 &error );
-
-	binary_data = NULL;
 
 #if defined( HAVE_FVALUE_TEST_MEMORY )
 
@@ -374,6 +375,108 @@ int fvalue_test_binary_data_clone(
 	libcerror_error_free(
 	 &error );
 
+	destination_binary_data = (libfvalue_binary_data_t *) 0x12345678UL;
+
+	result = libfvalue_binary_data_clone(
+	          &destination_binary_data,
+	          source_binary_data,
+	          &error );
+
+	destination_binary_data = NULL;
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+
+	/* Test libfvalue_binary_data_clone with malloc failing
+	 */
+	fvalue_test_malloc_attempts_before_fail = 0;
+
+	result = libfvalue_binary_data_clone(
+	          &destination_binary_data,
+	          source_binary_data,
+	          &error );
+
+	if( fvalue_test_malloc_attempts_before_fail != -1 )
+	{
+		fvalue_test_malloc_attempts_before_fail = -1;
+
+		if( destination_binary_data != NULL )
+		{
+			libfvalue_binary_data_free(
+			 &destination_binary_data,
+			 NULL );
+		}
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NULL(
+		 "destination_binary_data",
+		 destination_binary_data );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+
+	/* Test libfvalue_binary_data_clone with memcpy failing
+	 */
+	fvalue_test_memcpy_attempts_before_fail = 0;
+
+	result = libfvalue_binary_data_clone(
+	          &destination_binary_data,
+	          source_binary_data,
+	          &error );
+
+	if( fvalue_test_memcpy_attempts_before_fail != -1 )
+	{
+		fvalue_test_memcpy_attempts_before_fail = -1;
+
+		if( destination_binary_data != NULL )
+		{
+			libfvalue_binary_data_free(
+			 &destination_binary_data,
+			 NULL );
+		}
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NULL(
+		 "destination_binary_data",
+		 destination_binary_data );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
+
 	/* Clean up
 	 */
 	result = libfvalue_binary_data_free(
@@ -416,6 +519,1589 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the libfvalue_binary_data_get_utf8_string_size function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_binary_data_get_utf8_string_size(
+     void )
+{
+	libcerror_error_t *error             = NULL;
+	libfvalue_binary_data_t *binary_data = NULL;
+	size_t utf8_string_size              = 0;
+	int result                           = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_binary_data_initialize(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          binary_data,
+	          (uint8_t *) "test",
+	          4,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_binary_data_get_utf8_string_size(
+	          binary_data,
+	          &utf8_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_size",
+	 utf8_string_size,
+	 (size_t) 9 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_binary_data_get_utf8_string_size(
+	          binary_data,
+	          &utf8_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_size",
+	 utf8_string_size,
+	 (size_t) 9 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_binary_data_get_utf8_string_size(
+	          binary_data,
+	          &utf8_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_size",
+	 utf8_string_size,
+	 (size_t) 9 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+	/* Test error cases
+	 */
+	result = libfvalue_binary_data_get_utf8_string_size(
+	          NULL,
+	          &utf8_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_get_utf8_string_size(
+	          binary_data,
+	          NULL,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_get_utf8_string_size(
+	          binary_data,
+	          &utf8_string_size,
+	          0xffffff00UL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_get_utf8_string_size(
+	          binary_data,
+	          &utf8_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | 0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_binary_data_free(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( binary_data != NULL )
+	{
+		libfvalue_binary_data_free(
+		 &binary_data,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_binary_data_copy_to_utf8_string_with_index function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_binary_data_copy_to_utf8_string_with_index(
+     void )
+{
+	uint8_t expected_utf8_string_base16[ 9 ] = {
+		'7', '4', '6', '5', '7', '3', '7', '4', 0 };
+	uint8_t expected_utf8_string_base32[ 9 ] = {
+		'O', 'R', 'S', 'X', 'G', '5', 'A', '=', 0 };
+	uint8_t expected_utf8_string_base64[ 9 ] = {
+		'd', 'G', 'V', 'z', 'd', 'A', '=', '=', 0 };
+	uint8_t utf8_string[ 32 ];
+
+	libcerror_error_t *error             = NULL;
+	libfvalue_binary_data_t *binary_data = NULL;
+	size_t utf8_string_index             = 0;
+	int result                           = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_binary_data_initialize(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          binary_data,
+	          (uint8_t *) "test",
+	          4,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	utf8_string_index = 0;
+
+	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
+	          binary_data,
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          utf8_string,
+	          expected_utf8_string_base16,
+	          sizeof( uint8_t ) * 9 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
+	          binary_data,
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          utf8_string,
+	          expected_utf8_string_base32,
+	          sizeof( uint8_t ) * 9 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
+	          binary_data,
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          utf8_string,
+	          expected_utf8_string_base64,
+	          sizeof( uint8_t ) * 9 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	/* Test error cases
+	 */
+	utf8_string_index = 0;
+
+	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
+	          NULL,
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
+	          binary_data,
+	          NULL,
+	          32,
+	          &utf8_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
+	          binary_data,
+	          utf8_string,
+	          (size_t) SSIZE_MAX + 1,
+	          &utf8_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
+	          binary_data,
+	          utf8_string,
+	          32,
+	          NULL,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
+	          binary_data,
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          0xffffff00UL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
+	          binary_data,
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | 0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_binary_data_free(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( binary_data != NULL )
+	{
+		libfvalue_binary_data_free(
+		 &binary_data,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_binary_data_get_utf16_string_size function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_binary_data_get_utf16_string_size(
+     void )
+{
+	libcerror_error_t *error             = NULL;
+	libfvalue_binary_data_t *binary_data = NULL;
+	size_t utf16_string_size             = 0;
+	int result                           = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_binary_data_initialize(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          binary_data,
+	          (uint8_t *) "test",
+	          4,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_binary_data_get_utf16_string_size(
+	          binary_data,
+	          &utf16_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_size",
+	 utf16_string_size,
+	 (size_t) 9 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_binary_data_get_utf16_string_size(
+	          binary_data,
+	          &utf16_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_size",
+	 utf16_string_size,
+	 (size_t) 9 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_binary_data_get_utf16_string_size(
+	          binary_data,
+	          &utf16_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_size",
+	 utf16_string_size,
+	 (size_t) 9 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+	/* Test error cases
+	 */
+	result = libfvalue_binary_data_get_utf16_string_size(
+	          NULL,
+	          &utf16_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_get_utf16_string_size(
+	          binary_data,
+	          NULL,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_get_utf16_string_size(
+	          binary_data,
+	          &utf16_string_size,
+	          0xffffff00UL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_get_utf16_string_size(
+	          binary_data,
+	          &utf16_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | 0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_binary_data_free(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( binary_data != NULL )
+	{
+		libfvalue_binary_data_free(
+		 &binary_data,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_binary_data_copy_to_utf16_string_with_index function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_binary_data_copy_to_utf16_string_with_index(
+     void )
+{
+	uint16_t expected_utf16_string_base16[ 9 ] = {
+		'7', '4', '6', '5', '7', '3', '7', '4', 0 };
+	uint16_t expected_utf16_string_base32[ 9 ] = {
+		'O', 'R', 'S', 'X', 'G', '5', 'A', '=', 0 };
+	uint16_t expected_utf16_string_base64[ 9 ] = {
+		'd', 'G', 'V', 'z', 'd', 'A', '=', '=', 0 };
+	uint16_t utf16_string[ 32 ];
+
+	libcerror_error_t *error             = NULL;
+	libfvalue_binary_data_t *binary_data = NULL;
+	size_t utf16_string_index            = 0;
+	int result                           = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_binary_data_initialize(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          binary_data,
+	          (uint8_t *) "test",
+	          4,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	utf16_string_index = 0;
+
+	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
+	          binary_data,
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          utf16_string,
+	          expected_utf16_string_base16,
+	          sizeof( uint16_t ) * 9 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
+	          binary_data,
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          utf16_string,
+	          expected_utf16_string_base32,
+	          sizeof( uint16_t ) * 9 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+#endif
+
+	utf16_string_index = 0;
+
+	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
+	          binary_data,
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          utf16_string,
+	          expected_utf16_string_base64,
+	          sizeof( uint16_t ) * 9 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	/* Test error cases
+	 */
+	utf16_string_index = 0;
+
+	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
+	          NULL,
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
+	          binary_data,
+	          NULL,
+	          32,
+	          &utf16_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
+	          binary_data,
+	          utf16_string,
+	          (size_t) SSIZE_MAX + 1,
+	          &utf16_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
+	          binary_data,
+	          utf16_string,
+	          32,
+	          NULL,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
+	          binary_data,
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          0xffffff00UL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
+	          binary_data,
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | 0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_binary_data_free(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( binary_data != NULL )
+	{
+		libfvalue_binary_data_free(
+		 &binary_data,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_binary_data_get_utf32_string_size function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_binary_data_get_utf32_string_size(
+     void )
+{
+	libcerror_error_t *error             = NULL;
+	libfvalue_binary_data_t *binary_data = NULL;
+	size_t utf32_string_size             = 0;
+	int result                           = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_binary_data_initialize(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          binary_data,
+	          (uint8_t *) "test",
+	          4,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_binary_data_get_utf32_string_size(
+	          binary_data,
+	          &utf32_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_size",
+	 utf32_string_size,
+	 (size_t) 9 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_binary_data_get_utf32_string_size(
+	          binary_data,
+	          &utf32_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_size",
+	 utf32_string_size,
+	 (size_t) 9 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_binary_data_get_utf32_string_size(
+	          binary_data,
+	          &utf32_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_size",
+	 utf32_string_size,
+	 (size_t) 9 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+	/* Test error cases
+	 */
+	result = libfvalue_binary_data_get_utf32_string_size(
+	          NULL,
+	          &utf32_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_get_utf32_string_size(
+	          binary_data,
+	          NULL,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_get_utf32_string_size(
+	          binary_data,
+	          &utf32_string_size,
+	          0xffffff00UL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_get_utf32_string_size(
+	          binary_data,
+	          &utf32_string_size,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | 0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_binary_data_free(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( binary_data != NULL )
+	{
+		libfvalue_binary_data_free(
+		 &binary_data,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_binary_data_copy_to_utf32_string_with_index function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_binary_data_copy_to_utf32_string_with_index(
+     void )
+{
+	uint32_t expected_utf32_string_base16[ 9 ] = {
+		'7', '4', '6', '5', '7', '3', '7', '4', 0 };
+	uint32_t expected_utf32_string_base32[ 9 ] = {
+		'O', 'R', 'S', 'X', 'G', '5', 'A', '=', 0 };
+	uint32_t expected_utf32_string_base64[ 9 ] = {
+		'd', 'G', 'V', 'z', 'd', 'A', '=', '=', 0 };
+	uint32_t utf32_string[ 32 ];
+
+	libcerror_error_t *error             = NULL;
+	libfvalue_binary_data_t *binary_data = NULL;
+	size_t utf32_string_index            = 0;
+	int result                           = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_binary_data_initialize(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          binary_data,
+	          (uint8_t *) "test",
+	          4,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	utf32_string_index = 0;
+
+	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
+	          binary_data,
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          utf32_string,
+	          expected_utf32_string_base16,
+	          sizeof( uint32_t ) * 9 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
+	          binary_data,
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          utf32_string,
+	          expected_utf32_string_base32,
+	          sizeof( uint32_t ) * 9 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+#endif
+
+	utf32_string_index = 0;
+
+	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
+	          binary_data,
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          utf32_string,
+	          expected_utf32_string_base64,
+	          sizeof( uint32_t ) * 9 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	/* Test error cases
+	 */
+	utf32_string_index = 0;
+
+	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
+	          NULL,
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
+	          binary_data,
+	          NULL,
+	          32,
+	          &utf32_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
+	          binary_data,
+	          utf32_string,
+	          (size_t) SSIZE_MAX + 1,
+	          &utf32_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
+	          binary_data,
+	          utf32_string,
+	          32,
+	          NULL,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
+	          binary_data,
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          0xffffff00UL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
+	          binary_data,
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | 0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_binary_data_free(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( binary_data != NULL )
+	{
+		libfvalue_binary_data_free(
+		 &binary_data,
+		 NULL );
+	}
+	return( 0 );
+}
 #endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 /* The main program
@@ -449,17 +2135,29 @@ int main(
 
 	/* TODO: add tests for libfvalue_binary_data_copy_from_byte_stream */
 
-	/* TODO: add tests for libfvalue_binary_data_get_utf8_string_size */
+	FVALUE_TEST_RUN(
+	 "libfvalue_binary_data_get_utf8_string_size",
+	 fvalue_test_binary_data_get_utf8_string_size );
 
-	/* TODO: add tests for libfvalue_binary_data_copy_to_utf8_string_with_index */
+	FVALUE_TEST_RUN(
+	 "libfvalue_binary_data_copy_to_utf8_string_with_index",
+	 fvalue_test_binary_data_copy_to_utf8_string_with_index );
 
-	/* TODO: add tests for libfvalue_binary_data_get_utf16_string_size */
+	FVALUE_TEST_RUN(
+	 "libfvalue_binary_data_get_utf16_string_size",
+	 fvalue_test_binary_data_get_utf16_string_size );
 
-	/* TODO: add tests for libfvalue_binary_data_copy_to_utf16_string_with_index */
+	FVALUE_TEST_RUN(
+	 "libfvalue_binary_data_copy_to_utf16_string_with_index",
+	 fvalue_test_binary_data_copy_to_utf16_string_with_index );
 
-	/* TODO: add tests for libfvalue_binary_data_get_utf32_string_size */
+	FVALUE_TEST_RUN(
+	 "libfvalue_binary_data_get_utf32_string_size",
+	 fvalue_test_binary_data_get_utf32_string_size );
 
-	/* TODO: add tests for libfvalue_binary_data_copy_to_utf32_string_with_index */
+	FVALUE_TEST_RUN(
+	 "libfvalue_binary_data_copy_to_utf32_string_with_index",
+	 fvalue_test_binary_data_copy_to_utf32_string_with_index );
 
 #endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
