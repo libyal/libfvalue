@@ -113,6 +113,8 @@ int fvalue_test_value_entry_initialize(
 	          &value_entry,
 	          &error );
 
+	value_entry = NULL;
+
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -124,8 +126,6 @@ int fvalue_test_value_entry_initialize(
 
 	libcerror_error_free(
 	 &error );
-
-	value_entry = NULL;
 
 #if defined( HAVE_FVALUE_TEST_MEMORY )
 
@@ -381,6 +381,8 @@ int fvalue_test_value_entry_clone(
 	          source_value_entry,
 	          &error );
 
+	destination_value_entry = NULL;
+
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -392,8 +394,6 @@ int fvalue_test_value_entry_clone(
 
 	libcerror_error_free(
 	 &error );
-
-	destination_value_entry = NULL;
 
 #if defined( HAVE_FVALUE_TEST_MEMORY )
 

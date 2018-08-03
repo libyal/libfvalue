@@ -113,6 +113,8 @@ int fvalue_test_string_initialize(
 	          &string,
 	          &error );
 
+	string = NULL;
+
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -124,8 +126,6 @@ int fvalue_test_string_initialize(
 
 	libcerror_error_free(
 	 &error );
-
-	string = NULL;
 
 #if defined( HAVE_FVALUE_TEST_MEMORY )
 
@@ -374,6 +374,108 @@ int fvalue_test_string_clone(
 	libcerror_error_free(
 	 &error );
 
+	destination_string = (libfvalue_string_t *) 0x12345678UL;
+
+	result = libfvalue_string_clone(
+	          &destination_string,
+	          source_string,
+	          &error );
+
+	destination_string = NULL;
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+
+	/* Test libfvalue_string_clone with malloc failing
+	 */
+	fvalue_test_malloc_attempts_before_fail = 0;
+
+	result = libfvalue_string_clone(
+	          &destination_string,
+	          source_string,
+	          &error );
+
+	if( fvalue_test_malloc_attempts_before_fail != -1 )
+	{
+		fvalue_test_malloc_attempts_before_fail = -1;
+
+		if( destination_string != NULL )
+		{
+			libfvalue_string_free(
+			 &destination_string,
+			 NULL );
+		}
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NULL(
+		 "destination_string",
+		 destination_string );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+
+	/* Test libfvalue_string_clone with memcpy failing
+	 */
+	fvalue_test_memcpy_attempts_before_fail = 0;
+
+	result = libfvalue_string_clone(
+	          &destination_string,
+	          source_string,
+	          &error );
+
+	if( fvalue_test_memcpy_attempts_before_fail != -1 )
+	{
+		fvalue_test_memcpy_attempts_before_fail = -1;
+
+		if( destination_string != NULL )
+		{
+			libfvalue_string_free(
+			 &destination_string,
+			 NULL );
+		}
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NULL(
+		 "destination_string",
+		 destination_string );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
+
 	/* Clean up
 	 */
 	result = libfvalue_string_free(
@@ -416,6 +518,286 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the libfvalue_string_get_utf8_string_size function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_string_get_utf8_string_size(
+     void )
+{
+	size_t utf8_string_size[ 32 ];
+
+	libcerror_error_t *error   = NULL;
+	libfvalue_string_t *string = NULL;
+	int result                 = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_string_initialize(
+	          &string,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "string",
+	 string );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_string_get_utf8_string_size(
+	          string,
+	          utf8_string_size,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_string_get_utf8_string_size(
+	          NULL,
+	          utf8_string_size,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_string_get_utf8_string_size(
+	          string,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_string_get_utf8_string_size(
+	          string,
+	          utf8_string_size,
+	          0xffffffffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_string_free(
+	          &string,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "string",
+	 string );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( string != NULL )
+	{
+		libfvalue_string_free(
+		 &string,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_string_get_utf16_string_size function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_string_get_utf16_string_size(
+     void )
+{
+	size_t utf16_string_size[ 32 ];
+
+	libcerror_error_t *error   = NULL;
+	libfvalue_string_t *string = NULL;
+	int result                 = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_string_initialize(
+	          &string,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "string",
+	 string );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_string_get_utf16_string_size(
+	          string,
+	          utf16_string_size,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_string_get_utf16_string_size(
+	          NULL,
+	          utf16_string_size,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_string_get_utf16_string_size(
+	          string,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_string_get_utf16_string_size(
+	          string,
+	          utf16_string_size,
+	          0xffffffffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_string_free(
+	          &string,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "string",
+	 string );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( string != NULL )
+	{
+		libfvalue_string_free(
+		 &string,
+		 NULL );
+	}
+	return( 0 );
+}
+
 #endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 /* The main program
@@ -451,13 +833,17 @@ int main(
 
 	/* TODO: add tests for libfvalue_string_copy_from_utf8_string_with_index */
 
-	/* TODO: add tests for libfvalue_string_get_utf8_string_size */
+	FVALUE_TEST_RUN(
+	 "libfvalue_string_get_utf8_string_size",
+	 fvalue_test_string_get_utf8_string_size );
 
 	/* TODO: add tests for libfvalue_string_copy_to_utf8_string_with_index */
 
 	/* TODO: add tests for libfvalue_string_copy_from_utf16_string_with_index */
 
-	/* TODO: add tests for libfvalue_string_get_utf16_string_size */
+	FVALUE_TEST_RUN(
+	 "libfvalue_string_get_utf16_string_size",
+	 fvalue_test_string_get_utf16_string_size );
 
 	/* TODO: add tests for libfvalue_string_copy_to_utf16_string_with_index */
 

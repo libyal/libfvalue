@@ -519,6 +519,183 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the libfvalue_binary_data_copy_from_byte_stream function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_binary_data_copy_from_byte_stream(
+     void )
+{
+	libcerror_error_t *error             = NULL;
+	libfvalue_binary_data_t *binary_data = NULL;
+	int result                           = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_binary_data_initialize(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          binary_data,
+	          (uint8_t *) "test",
+	          4,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          binary_data,
+	          NULL,
+	          0,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          NULL,
+	          (uint8_t *) "test",
+	          4,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          binary_data,
+	          NULL,
+	          4,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          binary_data,
+	          (uint8_t *) "test",
+	          (size_t) SSIZE_MAX + 1,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_binary_data_copy_from_byte_stream(
+	          binary_data,
+	          (uint8_t *) "test",
+	          4,
+	          -1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_binary_data_free(
+	          &binary_data,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "binary_data",
+	 binary_data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( binary_data != NULL )
+	{
+		libfvalue_binary_data_free(
+		 &binary_data,
+		 NULL );
+	}
+	return( 0 );
+}
+
 /* Tests the libfvalue_binary_data_get_utf8_string_size function
  * Returns 1 if successful or 0 if not
  */
@@ -607,8 +784,6 @@ int fvalue_test_binary_data_get_utf8_string_size(
 	 "error",
 	 error );
 
-#ifdef TODO
-/* TODO fix test */
 	result = libfvalue_binary_data_get_utf8_string_size(
 	          binary_data,
 	          &utf8_string_size,
@@ -628,7 +803,6 @@ int fvalue_test_binary_data_get_utf8_string_size(
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-#endif
 
 	/* Test error cases
 	 */
@@ -811,6 +985,11 @@ int fvalue_test_binary_data_copy_to_utf8_string_with_index(
 	 result,
 	 1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 9 );
+
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
@@ -840,6 +1019,11 @@ int fvalue_test_binary_data_copy_to_utf8_string_with_index(
 	 result,
 	 1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 9 );
+
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
@@ -868,6 +1052,11 @@ int fvalue_test_binary_data_copy_to_utf8_string_with_index(
 	 "result",
 	 result,
 	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 9 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -899,6 +1088,11 @@ int fvalue_test_binary_data_copy_to_utf8_string_with_index(
 	 "result",
 	 result,
 	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 0 );
 
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
@@ -940,6 +1134,11 @@ int fvalue_test_binary_data_copy_to_utf8_string_with_index(
 	 result,
 	 -1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 0 );
+
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
 	 error );
@@ -960,6 +1159,11 @@ int fvalue_test_binary_data_copy_to_utf8_string_with_index(
 	 result,
 	 -1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 0 );
+
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
 	 error );
@@ -967,6 +1171,37 @@ int fvalue_test_binary_data_copy_to_utf8_string_with_index(
 	libcerror_error_free(
 	 &error );
 
+	utf8_string_index = 32;
+
+	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
+	          binary_data,
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 32 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	utf8_string_index = 0;
+
+	/* Unsupported flags
+	 */
 	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
 	          binary_data,
 	          utf8_string,
@@ -980,6 +1215,11 @@ int fvalue_test_binary_data_copy_to_utf8_string_with_index(
 	 result,
 	 -1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 0 );
+
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
 	 error );
@@ -987,6 +1227,8 @@ int fvalue_test_binary_data_copy_to_utf8_string_with_index(
 	libcerror_error_free(
 	 &error );
 
+	/* Unsupported encoding
+	 */
 	result = libfvalue_binary_data_copy_to_utf8_string_with_index(
 	          binary_data,
 	          utf8_string,
@@ -999,6 +1241,11 @@ int fvalue_test_binary_data_copy_to_utf8_string_with_index(
 	 "result",
 	 result,
 	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 0 );
 
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
@@ -1111,8 +1358,6 @@ int fvalue_test_binary_data_get_utf16_string_size(
 	 "error",
 	 error );
 
-#ifdef TODO
-/* TODO fix test */
 	result = libfvalue_binary_data_get_utf16_string_size(
 	          binary_data,
 	          &utf16_string_size,
@@ -1132,10 +1377,7 @@ int fvalue_test_binary_data_get_utf16_string_size(
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-#endif
 
-#ifdef TODO
-/* TODO fix test */
 	result = libfvalue_binary_data_get_utf16_string_size(
 	          binary_data,
 	          &utf16_string_size,
@@ -1155,7 +1397,6 @@ int fvalue_test_binary_data_get_utf16_string_size(
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-#endif
 
 	/* Test error cases
 	 */
@@ -1338,6 +1579,11 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 	 result,
 	 1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 9 );
+
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
@@ -1354,8 +1600,6 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 
 	utf16_string_index = 0;
 
-#ifdef TODO
-/* TODO fix test */
 	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
 	          binary_data,
 	          utf16_string,
@@ -1368,6 +1612,11 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 	 "result",
 	 result,
 	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 9 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1382,7 +1631,6 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 	 "result",
 	 result,
 	 0 );
-#endif
 
 	utf16_string_index = 0;
 
@@ -1398,6 +1646,11 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 	 "result",
 	 result,
 	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 9 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1429,6 +1682,11 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 	 "result",
 	 result,
 	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 0 );
 
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
@@ -1470,6 +1728,11 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 	 result,
 	 -1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 0 );
+
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
 	 error );
@@ -1490,6 +1753,11 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 	 result,
 	 -1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 0 );
+
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
 	 error );
@@ -1497,6 +1765,37 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 	libcerror_error_free(
 	 &error );
 
+	utf16_string_index = 32;
+
+	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
+	          binary_data,
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 32 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	utf16_string_index = 0;
+
+	/* Unsupported flags
+	 */
 	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
 	          binary_data,
 	          utf16_string,
@@ -1510,6 +1809,11 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 	 result,
 	 -1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 0 );
+
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
 	 error );
@@ -1517,6 +1821,8 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 	libcerror_error_free(
 	 &error );
 
+	/* Unsupported encoding
+	 */
 	result = libfvalue_binary_data_copy_to_utf16_string_with_index(
 	          binary_data,
 	          utf16_string,
@@ -1529,6 +1835,11 @@ int fvalue_test_binary_data_copy_to_utf16_string_with_index(
 	 "result",
 	 result,
 	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 0 );
 
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
@@ -1641,8 +1952,6 @@ int fvalue_test_binary_data_get_utf32_string_size(
 	 "error",
 	 error );
 
-#ifdef TODO
-/* TODO fix test */
 	result = libfvalue_binary_data_get_utf32_string_size(
 	          binary_data,
 	          &utf32_string_size,
@@ -1662,10 +1971,7 @@ int fvalue_test_binary_data_get_utf32_string_size(
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-#endif
 
-#ifdef TODO
-/* TODO fix test */
 	result = libfvalue_binary_data_get_utf32_string_size(
 	          binary_data,
 	          &utf32_string_size,
@@ -1685,7 +1991,6 @@ int fvalue_test_binary_data_get_utf32_string_size(
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-#endif
 
 	/* Test error cases
 	 */
@@ -1868,6 +2173,11 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 	 result,
 	 1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 9 );
+
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
@@ -1884,8 +2194,6 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 
 	utf32_string_index = 0;
 
-#ifdef TODO
-/* TODO fix test */
 	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
 	          binary_data,
 	          utf32_string,
@@ -1898,6 +2206,11 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 	 "result",
 	 result,
 	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 9 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1912,7 +2225,6 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 	 "result",
 	 result,
 	 0 );
-#endif
 
 	utf32_string_index = 0;
 
@@ -1928,6 +2240,11 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 	 "result",
 	 result,
 	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 9 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1959,6 +2276,11 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 	 "result",
 	 result,
 	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 0 );
 
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
@@ -2000,6 +2322,11 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 	 result,
 	 -1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 0 );
+
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
 	 error );
@@ -2020,6 +2347,11 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 	 result,
 	 -1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 0 );
+
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
 	 error );
@@ -2027,6 +2359,37 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 	libcerror_error_free(
 	 &error );
 
+	utf32_string_index = 32;
+
+	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
+	          binary_data,
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER | LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 32 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	utf32_string_index = 0;
+
+	/* Unsupported flags
+	 */
 	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
 	          binary_data,
 	          utf32_string,
@@ -2040,6 +2403,11 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 	 result,
 	 -1 );
 
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 0 );
+
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
 	 error );
@@ -2047,6 +2415,8 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 	libcerror_error_free(
 	 &error );
 
+	/* Unsupported encoding
+	 */
 	result = libfvalue_binary_data_copy_to_utf32_string_with_index(
 	          binary_data,
 	          utf32_string,
@@ -2059,6 +2429,11 @@ int fvalue_test_binary_data_copy_to_utf32_string_with_index(
 	 "result",
 	 result,
 	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 0 );
 
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
@@ -2102,6 +2477,7 @@ on_error:
 	}
 	return( 0 );
 }
+
 #endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 /* The main program
@@ -2133,7 +2509,9 @@ int main(
 	 "libfvalue_binary_data_clone",
 	 fvalue_test_binary_data_clone );
 
-	/* TODO: add tests for libfvalue_binary_data_copy_from_byte_stream */
+	FVALUE_TEST_RUN(
+	 "libfvalue_binary_data_copy_from_byte_stream",
+	 fvalue_test_binary_data_copy_from_byte_stream );
 
 	FVALUE_TEST_RUN(
 	 "libfvalue_binary_data_get_utf8_string_size",

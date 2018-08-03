@@ -113,6 +113,8 @@ int fvalue_test_floating_point_initialize(
 	          &floating_point,
 	          &error );
 
+	floating_point = NULL;
+
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -124,8 +126,6 @@ int fvalue_test_floating_point_initialize(
 
 	libcerror_error_free(
 	 &error );
-
-	floating_point = NULL;
 
 #if defined( HAVE_FVALUE_TEST_MEMORY )
 
@@ -381,6 +381,8 @@ int fvalue_test_floating_point_clone(
 	          source_floating_point,
 	          &error );
 
+	destination_floating_point = NULL;
+
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -392,8 +394,6 @@ int fvalue_test_floating_point_clone(
 
 	libcerror_error_free(
 	 &error );
-
-	destination_floating_point = NULL;
 
 #if defined( HAVE_FVALUE_TEST_MEMORY )
 

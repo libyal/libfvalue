@@ -131,6 +131,7 @@ int libfvalue_data_handle_clone(
 /* Clears a data handle
  * Returns 1 if successful or -1 on error
  */
+LIBFVALUE_EXTERN \
 int libfvalue_data_handle_clear(
      libfvalue_data_handle_t *data_handle,
      libfvalue_error_t **error );
