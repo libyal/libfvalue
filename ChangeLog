@@ -1,4 +1,12 @@
 TODO
+* integer
+  - libfvalue_integer_copy_from_utf8_string_with_index rename size to lenght?
+  - libfvalue_integer_copy_from_utf8_string_with_index add support to not have
+  to run libfvalue_integer_copy_from_byte_stream first
+* string
+  - libfvalue_string_copy_from_utf8_string_with_index add support to not have
+  to run libfvalue_string_copy_from_byte_stream first
+
 * implement libfvalue_value_copy_entry_data
   - add to include header
 * fix append value entry and pointing to stale data
@@ -28,70 +36,10 @@ TODO
 * add from string functions for fdatetime, fguid, fwnt
 * update man pages
 
-20160831
-* worked on tests
-
-20160325
-* fixed leaks in value and data handle
-
-20160109
-* fix in clear function
-
-20160106
-* 2016 update
-
-20151226
-* applied updates
-* added value clear function
-
-20150706
-* code clean up
-
-20150702
-* code clean up
-
-20150322
-* code clean up
-* added NULL type
-
-20150222
-* code clean up
-
-20150104
-* 2015 update
-
-20141227
-* changes for Borland C compiler
-
-20141203
-* bug fix in libfvalue_value_clone
-
-20141110
-* bug fix in include header
-
-20141109
-* code clean up
-
-20141102
-* added msvscpp files
-* bug fix in table
-
-20141020
-* changes for deployment
-* fixes for missing include headers for strict compilation
-
-20141018
-* changes for deployment
-
-20141012
-* worked on utility scripts
-
-20141011
-* bug fix
-
 20140928
 * removed README.macosx
 * changes for project site move
+* see `git log' for more recent change log
 
 20140406
 * worked on refactor

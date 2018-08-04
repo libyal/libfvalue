@@ -301,6 +301,28 @@ int libfvalue_string_copy_from_byte_stream(
 
 		return( -1 );
 	}
+	if( byte_stream == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid byte stream.",
+		 function );
+
+		return( -1 );
+	}
+	if( byte_stream_size > (size_t) SSIZE_MAX )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid byte stream size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
 	if( ( encoding != LIBFVALUE_CODEPAGE_ASCII )
 	 && ( encoding != LIBFVALUE_CODEPAGE_ISO_8859_1 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_ISO_8859_2 )
@@ -350,11 +372,65 @@ int libfvalue_string_copy_from_byte_stream(
 
 		return( -1 );
 	}
-	string->data      = (uint8_t *) byte_stream;
+	if( string->data != NULL )
+	{
+		if( ( string->flags & LIBFVALUE_VALUE_FLAG_DATA_MANAGED ) != 0 )
+		{
+			memory_free(
+			 string->data );
+
+			string->flags &= ~( LIBFVALUE_VALUE_FLAG_DATA_MANAGED );
+		}
+		string->data      = NULL;
+		string->data_size = 0;
+	}
 	string->data_size = byte_stream_size;
-	string->codepage  = encoding;
+
+	string->data = (uint8_t *) memory_allocate(
+	                            sizeof( uint8_t ) * string->data_size );
+
+	if( string->data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create string data.",
+		 function );
+
+		goto on_error;
+	}
+	string->flags |= LIBFVALUE_VALUE_FLAG_DATA_MANAGED;
+
+	if( memory_copy(
+	     string->data,
+	     byte_stream,
+	     sizeof( uint8_t ) * string->data_size ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+		 "%s: unable to copy byte stream.",
+		 function );
+
+		goto on_error;
+	}
+	string->codepage = encoding;
 
 	return( 1 );
+
+on_error:
+	if( string->data != NULL )
+	{
+		memory_free(
+		 string->data );
+
+		string->data = NULL;
+	}
+	string->data_size = 0;
+
+	return( -1 );
 }
 
 /* Copies the string from an UTF-8 encoded string
@@ -368,9 +444,10 @@ int libfvalue_string_copy_from_utf8_string_with_index(
      uint32_t string_format_flags,
      libcerror_error_t **error )
 {
-	static char *function  = "libfvalue_string_copy_from_utf8_string_with_index";
-	size_t value_data_size = 0;
-	int byte_order         = 0;
+	static char *function         = "libfvalue_string_copy_from_utf8_string_with_index";
+	size_t safe_utf8_string_index = 0;
+	size_t value_data_size        = 0;
+	int byte_order                = 0;
 
 	if( string == NULL )
 	{
@@ -428,6 +505,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 
 		return( -1 );
 	}
+	safe_utf8_string_index = *utf8_string_index;
+
 	switch( string->codepage )
 	{
 		case LIBFVALUE_CODEPAGE_1200_MIXED:
@@ -443,8 +522,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 		case LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN:
 		case LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN:
 			if( libuna_utf16_stream_size_from_utf8(
-			     utf8_string,
-			     utf8_string_size,
+			     &( utf8_string[ safe_utf8_string_index ] ),
+			     utf8_string_size - safe_utf8_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -462,8 +541,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 		case LIBFVALUE_CODEPAGE_UTF32_BIG_ENDIAN:
 		case LIBFVALUE_CODEPAGE_UTF32_LITTLE_ENDIAN:
 			if( libuna_utf32_stream_size_from_utf8(
-			     utf8_string,
-			     utf8_string_size,
+			     &( utf8_string[ safe_utf8_string_index ] ),
+			     utf8_string_size - safe_utf8_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -480,8 +559,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 
 		case LIBFVALUE_CODEPAGE_UTF7:
 			if( libuna_utf7_stream_size_from_utf8(
-			     utf8_string,
-			     utf8_string_size,
+			     &( utf8_string[ safe_utf8_string_index ] ),
+			     utf8_string_size - safe_utf8_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -498,8 +577,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 
 		case LIBFVALUE_CODEPAGE_UTF8:
 			if( libuna_utf8_stream_size_from_utf8(
-			     utf8_string,
-			     utf8_string_size,
+			     &( utf8_string[ safe_utf8_string_index ] ),
+			     utf8_string_size - safe_utf8_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -516,8 +595,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 
 		default:
 			if( libuna_byte_stream_size_from_utf8(
-			     utf8_string,
-			     utf8_string_size,
+			     &( utf8_string[ safe_utf8_string_index ] ),
+			     utf8_string_size - safe_utf8_string_index,
 			     string->codepage,
 			     &value_data_size,
 			     error ) != 1 )
@@ -580,8 +659,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 			     string->data,
 			     string->data_size,
 			     byte_order,
-			     utf8_string,
-			     utf8_string_size,
+			     &( utf8_string[ safe_utf8_string_index ] ),
+			     utf8_string_size - safe_utf8_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -609,8 +688,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 			     string->data,
 			     string->data_size,
 			     byte_order,
-			     utf8_string,
-			     utf8_string_size,
+			     &( utf8_string[ safe_utf8_string_index ] ),
+			     utf8_string_size - safe_utf8_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -628,8 +707,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 			if( libuna_utf7_stream_copy_from_utf8(
 			     string->data,
 			     string->data_size,
-			     utf8_string,
-			     utf8_string_size,
+			     &( utf8_string[ safe_utf8_string_index ] ),
+			     utf8_string_size - safe_utf8_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -647,8 +726,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 			if( libuna_utf8_stream_copy_from_utf8(
 			     string->data,
 			     string->data_size,
-			     utf8_string,
-			     utf8_string_size,
+			     &( utf8_string[ safe_utf8_string_index ] ),
+			     utf8_string_size - safe_utf8_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -667,8 +746,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 			     string->data,
 			     string->data_size,
 			     string->codepage,
-			     utf8_string,
-			     utf8_string_size,
+			     &( utf8_string[ safe_utf8_string_index ] ),
+			     utf8_string_size - safe_utf8_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -682,6 +761,8 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 			}
 			break;
 	}
+	*utf8_string_index = utf8_string_size;
+
 	return( 1 );
 
 on_error:
@@ -1202,9 +1283,10 @@ int libfvalue_string_copy_from_utf16_string_with_index(
      uint32_t string_format_flags,
      libcerror_error_t **error )
 {
-	static char *function  = "libfvalue_string_copy_from_utf16_string_with_index";
-	size_t value_data_size = 0;
-	int byte_order         = 0;
+	static char *function          = "libfvalue_string_copy_from_utf16_string_with_index";
+	size_t safe_utf16_string_index = 0;
+	size_t value_data_size         = 0;
+	int byte_order                 = 0;
 
 	if( string == NULL )
 	{
@@ -1262,6 +1344,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 
 		return( -1 );
 	}
+	safe_utf16_string_index = *utf16_string_index;
+
 	switch( string->codepage )
 	{
 		case LIBFVALUE_CODEPAGE_1200_MIXED:
@@ -1277,8 +1361,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 		case LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN:
 		case LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN:
 			if( libuna_utf16_stream_size_from_utf16(
-			     utf16_string,
-			     utf16_string_size,
+			     &( utf16_string[ safe_utf16_string_index ] ),
+			     utf16_string_size - safe_utf16_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -1296,8 +1380,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 		case LIBFVALUE_CODEPAGE_UTF32_BIG_ENDIAN:
 		case LIBFVALUE_CODEPAGE_UTF32_LITTLE_ENDIAN:
 			if( libuna_utf32_stream_size_from_utf16(
-			     utf16_string,
-			     utf16_string_size,
+			     &( utf16_string[ safe_utf16_string_index ] ),
+			     utf16_string_size - safe_utf16_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -1314,8 +1398,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 
 		case LIBFVALUE_CODEPAGE_UTF7:
 			if( libuna_utf7_stream_size_from_utf16(
-			     utf16_string,
-			     utf16_string_size,
+			     &( utf16_string[ safe_utf16_string_index ] ),
+			     utf16_string_size - safe_utf16_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -1332,8 +1416,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 
 		case LIBFVALUE_CODEPAGE_UTF8:
 			if( libuna_utf8_stream_size_from_utf16(
-			     utf16_string,
-			     utf16_string_size,
+			     &( utf16_string[ safe_utf16_string_index ] ),
+			     utf16_string_size - safe_utf16_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -1350,8 +1434,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 
 		default:
 			if( libuna_byte_stream_size_from_utf16(
-			     utf16_string,
-			     utf16_string_size,
+			     &( utf16_string[ safe_utf16_string_index ] ),
+			     utf16_string_size - safe_utf16_string_index,
 			     string->codepage,
 			     &value_data_size,
 			     error ) != 1 )
@@ -1414,8 +1498,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 			     string->data,
 			     string->data_size,
 			     byte_order,
-			     utf16_string,
-			     utf16_string_size,
+			     &( utf16_string[ safe_utf16_string_index ] ),
+			     utf16_string_size - safe_utf16_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -1443,8 +1527,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 			     string->data,
 			     string->data_size,
 			     byte_order,
-			     utf16_string,
-			     utf16_string_size,
+			     &( utf16_string[ safe_utf16_string_index ] ),
+			     utf16_string_size - safe_utf16_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -1462,8 +1546,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 			if( libuna_utf7_stream_copy_from_utf16(
 			     string->data,
 			     string->data_size,
-			     utf16_string,
-			     utf16_string_size,
+			     &( utf16_string[ safe_utf16_string_index ] ),
+			     utf16_string_size - safe_utf16_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -1481,8 +1565,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 			if( libuna_utf8_stream_copy_from_utf16(
 			     string->data,
 			     string->data_size,
-			     utf16_string,
-			     utf16_string_size,
+			     &( utf16_string[ safe_utf16_string_index ] ),
+			     utf16_string_size - safe_utf16_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -1501,8 +1585,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 			     string->data,
 			     string->data_size,
 			     string->codepage,
-			     utf16_string,
-			     utf16_string_size,
+			     &( utf16_string[ safe_utf16_string_index ] ),
+			     utf16_string_size - safe_utf16_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -1516,6 +1600,8 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 			}
 			break;
 	}
+	*utf16_string_index = utf16_string_size;
+
 	return( 1 );
 
 on_error:
@@ -2036,9 +2122,10 @@ int libfvalue_string_copy_from_utf32_string_with_index(
      uint32_t string_format_flags,
      libcerror_error_t **error )
 {
-	static char *function  = "libfvalue_string_copy_from_utf32_string_with_index";
-	size_t value_data_size = 0;
-	int byte_order         = 0;
+	static char *function          = "libfvalue_string_copy_from_utf32_string_with_index";
+	size_t safe_utf32_string_index = 0;
+	size_t value_data_size         = 0;
+	int byte_order                 = 0;
 
 	if( string == NULL )
 	{
@@ -2096,6 +2183,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 
 		return( -1 );
 	}
+	safe_utf32_string_index = *utf32_string_index;
+
 	switch( string->codepage )
 	{
 		case LIBFVALUE_CODEPAGE_1200_MIXED:
@@ -2111,8 +2200,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 		case LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN:
 		case LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN:
 			if( libuna_utf16_stream_size_from_utf32(
-			     utf32_string,
-			     utf32_string_size,
+			     &( utf32_string[ safe_utf32_string_index ] ),
+			     utf32_string_size - safe_utf32_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -2130,8 +2219,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 		case LIBFVALUE_CODEPAGE_UTF32_BIG_ENDIAN:
 		case LIBFVALUE_CODEPAGE_UTF32_LITTLE_ENDIAN:
 			if( libuna_utf32_stream_size_from_utf32(
-			     utf32_string,
-			     utf32_string_size,
+			     &( utf32_string[ safe_utf32_string_index ] ),
+			     utf32_string_size - safe_utf32_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -2148,8 +2237,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 
 		case LIBFVALUE_CODEPAGE_UTF7:
 			if( libuna_utf7_stream_size_from_utf32(
-			     utf32_string,
-			     utf32_string_size,
+			     &( utf32_string[ safe_utf32_string_index ] ),
+			     utf32_string_size - safe_utf32_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -2166,8 +2255,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 
 		case LIBFVALUE_CODEPAGE_UTF8:
 			if( libuna_utf8_stream_size_from_utf32(
-			     utf32_string,
-			     utf32_string_size,
+			     &( utf32_string[ safe_utf32_string_index ] ),
+			     utf32_string_size - safe_utf32_string_index,
 			     &value_data_size,
 			     error ) != 1 )
 			{
@@ -2184,8 +2273,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 
 		default:
 			if( libuna_byte_stream_size_from_utf32(
-			     utf32_string,
-			     utf32_string_size,
+			     &( utf32_string[ safe_utf32_string_index ] ),
+			     utf32_string_size - safe_utf32_string_index,
 			     string->codepage,
 			     &value_data_size,
 			     error ) != 1 )
@@ -2248,8 +2337,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 			     string->data,
 			     string->data_size,
 			     byte_order,
-			     utf32_string,
-			     utf32_string_size,
+			     &( utf32_string[ safe_utf32_string_index ] ),
+			     utf32_string_size - safe_utf32_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -2277,8 +2366,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 			     string->data,
 			     string->data_size,
 			     byte_order,
-			     utf32_string,
-			     utf32_string_size,
+			     &( utf32_string[ safe_utf32_string_index ] ),
+			     utf32_string_size - safe_utf32_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -2296,8 +2385,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 			if( libuna_utf7_stream_copy_from_utf32(
 			     string->data,
 			     string->data_size,
-			     utf32_string,
-			     utf32_string_size,
+			     &( utf32_string[ safe_utf32_string_index ] ),
+			     utf32_string_size - safe_utf32_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -2315,8 +2404,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 			if( libuna_utf8_stream_copy_from_utf32(
 			     string->data,
 			     string->data_size,
-			     utf32_string,
-			     utf32_string_size,
+			     &( utf32_string[ safe_utf32_string_index ] ),
+			     utf32_string_size - safe_utf32_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -2335,8 +2424,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 			     string->data,
 			     string->data_size,
 			     string->codepage,
-			     utf32_string,
-			     utf32_string_size,
+			     &( utf32_string[ safe_utf32_string_index ] ),
+			     utf32_string_size - safe_utf32_string_index,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -2350,6 +2439,8 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 			}
 			break;
 	}
+	*utf32_string_index = utf32_string_size;
+
 	return( 1 );
 
 on_error:

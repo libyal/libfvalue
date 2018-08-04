@@ -324,7 +324,7 @@ enum LIBFVALUE_PRINT_FLAGS
         LIBFVALUE_PRINT_FLAG_WITH_TYPE_DESCRIPTION		= 0x01
 };
 
-#endif
+#endif /* !defined( HAVE_LOCAL_LIBFVALUE ) */
 
-#endif
+#endif /* !defined( LIBFVALUE_INTERNAL_DEFINITIONS_H ) */
 

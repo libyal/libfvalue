@@ -124,6 +124,7 @@ stamp-h[1-9]
 /tests/fvalue_test_binary_data
 /tests/fvalue_test_data_handle
 /tests/fvalue_test_error
+/tests/fvalue_test_filetime
 /tests/fvalue_test_floating_point
 /tests/fvalue_test_integer
 /tests/fvalue_test_split_utf16_string

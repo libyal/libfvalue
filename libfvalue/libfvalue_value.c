@@ -1361,6 +1361,17 @@ int libfvalue_value_copy_data(
 
 		return( -1 );
 	}
+	if( data_size > (size_t) SSIZE_MAX )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid data size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
 	if( libfvalue_data_handle_get_data(
 	     internal_value->data_handle,
 	     &data_handle_data,
@@ -1693,6 +1704,7 @@ int libfvalue_value_get_number_of_value_entries(
 {
 	libfvalue_internal_value_t *internal_value = NULL;
 	static char *function                      = "libfvalue_value_get_number_of_value_entries";
+	int safe_number_of_value_entries           = 0;
 	int result                                 = 0;
 
 	if( value == NULL )
@@ -1738,7 +1750,7 @@ int libfvalue_value_get_number_of_value_entries(
 	{
 		if( libfvalue_data_handle_get_number_of_value_entries(
 		     internal_value->data_handle,
-		     number_of_value_entries,
+		     &safe_number_of_value_entries,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -1751,11 +1763,11 @@ int libfvalue_value_get_number_of_value_entries(
 			return( -1 );
 		}
 	}
-	else
+	else if( internal_value->value_instances != NULL )
 	{
 		if( libcdata_array_get_number_of_entries(
 		     internal_value->value_instances,
-		     number_of_value_entries,
+		     &safe_number_of_value_entries,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -1768,7 +1780,7 @@ int libfvalue_value_get_number_of_value_entries(
 			return( -1 );
 		}
 	}
-	if( *number_of_value_entries <= 0 )
+	if( safe_number_of_value_entries < 0 )
 	{
 		libcerror_error_set(
 		 error,
@@ -1779,6 +1791,8 @@ int libfvalue_value_get_number_of_value_entries(
 
 		return( -1 );
 	}
+	*number_of_value_entries = safe_number_of_value_entries;
+
 	return( 1 );
 }
 

@@ -2,6 +2,7 @@ MSVSCPP_FILES = \
 	fvalue_test_binary_data/fvalue_test_binary_data.vcproj \
 	fvalue_test_data_handle/fvalue_test_data_handle.vcproj \
 	fvalue_test_error/fvalue_test_error.vcproj \
+	fvalue_test_filetime/fvalue_test_filetime.vcproj \
 	fvalue_test_floating_point/fvalue_test_floating_point.vcproj \
 	fvalue_test_integer/fvalue_test_integer.vcproj \
 	fvalue_test_split_utf16_string/fvalue_test_split_utf16_string.vcproj \

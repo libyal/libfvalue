@@ -26,6 +26,7 @@ check_PROGRAMS = \
 	fvalue_test_binary_data \
 	fvalue_test_data_handle \
 	fvalue_test_error \
+	fvalue_test_filetime \
 	fvalue_test_floating_point \
 	fvalue_test_integer \
 	fvalue_test_split_utf16_string \
@@ -68,6 +69,18 @@ fvalue_test_error_SOURCES = \
 
 fvalue_test_error_LDADD = \
 	../libfvalue/libfvalue.la
+
+fvalue_test_filetime_SOURCES = \
+	fvalue_test_filetime.c \
+	fvalue_test_libcerror.h \
+	fvalue_test_libfdatetime.h \
+	fvalue_test_libfvalue.h \
+	fvalue_test_macros.h \
+	fvalue_test_unused.h
+
+fvalue_test_filetime_LDADD = \
+	../libfvalue/libfvalue.la \
+	@LIBCERROR_LIBADD@
 
 fvalue_test_floating_point_SOURCES = \
 	fvalue_test_floating_point.c \

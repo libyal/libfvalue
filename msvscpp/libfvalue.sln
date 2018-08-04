@@ -23,6 +23,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fvalue_test_error", "fvalue
 		{64EAA9AB-171E-4366-B8F8-F3D5A965AA28} = {64EAA9AB-171E-4366-B8F8-F3D5A965AA28}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fvalue_test_filetime", "fvalue_test_filetime\fvalue_test_filetime.vcproj", "{8E415C29-2FB3-4F4B-BE4E-7D093716CD03}"
+	ProjectSection(ProjectDependencies) = postProject
+		{64EAA9AB-171E-4366-B8F8-F3D5A965AA28} = {64EAA9AB-171E-4366-B8F8-F3D5A965AA28}
+		{824A5A19-B107-4149-A00C-4A5CC7BB7F2D} = {824A5A19-B107-4149-A00C-4A5CC7BB7F2D}
+	EndProjectSection
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fvalue_test_floating_point", "fvalue_test_floating_point\fvalue_test_floating_point.vcproj", "{F99A3253-D5B5-46F6-B915-6F1609A499AB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{64EAA9AB-171E-4366-B8F8-F3D5A965AA28} = {64EAA9AB-171E-4366-B8F8-F3D5A965AA28}
@@ -146,6 +152,10 @@ Global
 		{3E3FDDD6-5CAC-4F01-90A1-6075FF079F4F}.Release|Win32.Build.0 = Release|Win32
 		{3E3FDDD6-5CAC-4F01-90A1-6075FF079F4F}.VSDebug|Win32.ActiveCfg = VSDebug|Win32
 		{3E3FDDD6-5CAC-4F01-90A1-6075FF079F4F}.VSDebug|Win32.Build.0 = VSDebug|Win32
+		{8E415C29-2FB3-4F4B-BE4E-7D093716CD03}.Release|Win32.ActiveCfg = Release|Win32
+		{8E415C29-2FB3-4F4B-BE4E-7D093716CD03}.Release|Win32.Build.0 = Release|Win32
+		{8E415C29-2FB3-4F4B-BE4E-7D093716CD03}.VSDebug|Win32.ActiveCfg = VSDebug|Win32
+		{8E415C29-2FB3-4F4B-BE4E-7D093716CD03}.VSDebug|Win32.Build.0 = VSDebug|Win32
 		{F99A3253-D5B5-46F6-B915-6F1609A499AB}.Release|Win32.ActiveCfg = Release|Win32
 		{F99A3253-D5B5-46F6-B915-6F1609A499AB}.Release|Win32.Build.0 = Release|Win32
 		{F99A3253-D5B5-46F6-B915-6F1609A499AB}.VSDebug|Win32.ActiveCfg = VSDebug|Win32
