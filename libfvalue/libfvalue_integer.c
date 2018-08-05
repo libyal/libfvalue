@@ -488,7 +488,7 @@ int libfvalue_integer_get_string_size(
 int libfvalue_integer_copy_from_utf8_string_with_index(
      libfvalue_integer_t *integer,
      uint8_t *utf8_string,
-     size_t utf8_string_size,
+     size_t utf8_string_length,
      size_t *utf8_string_index,
      uint32_t string_format_flags,
      libcerror_error_t **error )
@@ -508,7 +508,7 @@ int libfvalue_integer_copy_from_utf8_string_with_index(
 	}
 	if( libfvalue_utf8_string_with_index_copy_to_integer(
 	     utf8_string,
-	     utf8_string_size,
+	     utf8_string_length,
 	     utf8_string_index,
 	     &( integer->value ),
 	     integer->value_size,
@@ -580,7 +580,7 @@ int libfvalue_integer_copy_to_utf8_string_with_index(
 int libfvalue_integer_copy_from_utf16_string_with_index(
      libfvalue_integer_t *integer,
      uint16_t *utf16_string,
-     size_t utf16_string_size,
+     size_t utf16_string_length,
      size_t *utf16_string_index,
      uint32_t string_format_flags,
      libcerror_error_t **error )
@@ -600,7 +600,7 @@ int libfvalue_integer_copy_from_utf16_string_with_index(
 	}
 	if( libfvalue_utf16_string_with_index_copy_to_integer(
 	     utf16_string,
-	     utf16_string_size,
+	     utf16_string_length,
 	     utf16_string_index,
 	     &( integer->value ),
 	     integer->value_size,
@@ -672,7 +672,7 @@ int libfvalue_integer_copy_to_utf16_string_with_index(
 int libfvalue_integer_copy_from_utf32_string_with_index(
      libfvalue_integer_t *integer,
      uint32_t *utf32_string,
-     size_t utf32_string_size,
+     size_t utf32_string_length,
      size_t *utf32_string_index,
      uint32_t string_format_flags,
      libcerror_error_t **error )
@@ -692,7 +692,7 @@ int libfvalue_integer_copy_from_utf32_string_with_index(
 	}
 	if( libfvalue_utf32_string_with_index_copy_to_integer(
 	     utf32_string,
-	     utf32_string_size,
+	     utf32_string_length,
 	     utf32_string_index,
 	     &( integer->value ),
 	     integer->value_size,

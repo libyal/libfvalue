@@ -2537,6 +2537,521 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the libfvalue_data_handle_set_value_entry_data function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_data_handle_set_value_entry_data(
+     void )
+{
+	uint8_t data[ 32 ];
+
+	libcerror_error_t *error             = NULL;
+	libfvalue_data_handle_t *data_handle = NULL;
+	int result                           = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_data_handle_initialize(
+	          &data_handle,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "data_handle",
+	 data_handle );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_data_handle_set_value_entry_data(
+	          data_handle,
+	          0,
+	          data,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Initialize test
+	 */
+	result = libfvalue_data_handle_set_data(
+	          data_handle,
+	          data,
+	          32,
+	          0,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_data_handle_set_value_entry_data(
+	          data_handle,
+	          0,
+	          data,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_data_handle_set_value_entry_data(
+	          NULL,
+	          0,
+	          data,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_data_handle_set_value_entry_data(
+	          data_handle,
+	          -1,
+	          data,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_data_handle_set_value_entry_data(
+	          data_handle,
+	          0,
+	          NULL,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_data_handle_set_value_entry_data(
+	          data_handle,
+	          0,
+	          data,
+	          (size_t) SSIZE_MAX + 1,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_data_handle_set_value_entry_data(
+	          data_handle,
+	          0,
+	          data,
+	          32,
+	          -1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test value entry offset out of bounds
+	 */
+	result = libfvalue_data_handle_set_value_entry_data(
+	          data_handle,
+	          0,
+	          data + 32,
+	          32,
+	          -1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test value entry size out of bounds
+	 */
+	result = libfvalue_data_handle_set_value_entry_data(
+	          data_handle,
+	          0,
+	          data + 16,
+	          32,
+	          -1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_data_handle_free(
+	          &data_handle,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "data_handle",
+	 data_handle );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( data_handle != NULL )
+	{
+		libfvalue_data_handle_free(
+		 &data_handle,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_data_handle_append_value_entry_data function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_data_handle_append_value_entry_data(
+     void )
+{
+	uint8_t data1[ 32 ];
+	uint8_t data2[ 32 ];
+	uint8_t data3[ 32 ];
+
+	libcerror_error_t *error             = NULL;
+	libfvalue_data_handle_t *data_handle = NULL;
+	int result                           = 0;
+	int value_entry_index                = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_data_handle_initialize(
+	          &data_handle,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "data_handle",
+	 data_handle );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	value_entry_index = 0;
+
+	result = libfvalue_data_handle_append_value_entry_data(
+	          data_handle,
+	          &value_entry_index,
+	          data1,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "value_entry_index",
+	 value_entry_index,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	value_entry_index = 0;
+
+	result = libfvalue_data_handle_append_value_entry_data(
+	          data_handle,
+	          &value_entry_index,
+	          data2,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "value_entry_index",
+	 value_entry_index,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	value_entry_index = 0;
+
+	result = libfvalue_data_handle_append_value_entry_data(
+	          NULL,
+	          &value_entry_index,
+	          data3,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "value_entry_index",
+	 value_entry_index,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_data_handle_append_value_entry_data(
+	          data_handle,
+	          NULL,
+	          data3,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "value_entry_index",
+	 value_entry_index,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_data_handle_append_value_entry_data(
+	          data_handle,
+	          &value_entry_index,
+	          NULL,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "value_entry_index",
+	 value_entry_index,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_data_handle_append_value_entry_data(
+	          data_handle,
+	          &value_entry_index,
+	          data3,
+	          (size_t) SSIZE_MAX + 1,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "value_entry_index",
+	 value_entry_index,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_data_handle_append_value_entry_data(
+	          data_handle,
+	          &value_entry_index,
+	          data3,
+	          32,
+	          -1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "value_entry_index",
+	 value_entry_index,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_data_handle_free(
+	          &data_handle,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "data_handle",
+	 data_handle );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( data_handle != NULL )
+	{
+		libfvalue_data_handle_free(
+		 &data_handle,
+		 NULL );
+	}
+	return( 0 );
+}
+
 /* The main program
  */
 #if defined( HAVE_WIDE_SYSTEM_CHARACTER )
@@ -2604,9 +3119,13 @@ int main(
 	 "libfvalue_data_handle_get_value_entry_data",
 	 fvalue_test_data_handle_get_value_entry_data );
 
-	/* TODO: add tests for libfvalue_data_handle_set_value_entry_data */
+	FVALUE_TEST_RUN(
+	 "libfvalue_data_handle_set_value_entry_data",
+	 fvalue_test_data_handle_set_value_entry_data );
 
-	/* TODO: add tests for libfvalue_data_handle_append_value_entry_data */
+	FVALUE_TEST_RUN(
+	 "libfvalue_data_handle_append_value_entry_data",
+	 fvalue_test_data_handle_append_value_entry_data );
 
 	return( EXIT_SUCCESS );
 

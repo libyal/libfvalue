@@ -565,7 +565,7 @@ int libfvalue_floating_point_get_string_size(
 int libfvalue_floating_point_copy_from_utf8_string_with_index(
      libfvalue_floating_point_t *floating_point,
      uint8_t *utf8_string,
-     size_t utf8_string_size,
+     size_t utf8_string_length,
      size_t *utf8_string_index,
      uint32_t string_format_flags,
      libcerror_error_t **error )
@@ -585,7 +585,7 @@ int libfvalue_floating_point_copy_from_utf8_string_with_index(
 	}
 	if( libfvalue_utf8_string_with_index_copy_to_floating_point(
 	     utf8_string,
-	     utf8_string_size,
+	     utf8_string_length,
 	     utf8_string_index,
 	     &( floating_point->value ),
 	     floating_point->value_size,
@@ -657,7 +657,7 @@ int libfvalue_floating_point_copy_to_utf8_string_with_index(
 int libfvalue_floating_point_copy_from_utf16_string_with_index(
      libfvalue_floating_point_t *floating_point,
      uint16_t *utf16_string,
-     size_t utf16_string_size,
+     size_t utf16_string_length,
      size_t *utf16_string_index,
      uint32_t string_format_flags,
      libcerror_error_t **error )
@@ -677,7 +677,7 @@ int libfvalue_floating_point_copy_from_utf16_string_with_index(
 	}
 	if( libfvalue_utf16_string_with_index_copy_to_floating_point(
 	     utf16_string,
-	     utf16_string_size,
+	     utf16_string_length,
 	     utf16_string_index,
 	     &( floating_point->value ),
 	     floating_point->value_size,
@@ -749,7 +749,7 @@ int libfvalue_floating_point_copy_to_utf16_string_with_index(
 int libfvalue_floating_point_copy_from_utf32_string_with_index(
      libfvalue_floating_point_t *floating_point,
      uint32_t *utf32_string,
-     size_t utf32_string_size,
+     size_t utf32_string_length,
      size_t *utf32_string_index,
      uint32_t string_format_flags,
      libcerror_error_t **error )
@@ -769,7 +769,7 @@ int libfvalue_floating_point_copy_from_utf32_string_with_index(
 	}
 	if( libfvalue_utf32_string_with_index_copy_to_floating_point(
 	     utf32_string,
-	     utf32_string_size,
+	     utf32_string_length,
 	     utf32_string_index,
 	     &( floating_point->value ),
 	     floating_point->value_size,
@@ -1746,7 +1746,10 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
      uint32_t string_format_flags,
      libcerror_error_t **error )
 {
+	byte_stream_float64_t value_float64;
+
 	static char *function       = "libfvalue_utf8_string_with_index_copy_to_floating_point";
+	size_t fraction_index       = 0;
 	size_t maximum_string_index = 0;
 	size_t string_index         = 0;
 	uint64_t divider            = 0;
@@ -1757,6 +1760,7 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 	uint8_t character_value     = 0;
 	int8_t bit_shift            = 0;
 	int8_t sign                 = 1;
+	double value_fraction       = 0.0;
 
 	if( utf8_string == NULL )
 	{
@@ -1895,7 +1899,9 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		if( utf8_string[ string_index ] != (uint8_t) '0' )
+		character_value = utf8_string[ string_index++ ];
+
+		if(character_value != (uint8_t) '0' )
 		{
 			libcerror_error_set(
 			 error,
@@ -1903,14 +1909,14 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 			 "%s: unsupported character value: 0x%02" PRIx8 " at index: %d.",
 			 function,
-			 utf8_string[ string_index ],
+			 character_value,
 			 string_index );
 
 			return( -1 );
 		}
-		string_index++;
+		character_value = utf8_string[ string_index++ ];
 
-		if( utf8_string[ string_index ] != (uint8_t) 'x' )
+		if( character_value != (uint8_t) 'x' )
 		{
 			libcerror_error_set(
 			 error,
@@ -1918,16 +1924,16 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 			 "%s: unsupported character value: 0x%02" PRIx8 " at index: %d.",
 			 function,
-			 utf8_string[ string_index ],
+			 character_value,
 			 string_index );
 
 			return( -1 );
 		}
-		string_index++;
-
 		while( string_index < utf8_string_length )
 		{
-			if( utf8_string[ string_index ] == 0 )
+			character_value = utf8_string[ string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
@@ -1944,20 +1950,20 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 			}
 			value_64bit <<= 4;
 
-			if( ( utf8_string[ string_index ] >= (uint8_t) '0' )
-			 && ( utf8_string[ string_index ] <= (uint8_t) '9' ) )
+			if( ( character_value >= (uint8_t) '0' )
+			 && ( character_value <= (uint8_t) '9' ) )
 			{
-				byte_value = (uint8_t) ( utf8_string[ string_index ] - (uint8_t) '0' );
+				byte_value = (uint8_t) ( character_value - (uint8_t) '0' );
 			}
-			else if( ( utf8_string[ string_index ] >= (uint8_t) 'A' )
-			      && ( utf8_string[ string_index ] <= (uint8_t) 'F' ) )
+			else if( ( character_value >= (uint8_t) 'A' )
+			      && ( character_value <= (uint8_t) 'F' ) )
 			{
-				byte_value = (uint8_t) ( utf8_string[ string_index ] - (uint8_t) 'A' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint8_t) 'A' + 10 );
 			}
-			else if( ( utf8_string[ string_index ] >= (uint8_t) 'a' )
-			      && ( utf8_string[ string_index ] <= (uint8_t) 'f' ) )
+			else if( ( character_value >= (uint8_t) 'a' )
+			      && ( character_value <= (uint8_t) 'f' ) )
 			{
-				byte_value = (uint8_t) ( utf8_string[ string_index ] - (uint8_t) 'a' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint8_t) 'a' + 10 );
 			}
 			else
 			{
@@ -1967,7 +1973,7 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 				 "%s: unsupported character value: 0x%02" PRIx8 " at index: %d.",
 				 function,
-				 utf8_string[ string_index ],
+				 character_value,
 				 string_index );
 
 				return( -1 );
@@ -1979,6 +1985,8 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 	}
 	else
 	{
+		value_float64.floating_point = 0.0;
+
 		/* In the maximum possible string one character is substituted for the sign
 		 */
 		if( utf8_string[ string_index ] == (uint8_t) '-' )
@@ -1993,7 +2001,9 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 		}
 		while( string_index < utf8_string_length )
 		{
-			if( utf8_string[ string_index ] == 0 )
+			character_value = utf8_string[ string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
@@ -2008,10 +2018,17 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
-			value_64bit *= 10;
-
-			if( ( utf8_string[ string_index ] < (uint8_t) '0' )
-			 && ( utf8_string[ string_index ] > (uint8_t) '9' ) )
+			if( character_value == (uint8_t) '.' )
+			{
+				break;
+			}
+			if( ( character_value >= (uint8_t) '0' )
+			 && ( character_value <= (uint8_t) '9' ) )
+			{
+				value_float64.floating_point *= 10;
+				value_float64.floating_point += character_value - (uint8_t) '0';
+			}
+			else
 			{
 				libcerror_error_set(
 				 error,
@@ -2019,24 +2036,71 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 				 "%s: unsupported character value: 0x%02" PRIx8 " at index: %d.",
 				 function,
-				 utf8_string[ string_index ],
+				 character_value,
 				 string_index );
 
 				return( -1 );
 			}
-			character_value = (uint8_t) ( utf8_string[ string_index ] - (uint8_t) '0' );
-
-			value_64bit += character_value;
-
 			string_index++;
+		}
+		fraction_index = string_index;
+
+		string_index++;
+		utf8_string_length--;
+
+		if( utf8_string_length > (size_t) maximum_string_index )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+			 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_LARGE,
+			 "%s: string too large.",
+			 function );
+
+			return( -1 );
+		}
+		while( fraction_index < utf8_string_length )
+		{
+			character_value = utf8_string[ utf8_string_length ];
+
+			if( character_value == 0 )
+			{
+				break;
+			}
+			if( ( character_value >= (uint8_t) '0' )
+			 && ( character_value <= (uint8_t) '9' ) )
+			{
+				value_fraction /= 10;
+				value_fraction += character_value - (uint8_t) '0';
+			}
+			else
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
+				 "%s: unsupported character value: 0x%02" PRIx8 " at index: %d.",
+				 function,
+				 character_value,
+				 utf8_string_length );
+
+				return( -1 );
+			}
+			string_index++;
+			utf8_string_length--;
+		}
+		if( value_fraction != 0.0 )
+		{
+			value_float64.floating_point += value_fraction / 10;
 		}
 		if( sign == -1 )
 		{
-			value_64bit |= (uint64_t) 1 << bit_shift;
+			value_float64.floating_point *= 1.0;
 		}
+		value_64bit = value_float64.integer;
 	}
-	*utf8_string_index = string_index;
-	*floating_point_value     = value_64bit;
+	*utf8_string_index    = string_index;
+	*floating_point_value = value_64bit;
 
 	return( 1 );
 }
@@ -2609,17 +2673,21 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
      uint32_t string_format_flags,
      libcerror_error_t **error )
 {
+	byte_stream_float64_t value_float64;
+
 	static char *function       = "libfvalue_utf16_string_with_index_copy_to_floating_point";
+	size_t fraction_index       = 0;
 	size_t maximum_string_index = 0;
 	size_t string_index         = 0;
-	uint64_t value_64bit        = 0;
 	uint64_t divider            = 0;
+	uint64_t value_64bit        = 0;
 	uint32_t string_format_type = 0;
 	uint32_t supported_flags    = 0;
 	uint8_t byte_value          = 0;
 	uint8_t character_value     = 0;
 	int8_t bit_shift            = 0;
 	int8_t sign                 = 1;
+	double value_fraction       = 0.0;
 
 	if( utf16_string == NULL )
 	{
@@ -2758,39 +2826,41 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		if( utf16_string[ string_index ] != (uint16_t) '0' )
+		character_value = utf16_string[ string_index++ ];
+
+		if(character_value != (uint16_t) '0' )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-			 "%s: unsupported character value: 0x04%" PRIx16 " at index: %d.",
+			 "%s: unsupported character value: 0x%02" PRIx16 " at index: %d.",
 			 function,
-			 utf16_string[ string_index ],
+			 character_value,
 			 string_index );
 
 			return( -1 );
 		}
-		string_index++;
+		character_value = utf16_string[ string_index++ ];
 
-		if( utf16_string[ string_index ] != (uint16_t) 'x' )
+		if( character_value != (uint16_t) 'x' )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-			 "%s: unsupported character value: 0x04%" PRIx16 " at index: %d.",
+			 "%s: unsupported character value: 0x%02" PRIx16 " at index: %d.",
 			 function,
-			 utf16_string[ string_index ],
+			 character_value,
 			 string_index );
 
 			return( -1 );
 		}
-		string_index++;
-
 		while( string_index < utf16_string_length )
 		{
-			if( utf16_string[ string_index ] == 0 )
+			character_value = utf16_string[ string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
@@ -2807,20 +2877,20 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 			}
 			value_64bit <<= 4;
 
-			if( ( utf16_string[ string_index ] >= (uint16_t) '0' )
-			 && ( utf16_string[ string_index ] <= (uint16_t) '9' ) )
+			if( ( character_value >= (uint16_t) '0' )
+			 && ( character_value <= (uint16_t) '9' ) )
 			{
-				byte_value = (uint8_t) ( utf16_string[ string_index ] - (uint16_t) '0' );
+				byte_value = (uint8_t) ( character_value - (uint16_t) '0' );
 			}
-			else if( ( utf16_string[ string_index ] >= (uint16_t) 'A' )
-			      && ( utf16_string[ string_index ] <= (uint16_t) 'F' ) )
+			else if( ( character_value >= (uint16_t) 'A' )
+			      && ( character_value <= (uint16_t) 'F' ) )
 			{
-				byte_value = (uint8_t) ( utf16_string[ string_index ] - (uint16_t) 'A' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint16_t) 'A' + 10 );
 			}
-			else if( ( utf16_string[ string_index ] >= (uint16_t) 'a' )
-			      && ( utf16_string[ string_index ] <= (uint16_t) 'f' ) )
+			else if( ( character_value >= (uint16_t) 'a' )
+			      && ( character_value <= (uint16_t) 'f' ) )
 			{
-				byte_value = (uint8_t) ( utf16_string[ string_index ] - (uint16_t) 'a' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint16_t) 'a' + 10 );
 			}
 			else
 			{
@@ -2830,7 +2900,7 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 				 "%s: unsupported character value: 0x04%" PRIx16 " at index: %d.",
 				 function,
-				 utf16_string[ string_index ],
+				 character_value,
 				 string_index );
 
 				return( -1 );
@@ -2842,6 +2912,8 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 	}
 	else
 	{
+		value_float64.floating_point = 0.0;
+
 		/* In the maximum possible string one character is substituted for the sign
 		 */
 		if( utf16_string[ string_index ] == (uint16_t) '-' )
@@ -2856,7 +2928,9 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 		}
 		while( string_index < utf16_string_length )
 		{
-			if( utf16_string[ string_index ] == 0 )
+			character_value = utf16_string[ string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
@@ -2871,35 +2945,89 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
-			value_64bit *= 10;
-
-			if( ( utf16_string[ string_index ] < (uint16_t) '0' )
-			 && ( utf16_string[ string_index ] > (uint16_t) '9' ) )
+			if( character_value == (uint16_t) '.' )
+			{
+				break;
+			}
+			if( ( character_value >= (uint16_t) '0' )
+			 && ( character_value <= (uint16_t) '9' ) )
+			{
+				value_float64.floating_point *= 10;
+				value_float64.floating_point += character_value - (uint16_t) '0';
+			}
+			else
 			{
 				libcerror_error_set(
 				 error,
 				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-				 "%s: unsupported character value: 0x04%" PRIx16 " at index: %d.",
+				 "%s: unsupported character value: 0x%02" PRIx16 " at index: %d.",
 				 function,
-				 utf16_string[ string_index ],
+				 character_value,
 				 string_index );
 
 				return( -1 );
 			}
-			character_value = (uint8_t) ( utf16_string[ string_index ] - (uint16_t) '0' );
-
-			value_64bit += character_value;
-
 			string_index++;
+		}
+		fraction_index = string_index;
+
+		string_index++;
+		utf16_string_length--;
+
+		if( utf16_string_length > (size_t) maximum_string_index )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+			 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_LARGE,
+			 "%s: string too large.",
+			 function );
+
+			return( -1 );
+		}
+		while( fraction_index < utf16_string_length )
+		{
+			character_value = utf16_string[ utf16_string_length ];
+
+			if( character_value == 0 )
+			{
+				break;
+			}
+			if( ( character_value >= (uint16_t) '0' )
+			 && ( character_value <= (uint16_t) '9' ) )
+			{
+				value_fraction /= 10;
+				value_fraction += character_value - (uint16_t) '0';
+			}
+			else
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
+				 "%s: unsupported character value: 0x%02" PRIx16 " at index: %d.",
+				 function,
+				 character_value,
+				 utf16_string_length );
+
+				return( -1 );
+			}
+			string_index++;
+			utf16_string_length--;
+		}
+		if( value_fraction != 0.0 )
+		{
+			value_float64.floating_point += value_fraction / 10;
 		}
 		if( sign == -1 )
 		{
-			value_64bit |= (uint64_t) 1 << bit_shift;
+			value_float64.floating_point *= 1.0;
 		}
+		value_64bit = value_float64.integer;
 	}
-	*utf16_string_index = string_index;
-	*floating_point_value      = value_64bit;
+	*utf16_string_index   = string_index;
+	*floating_point_value = value_64bit;
 
 	return( 1 );
 }
@@ -3472,17 +3600,21 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
      uint32_t string_format_flags,
      libcerror_error_t **error )
 {
+	byte_stream_float64_t value_float64;
+
 	static char *function       = "libfvalue_utf32_string_with_index_copy_to_floating_point";
+	size_t fraction_index       = 0;
 	size_t maximum_string_index = 0;
 	size_t string_index         = 0;
-	uint64_t value_64bit        = 0;
 	uint64_t divider            = 0;
+	uint64_t value_64bit        = 0;
 	uint32_t string_format_type = 0;
 	uint32_t supported_flags    = 0;
 	uint8_t byte_value          = 0;
 	uint8_t character_value     = 0;
 	int8_t bit_shift            = 0;
 	int8_t sign                 = 1;
+	double value_fraction       = 0.0;
 
 	if( utf32_string == NULL )
 	{
@@ -3621,39 +3753,41 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		if( utf32_string[ string_index ] != (uint32_t) '0' )
+		character_value = utf32_string[ string_index++ ];
+
+		if(character_value != (uint32_t) '0' )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-			 "%s: unsupported character value: 0x08%" PRIx32 " at index: %d.",
+			 "%s: unsupported character value: 0x%02" PRIx32 " at index: %d.",
 			 function,
-			 utf32_string[ string_index ],
+			 character_value,
 			 string_index );
 
 			return( -1 );
 		}
-		string_index++;
+		character_value = utf32_string[ string_index++ ];
 
-		if( utf32_string[ string_index ] != (uint32_t) 'x' )
+		if( character_value != (uint32_t) 'x' )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-			 "%s: unsupported character value: 0x08%" PRIx32 " at index: %d.",
+			 "%s: unsupported character value: 0x%02" PRIx32 " at index: %d.",
 			 function,
-			 utf32_string[ string_index ],
+			 character_value,
 			 string_index );
 
 			return( -1 );
 		}
-		string_index++;
-
 		while( string_index < utf32_string_length )
 		{
-			if( utf32_string[ string_index ] == 0 )
+			character_value = utf32_string[ string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
@@ -3670,20 +3804,20 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 			}
 			value_64bit <<= 4;
 
-			if( ( utf32_string[ string_index ] >= (uint32_t) '0' )
-			 && ( utf32_string[ string_index ] <= (uint32_t) '9' ) )
+			if( ( character_value >= (uint32_t) '0' )
+			 && ( character_value <= (uint32_t) '9' ) )
 			{
-				byte_value = (uint8_t) ( utf32_string[ string_index ] - (uint32_t) '0' );
+				byte_value = (uint8_t) ( character_value - (uint32_t) '0' );
 			}
-			else if( ( utf32_string[ string_index ] >= (uint32_t) 'A' )
-			      && ( utf32_string[ string_index ] <= (uint32_t) 'F' ) )
+			else if( ( character_value >= (uint32_t) 'A' )
+			      && ( character_value <= (uint32_t) 'F' ) )
 			{
-				byte_value = (uint8_t) ( utf32_string[ string_index ] - (uint32_t) 'A' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint32_t) 'A' + 10 );
 			}
-			else if( ( utf32_string[ string_index ] >= (uint32_t) 'a' )
-			      && ( utf32_string[ string_index ] <= (uint32_t) 'f' ) )
+			else if( ( character_value >= (uint32_t) 'a' )
+			      && ( character_value <= (uint32_t) 'f' ) )
 			{
-				byte_value = (uint8_t) ( utf32_string[ string_index ] - (uint32_t) 'a' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint32_t) 'a' + 10 );
 			}
 			else
 			{
@@ -3693,7 +3827,7 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 				 "%s: unsupported character value: 0x08%" PRIx32 " at index: %d.",
 				 function,
-				 utf32_string[ string_index ],
+				 character_value,
 				 string_index );
 
 				return( -1 );
@@ -3705,6 +3839,8 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 	}
 	else
 	{
+		value_float64.floating_point = 0.0;
+
 		/* In the maximum possible string one character is substituted for the sign
 		 */
 		if( utf32_string[ string_index ] == (uint32_t) '-' )
@@ -3719,7 +3855,9 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 		}
 		while( string_index < utf32_string_length )
 		{
-			if( utf32_string[ string_index ] == 0 )
+			character_value = utf32_string[ string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
@@ -3734,35 +3872,89 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
-			value_64bit *= 10;
-
-			if( ( utf32_string[ string_index ] < (uint32_t) '0' )
-			 && ( utf32_string[ string_index ] > (uint32_t) '9' ) )
+			if( character_value == (uint32_t) '.' )
+			{
+				break;
+			}
+			if( ( character_value >= (uint32_t) '0' )
+			 && ( character_value <= (uint32_t) '9' ) )
+			{
+				value_float64.floating_point *= 10;
+				value_float64.floating_point += character_value - (uint32_t) '0';
+			}
+			else
 			{
 				libcerror_error_set(
 				 error,
 				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-				 "%s: unsupported character value: 0x08%" PRIx32 " at index: %d.",
+				 "%s: unsupported character value: 0x%02" PRIx32 " at index: %d.",
 				 function,
-				 utf32_string[ string_index ],
+				 character_value,
 				 string_index );
 
 				return( -1 );
 			}
-			character_value = (uint8_t) ( utf32_string[ string_index ] - (uint32_t) '0' );
-
-			value_64bit += character_value;
-
 			string_index++;
+		}
+		fraction_index = string_index;
+
+		string_index++;
+		utf32_string_length--;
+
+		if( utf32_string_length > (size_t) maximum_string_index )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+			 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_LARGE,
+			 "%s: string too large.",
+			 function );
+
+			return( -1 );
+		}
+		while( fraction_index < utf32_string_length )
+		{
+			character_value = utf32_string[ utf32_string_length ];
+
+			if( character_value == 0 )
+			{
+				break;
+			}
+			if( ( character_value >= (uint32_t) '0' )
+			 && ( character_value <= (uint32_t) '9' ) )
+			{
+				value_fraction /= 10;
+				value_fraction += character_value - (uint32_t) '0';
+			}
+			else
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
+				 "%s: unsupported character value: 0x%02" PRIx32 " at index: %d.",
+				 function,
+				 character_value,
+				 utf32_string_length );
+
+				return( -1 );
+			}
+			string_index++;
+			utf32_string_length--;
+		}
+		if( value_fraction != 0.0 )
+		{
+			value_float64.floating_point += value_fraction / 10;
 		}
 		if( sign == -1 )
 		{
-			value_64bit |= (uint64_t) 1 << bit_shift;
+			value_float64.floating_point *= 1.0;
 		}
+		value_64bit = value_float64.integer;
 	}
-	*utf32_string_index = string_index;
-	*floating_point_value      = value_64bit;
+	*utf32_string_index   = string_index;
+	*floating_point_value = value_64bit;
 
 	return( 1 );
 }

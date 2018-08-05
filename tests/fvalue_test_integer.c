@@ -1234,7 +1234,7 @@ int fvalue_test_integer_copy_from_utf8_string_with_index(
 	result = libfvalue_integer_copy_from_utf8_string_with_index(
 	          integer,
 	          utf8_string,
-	          11,
+	          10,
 	          &string_index,
 	          LIBFVALUE_INTEGER_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
@@ -1249,7 +1249,6 @@ int fvalue_test_integer_copy_from_utf8_string_with_index(
 	 integer->value,
 	 (uint64_t) 0x12345678UL );
 
-/* TODO change utf8_string_size to utf8_string_length in libfvalue_integer_copy_from_utf8_string_with_index? */
 	FVALUE_TEST_ASSERT_EQUAL_SIZE(
 	 "string_index",
 	 string_index,
@@ -1266,7 +1265,7 @@ int fvalue_test_integer_copy_from_utf8_string_with_index(
 	result = libfvalue_integer_copy_from_utf8_string_with_index(
 	          NULL,
 	          utf8_string,
-	          11,
+	          10,
 	          &string_index,
 	          LIBFVALUE_INTEGER_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
@@ -1291,7 +1290,7 @@ int fvalue_test_integer_copy_from_utf8_string_with_index(
 	result = libfvalue_integer_copy_from_utf8_string_with_index(
 	          integer,
 	          NULL,
-	          11,
+	          10,
 	          &string_index,
 	          LIBFVALUE_INTEGER_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
@@ -1585,7 +1584,7 @@ int fvalue_test_integer_copy_from_utf16_string_with_index(
 	result = libfvalue_integer_copy_from_utf16_string_with_index(
 	          integer,
 	          utf16_string,
-	          11,
+	          10,
 	          &string_index,
 	          LIBFVALUE_INTEGER_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
@@ -1600,7 +1599,6 @@ int fvalue_test_integer_copy_from_utf16_string_with_index(
 	 integer->value,
 	 (uint64_t) 0x12345678UL );
 
-/* TODO change utf16_string_size to utf16_string_length in libfvalue_integer_copy_from_utf16_string_with_index? */
 	FVALUE_TEST_ASSERT_EQUAL_SIZE(
 	 "string_index",
 	 string_index,
@@ -1617,7 +1615,7 @@ int fvalue_test_integer_copy_from_utf16_string_with_index(
 	result = libfvalue_integer_copy_from_utf16_string_with_index(
 	          NULL,
 	          utf16_string,
-	          11,
+	          10,
 	          &string_index,
 	          LIBFVALUE_INTEGER_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
@@ -1642,7 +1640,7 @@ int fvalue_test_integer_copy_from_utf16_string_with_index(
 	result = libfvalue_integer_copy_from_utf16_string_with_index(
 	          integer,
 	          NULL,
-	          11,
+	          10,
 	          &string_index,
 	          LIBFVALUE_INTEGER_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
@@ -1936,7 +1934,7 @@ int fvalue_test_integer_copy_from_utf32_string_with_index(
 	result = libfvalue_integer_copy_from_utf32_string_with_index(
 	          integer,
 	          utf32_string,
-	          11,
+	          10,
 	          &string_index,
 	          LIBFVALUE_INTEGER_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
@@ -1951,7 +1949,6 @@ int fvalue_test_integer_copy_from_utf32_string_with_index(
 	 integer->value,
 	 (uint64_t) 0x12345678UL );
 
-/* TODO change utf32_string_size to utf32_string_length in libfvalue_integer_copy_from_utf32_string_with_index? */
 	FVALUE_TEST_ASSERT_EQUAL_SIZE(
 	 "string_index",
 	 string_index,
@@ -1968,7 +1965,7 @@ int fvalue_test_integer_copy_from_utf32_string_with_index(
 	result = libfvalue_integer_copy_from_utf32_string_with_index(
 	          NULL,
 	          utf32_string,
-	          11,
+	          10,
 	          &string_index,
 	          LIBFVALUE_INTEGER_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
@@ -1993,7 +1990,7 @@ int fvalue_test_integer_copy_from_utf32_string_with_index(
 	result = libfvalue_integer_copy_from_utf32_string_with_index(
 	          integer,
 	          NULL,
-	          11,
+	          10,
 	          &string_index,
 	          LIBFVALUE_INTEGER_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
