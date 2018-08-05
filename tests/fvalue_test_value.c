@@ -417,6 +417,397 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the libfvalue_value_clone function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_clone(
+     void )
+{
+	libcerror_error_t *error             = NULL;
+	libfvalue_value_t *destination_value = NULL;
+	libfvalue_value_t *source_value      = NULL;
+	int result                           = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &source_value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "source_value",
+	 source_value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_clone(
+	          &destination_value,
+	          source_value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "destination_value",
+	 destination_value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_value_free(
+	          &destination_value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "destination_value",
+	 destination_value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_value_clone(
+	          &destination_value,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "destination_value",
+	 destination_value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_clone(
+	          NULL,
+	          source_value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	destination_value = (libfvalue_value_t *) 0x12345678UL;
+
+	result = libfvalue_value_clone(
+	          &destination_value,
+	          source_value,
+	          &error );
+
+	destination_value = NULL;
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+
+	/* Test libfvalue_value_clone with malloc failing
+	 */
+	fvalue_test_malloc_attempts_before_fail = 0;
+
+	result = libfvalue_value_clone(
+	          &destination_value,
+	          source_value,
+	          &error );
+
+	if( fvalue_test_malloc_attempts_before_fail != -1 )
+	{
+		fvalue_test_malloc_attempts_before_fail = -1;
+
+		if( destination_value != NULL )
+		{
+			libfvalue_value_free(
+			 &destination_value,
+			 NULL );
+		}
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NULL(
+		 "destination_value",
+		 destination_value );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+
+	/* Test libfvalue_value_clone with memcpy failing
+	 */
+	fvalue_test_memcpy_attempts_before_fail = 0;
+
+	result = libfvalue_value_clone(
+	          &destination_value,
+	          source_value,
+	          &error );
+
+	if( fvalue_test_memcpy_attempts_before_fail != -1 )
+	{
+		fvalue_test_memcpy_attempts_before_fail = -1;
+
+		if( destination_value != NULL )
+		{
+			libfvalue_value_free(
+			 &destination_value,
+			 NULL );
+		}
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NULL(
+		 "destination_value",
+		 destination_value );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &source_value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "source_value",
+	 source_value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( destination_value != NULL )
+	{
+		libfvalue_value_free(
+		 &destination_value,
+		 NULL );
+	}
+	if( source_value != NULL )
+	{
+		libfvalue_value_free(
+		 &source_value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_clear function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_clear(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_clear(
+	          value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_clear(
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
 /* Tests the libfvalue_value_get_type function
  * Returns 1 if successful or 0 if not
  */
@@ -2620,9 +3011,13 @@ int main(
 	 "libfvalue_value_free",
 	 fvalue_test_value_free );
 
-	/* TODO: add tests for libfvalue_value_clone */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_clone",
+	 fvalue_test_value_clone );
 
-	/* TODO: add tests for libfvalue_value_clear */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_clear",
+	 fvalue_test_value_clear );
 
 	FVALUE_TEST_RUN(
 	 "libfvalue_value_get_type",

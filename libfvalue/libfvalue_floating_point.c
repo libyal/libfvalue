@@ -1990,15 +1990,17 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 	{
 		value_float64.floating_point = 0.0;
 
+		character_value = utf8_string[ safe_utf8_string_index ];
+
 		/* In the maximum possible string one character is substituted for the sign
 		 */
-		if( utf8_string[ safe_utf8_string_index ] == (uint8_t) '-' )
+		if( character_value == (uint8_t) '-' )
 		{
 			safe_utf8_string_index++;
 
 			sign = -1;
 		}
-		else if( utf8_string[ safe_utf8_string_index ] == (uint8_t) '+' )
+		else if( character_value == (uint8_t) '+' )
 		{
 			safe_utf8_string_index++;
 		}
@@ -2025,13 +2027,8 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 			{
 				break;
 			}
-			if( ( character_value >= (uint8_t) '0' )
-			 && ( character_value <= (uint8_t) '9' ) )
-			{
-				value_float64.floating_point *= 10;
-				value_float64.floating_point += character_value - (uint8_t) '0';
-			}
-			else
+			if( ( character_value < (uint8_t) '0' )
+			 || ( character_value > (uint8_t) '9' ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -2044,6 +2041,9 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
+			value_float64.floating_point *= 10;
+			value_float64.floating_point += character_value - (uint8_t) '0';
+
 			safe_utf8_string_index++;
 		}
 		fraction_index = safe_utf8_string_index;
@@ -2070,13 +2070,8 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 			{
 				break;
 			}
-			if( ( character_value >= (uint8_t) '0' )
-			 && ( character_value <= (uint8_t) '9' ) )
-			{
-				value_fraction /= 10;
-				value_fraction += character_value - (uint8_t) '0';
-			}
-			else
+			if( ( character_value < (uint8_t) '0' )
+			 || ( character_value > (uint8_t) '9' ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -2089,6 +2084,9 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
+			value_fraction /= 10;
+			value_fraction += character_value - (uint8_t) '0';
+
 			safe_utf8_string_index++;
 			utf8_string_length--;
 		}
@@ -2917,15 +2915,17 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 	{
 		value_float64.floating_point = 0.0;
 
+		character_value = utf16_string[ safe_utf16_string_index ];
+
 		/* In the maximum possible string one character is substituted for the sign
 		 */
-		if( utf16_string[ safe_utf16_string_index ] == (uint16_t) '-' )
+		if( character_value == (uint16_t) '-' )
 		{
 			safe_utf16_string_index++;
 
 			sign = -1;
 		}
-		else if( utf16_string[ safe_utf16_string_index ] == (uint16_t) '+' )
+		else if( character_value == (uint16_t) '+' )
 		{
 			safe_utf16_string_index++;
 		}
@@ -2952,13 +2952,8 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 			{
 				break;
 			}
-			if( ( character_value >= (uint16_t) '0' )
-			 && ( character_value <= (uint16_t) '9' ) )
-			{
-				value_float64.floating_point *= 10;
-				value_float64.floating_point += character_value - (uint16_t) '0';
-			}
-			else
+			if( ( character_value < (uint16_t) '0' )
+			 || ( character_value > (uint16_t) '9' ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -2971,6 +2966,9 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
+			value_float64.floating_point *= 10;
+			value_float64.floating_point += character_value - (uint16_t) '0';
+
 			safe_utf16_string_index++;
 		}
 		fraction_index = safe_utf16_string_index;
@@ -2997,13 +2995,8 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 			{
 				break;
 			}
-			if( ( character_value >= (uint16_t) '0' )
-			 && ( character_value <= (uint16_t) '9' ) )
-			{
-				value_fraction /= 10;
-				value_fraction += character_value - (uint16_t) '0';
-			}
-			else
+			if( ( character_value < (uint16_t) '0' )
+			 || ( character_value > (uint16_t) '9' ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -3016,6 +3009,9 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
+			value_fraction /= 10;
+			value_fraction += character_value - (uint16_t) '0';
+
 			safe_utf16_string_index++;
 			utf16_string_length--;
 		}
@@ -3844,15 +3840,17 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 	{
 		value_float64.floating_point = 0.0;
 
+		character_value = utf32_string[ safe_utf32_string_index ];
+
 		/* In the maximum possible string one character is substituted for the sign
 		 */
-		if( utf32_string[ safe_utf32_string_index ] == (uint32_t) '-' )
+		if( character_value == (uint32_t) '-' )
 		{
 			safe_utf32_string_index++;
 
 			sign = -1;
 		}
-		else if( utf32_string[ safe_utf32_string_index ] == (uint32_t) '+' )
+		else if( character_value == (uint32_t) '+' )
 		{
 			safe_utf32_string_index++;
 		}
@@ -3879,13 +3877,8 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 			{
 				break;
 			}
-			if( ( character_value >= (uint32_t) '0' )
-			 && ( character_value <= (uint32_t) '9' ) )
-			{
-				value_float64.floating_point *= 10;
-				value_float64.floating_point += character_value - (uint32_t) '0';
-			}
-			else
+			if( ( character_value < (uint32_t) '0' )
+			 || ( character_value > (uint32_t) '9' ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -3898,6 +3891,9 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
+			value_float64.floating_point *= 10;
+			value_float64.floating_point += character_value - (uint32_t) '0';
+
 			safe_utf32_string_index++;
 		}
 		fraction_index = safe_utf32_string_index;
@@ -3924,13 +3920,8 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 			{
 				break;
 			}
-			if( ( character_value >= (uint32_t) '0' )
-			 && ( character_value <= (uint32_t) '9' ) )
-			{
-				value_fraction /= 10;
-				value_fraction += character_value - (uint32_t) '0';
-			}
-			else
+			if( ( character_value < (uint32_t) '0' )
+			 || ( character_value > (uint32_t) '9' ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -3943,6 +3934,9 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
+			value_fraction /= 10;
+			value_fraction += character_value - (uint32_t) '0';
+
 			safe_utf32_string_index++;
 			utf32_string_length--;
 		}
