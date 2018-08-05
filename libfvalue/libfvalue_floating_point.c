@@ -565,7 +565,7 @@ int libfvalue_floating_point_get_string_size(
 int libfvalue_floating_point_copy_from_utf8_string_with_index(
      libfvalue_floating_point_t *floating_point,
      uint8_t *utf8_string,
-     size_t utf8_string_size,
+     size_t utf8_string_length,
      size_t *utf8_string_index,
      uint32_t string_format_flags,
      libcerror_error_t **error )
@@ -585,7 +585,7 @@ int libfvalue_floating_point_copy_from_utf8_string_with_index(
 	}
 	if( libfvalue_utf8_string_with_index_copy_to_floating_point(
 	     utf8_string,
-	     utf8_string_size,
+	     utf8_string_length,
 	     utf8_string_index,
 	     &( floating_point->value ),
 	     floating_point->value_size,
@@ -657,7 +657,7 @@ int libfvalue_floating_point_copy_to_utf8_string_with_index(
 int libfvalue_floating_point_copy_from_utf16_string_with_index(
      libfvalue_floating_point_t *floating_point,
      uint16_t *utf16_string,
-     size_t utf16_string_size,
+     size_t utf16_string_length,
      size_t *utf16_string_index,
      uint32_t string_format_flags,
      libcerror_error_t **error )
@@ -677,7 +677,7 @@ int libfvalue_floating_point_copy_from_utf16_string_with_index(
 	}
 	if( libfvalue_utf16_string_with_index_copy_to_floating_point(
 	     utf16_string,
-	     utf16_string_size,
+	     utf16_string_length,
 	     utf16_string_index,
 	     &( floating_point->value ),
 	     floating_point->value_size,
@@ -749,7 +749,7 @@ int libfvalue_floating_point_copy_to_utf16_string_with_index(
 int libfvalue_floating_point_copy_from_utf32_string_with_index(
      libfvalue_floating_point_t *floating_point,
      uint32_t *utf32_string,
-     size_t utf32_string_size,
+     size_t utf32_string_length,
      size_t *utf32_string_index,
      uint32_t string_format_flags,
      libcerror_error_t **error )
@@ -769,7 +769,7 @@ int libfvalue_floating_point_copy_from_utf32_string_with_index(
 	}
 	if( libfvalue_utf32_string_with_index_copy_to_floating_point(
 	     utf32_string,
-	     utf32_string_size,
+	     utf32_string_length,
 	     utf32_string_index,
 	     &( floating_point->value ),
 	     floating_point->value_size,
@@ -852,6 +852,7 @@ int libfvalue_string_size_from_floating_point(
 	byte_stream_float64_t value_float64;
 
 	static char *function       = "libfvalue_string_size_from_floating_point";
+	size_t safe_string_size     = 0;
 	uint64_t divider            = 0;
 	uint64_t multiplier         = 0;
 	uint64_t value_64bit        = 0;
@@ -922,7 +923,7 @@ int libfvalue_string_size_from_floating_point(
 	}
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		*string_size = ( floating_point_value_size >> 2 ) + 3;
+		safe_string_size = ( floating_point_value_size >> 2 ) + 3;
 	}
 	else
 	{
@@ -1071,23 +1072,23 @@ int libfvalue_string_size_from_floating_point(
 		}
 		/* The string is at least a single digit with an end of string character
 		 */
-		*string_size = 2;
+		safe_string_size = 2;
 
 		if( is_signed != 0 )
 		{
-			*string_size += 1;
+			safe_string_size += 1;
 		}
 		if( is_indeterminate != 0 )
 		{
-			*string_size += 3;
+			safe_string_size += 3;
 		}
 		else if( is_infinite != 0 )
 		{
-			*string_size += 3;
+			safe_string_size += 3;
 		}
 		else if( is_not_a_number != 0 )
 		{
-			*string_size += 3;
+			safe_string_size += 3;
 		}
 		else if( is_zero == 0 )
 		{
@@ -1144,7 +1145,7 @@ int libfvalue_string_size_from_floating_point(
 			}
 			if( use_value_string != 0 )
 			{
-				*string_size += 12;
+				safe_string_size += 12;
 			}
 			else
 			{
@@ -1154,7 +1155,7 @@ int libfvalue_string_size_from_floating_point(
 				{
 					divider *= 10;
 
-					*string_size += 1;
+					safe_string_size += 1;
 				}
 				if( exponent != 0 )
 				{
@@ -1168,13 +1169,15 @@ int libfvalue_string_size_from_floating_point(
 					{
 						exponent_divider *= 10;
 
-						*string_size += 1;
+						safe_string_size += 1;
 					}
-					*string_size += 3;
+					safe_string_size += 3;
 				}
 			}
 		}
 	}
+	*string_size = safe_string_size;
+
 	return( 1 );
 }
 
@@ -1232,27 +1235,27 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 	byte_stream_float32_t value_float32;
 	byte_stream_float64_t value_float64;
 
-	static char *function        = "libfvalue_utf8_string_with_index_copy_from_floating_point";
-	size_t string_index          = 0;
-	uint64_t divider             = 0;
-	uint64_t multiplier          = 0;
-	uint64_t value_64bit         = 0;
-	uint32_t string_format_type  = 0;
-	uint32_t supported_flags     = 0;
-	uint16_t exponent_divider    = 0;
-	int16_t exponent             = 0;
-	int16_t exponent_value       = 0;
-	uint8_t byte_value           = 0;
-	uint8_t is_denormalized      = 0;
-	uint8_t is_indeterminate     = 0;
-	uint8_t is_infinite          = 0;
-	uint8_t is_not_a_number      = 0;
-	uint8_t is_signed            = 0;
-	uint8_t is_zero              = 0;
-	uint8_t number_of_characters = 0;
-	uint8_t use_value_string     = 0;
-	int8_t bit_shift             = 0;
-	int print_count              = 0;
+	static char *function         = "libfvalue_utf8_string_with_index_copy_from_floating_point";
+	size_t safe_utf8_string_index = 0;
+	uint64_t divider              = 0;
+	uint64_t multiplier           = 0;
+	uint64_t value_64bit          = 0;
+	uint32_t string_format_type   = 0;
+	uint32_t supported_flags      = 0;
+	uint16_t exponent_divider     = 0;
+	int16_t exponent              = 0;
+	int16_t exponent_value        = 0;
+	uint8_t byte_value            = 0;
+	uint8_t is_denormalized       = 0;
+	uint8_t is_indeterminate      = 0;
+	uint8_t is_infinite           = 0;
+	uint8_t is_not_a_number       = 0;
+	uint8_t is_signed             = 0;
+	uint8_t is_zero               = 0;
+	uint8_t number_of_characters  = 0;
+	uint8_t use_value_string      = 0;
+	int8_t bit_shift              = 0;
+	int print_count               = 0;
 
 	if( utf8_string == NULL )
 	{
@@ -1298,7 +1301,7 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 
 		return( -1 );
 	}
-	string_index = *utf8_string_index;
+	safe_utf8_string_index = *utf8_string_index;
 
 	if( ( floating_point_value_size != 32 )
 	 && ( floating_point_value_size != 64 ) )
@@ -1597,7 +1600,7 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 			}
 		}
 	}
-	if( ( string_index + number_of_characters ) > utf8_string_size )
+	if( ( safe_utf8_string_index + number_of_characters ) > utf8_string_size )
 	{
 		libcerror_error_set(
 		 error,
@@ -1610,8 +1613,8 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 	}
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		utf8_string[ string_index++ ] = (uint8_t) '0';
-		utf8_string[ string_index++ ] = (uint8_t) 'x';
+		utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '0';
+		utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'x';
 
 		bit_shift = (uint8_t) ( floating_point_value_size - 4 );
 
@@ -1621,11 +1624,11 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 
 			if( byte_value <= 9 )
 			{
-				utf8_string[ string_index++ ] = (uint8_t) '0' + byte_value;
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '0' + byte_value;
 			}
 			else
 			{
-				utf8_string[ string_index++ ] = (uint8_t) 'a' + byte_value - 10;
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'a' + byte_value - 10;
 			}
 			bit_shift -= 4;
 		}
@@ -1635,100 +1638,100 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 	{
 		if( is_signed != 0 )
 		{
-			utf8_string[ string_index++ ] = (uint8_t) '-';
+			utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '-';
 		}
 		if( is_indeterminate != 0 )
 		{
-			utf8_string[ string_index++ ] = (uint8_t) 'I';
-			utf8_string[ string_index++ ] = (uint8_t) 'n';
-			utf8_string[ string_index++ ] = (uint8_t) 'd';
+			utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'I';
+			utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'n';
+			utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'd';
 		}
 		else if( is_infinite != 0 )
 		{
-			utf8_string[ string_index++ ] = (uint8_t) 'I';
-			utf8_string[ string_index++ ] = (uint8_t) 'n';
-			utf8_string[ string_index++ ] = (uint8_t) 'f';
+			utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'I';
+			utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'n';
+			utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'f';
 		}
 		else if( is_not_a_number != 0 )
 		{
-			utf8_string[ string_index++ ] = (uint8_t) 'N';
-			utf8_string[ string_index++ ] = (uint8_t) 'a';
-			utf8_string[ string_index++ ] = (uint8_t) 'N';
+			utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'N';
+			utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'a';
+			utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'N';
 		}
 		else if( is_zero == 0 )
 		{
 			if( use_value_string != 0 )
 			{
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 0 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 1 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 2 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 3 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 4 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 5 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 6 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 7 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 8 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 9 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 10 ];
-				utf8_string[ string_index++ ] = (uint8_t) value_string[ 11 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 0 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 1 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 2 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 3 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 4 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 5 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 6 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 7 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 8 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 9 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 10 ];
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) value_string[ 11 ];
 			}
 			else
 			{
 				if( divider > 1 )
 				{
-					utf8_string[ string_index++ ] = (uint8_t) '0' + (uint8_t) ( floating_point_value / divider );
+					utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '0' + (uint8_t) ( floating_point_value / divider );
 
 					floating_point_value %= divider;
 
 					divider /= 10;
 
-					utf8_string[ string_index++ ] = (uint8_t) '.';
+					utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '.';
 
 					while( divider > 1 )
 					{
-						utf8_string[ string_index++ ] = (uint8_t) '0' + (uint8_t) ( floating_point_value / divider );
+						utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '0' + (uint8_t) ( floating_point_value / divider );
 
 						floating_point_value %= divider;
 
 						divider /= 10;
 					}
 				}
-				utf8_string[ string_index++ ] = (uint8_t) '0' + (uint8_t) ( floating_point_value / divider );
+				utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '0' + (uint8_t) ( floating_point_value / divider );
 
 				if( exponent != 0 )
 				{
-					utf8_string[ string_index++ ] = (uint8_t) 'e';
+					utf8_string[ safe_utf8_string_index++ ] = (uint8_t) 'e';
 
 					if( exponent < 0 )
 					{
 						exponent *= -1;
 
-						utf8_string[ string_index++ ] = (uint8_t) '-';
+						utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '-';
 					}
 					else
 					{
-						utf8_string[ string_index++ ] = (uint8_t) '+';
+						utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '+';
 					}
 					while( exponent_divider > 1 )
 					{
-						utf8_string[ string_index++ ] = (uint8_t) '0' + (uint8_t) ( exponent / exponent_divider );
+						utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '0' + (uint8_t) ( exponent / exponent_divider );
 
 						exponent %= exponent_divider;
 
 						exponent_divider /= 10;
 					}
-					utf8_string[ string_index++ ] = (uint8_t) '0' + (uint8_t) ( exponent / exponent_divider );
+					utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '0' + (uint8_t) ( exponent / exponent_divider );
 				}
 			}
 		}
 		else
 		{
-			utf8_string[ string_index++ ] = (uint8_t) '0';
+			utf8_string[ safe_utf8_string_index++ ] = (uint8_t) '0';
 		}
 	}
-	utf8_string[ string_index++ ] = 0;
+	utf8_string[ safe_utf8_string_index++ ] = 0;
 
-	*utf8_string_index = string_index;
+	*utf8_string_index = safe_utf8_string_index;
 
 	return( 1 );
 }
@@ -1746,17 +1749,21 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
      uint32_t string_format_flags,
      libcerror_error_t **error )
 {
-	static char *function       = "libfvalue_utf8_string_with_index_copy_to_floating_point";
-	size_t maximum_string_index = 0;
-	size_t string_index         = 0;
-	uint64_t divider            = 0;
-	uint64_t value_64bit        = 0;
-	uint32_t string_format_type = 0;
-	uint32_t supported_flags    = 0;
-	uint8_t byte_value          = 0;
-	uint8_t character_value     = 0;
-	int8_t bit_shift            = 0;
-	int8_t sign                 = 1;
+	byte_stream_float64_t value_float64;
+
+	static char *function         = "libfvalue_utf8_string_with_index_copy_to_floating_point";
+	size_t fraction_index         = 0;
+	size_t maximum_string_index   = 0;
+	size_t safe_utf8_string_index = 0;
+	uint64_t divider              = 0;
+	uint64_t value_64bit          = 0;
+	uint32_t string_format_type   = 0;
+	uint32_t supported_flags      = 0;
+	uint8_t byte_value            = 0;
+	uint8_t character_value       = 0;
+	int8_t bit_shift              = 0;
+	int8_t sign                   = 1;
+	double value_fraction         = 0.0;
 
 	if( utf8_string == NULL )
 	{
@@ -1802,7 +1809,7 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 
 		return( -1 );
 	}
-	string_index = *utf8_string_index;
+	safe_utf8_string_index = *utf8_string_index;
 
 	if( floating_point_value == NULL )
 	{
@@ -1878,7 +1885,7 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 			maximum_string_index += 1;
 		}
 	}
-	maximum_string_index += string_index;
+	maximum_string_index += safe_utf8_string_index;
 
 	if( maximum_string_index > (size_t) SSIZE_MAX )
 	{
@@ -1895,7 +1902,9 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		if( utf8_string[ string_index ] != (uint8_t) '0' )
+		character_value = utf8_string[ safe_utf8_string_index++ ];
+
+		if(character_value != (uint8_t) '0' )
 		{
 			libcerror_error_set(
 			 error,
@@ -1903,14 +1912,14 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 			 "%s: unsupported character value: 0x%02" PRIx8 " at index: %d.",
 			 function,
-			 utf8_string[ string_index ],
-			 string_index );
+			 character_value,
+			 safe_utf8_string_index );
 
 			return( -1 );
 		}
-		string_index++;
+		character_value = utf8_string[ safe_utf8_string_index++ ];
 
-		if( utf8_string[ string_index ] != (uint8_t) 'x' )
+		if( character_value != (uint8_t) 'x' )
 		{
 			libcerror_error_set(
 			 error,
@@ -1918,20 +1927,20 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 			 "%s: unsupported character value: 0x%02" PRIx8 " at index: %d.",
 			 function,
-			 utf8_string[ string_index ],
-			 string_index );
+			 character_value,
+			 safe_utf8_string_index );
 
 			return( -1 );
 		}
-		string_index++;
-
-		while( string_index < utf8_string_length )
+		while( safe_utf8_string_index < utf8_string_length )
 		{
-			if( utf8_string[ string_index ] == 0 )
+			character_value = utf8_string[ safe_utf8_string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
-			if( string_index > (size_t) maximum_string_index )
+			if( safe_utf8_string_index > (size_t) maximum_string_index )
 			{
 				libcerror_error_set(
 				 error,
@@ -1944,20 +1953,20 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 			}
 			value_64bit <<= 4;
 
-			if( ( utf8_string[ string_index ] >= (uint8_t) '0' )
-			 && ( utf8_string[ string_index ] <= (uint8_t) '9' ) )
+			if( ( character_value >= (uint8_t) '0' )
+			 && ( character_value <= (uint8_t) '9' ) )
 			{
-				byte_value = (uint8_t) ( utf8_string[ string_index ] - (uint8_t) '0' );
+				byte_value = (uint8_t) ( character_value - (uint8_t) '0' );
 			}
-			else if( ( utf8_string[ string_index ] >= (uint8_t) 'A' )
-			      && ( utf8_string[ string_index ] <= (uint8_t) 'F' ) )
+			else if( ( character_value >= (uint8_t) 'A' )
+			      && ( character_value <= (uint8_t) 'F' ) )
 			{
-				byte_value = (uint8_t) ( utf8_string[ string_index ] - (uint8_t) 'A' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint8_t) 'A' + 10 );
 			}
-			else if( ( utf8_string[ string_index ] >= (uint8_t) 'a' )
-			      && ( utf8_string[ string_index ] <= (uint8_t) 'f' ) )
+			else if( ( character_value >= (uint8_t) 'a' )
+			      && ( character_value <= (uint8_t) 'f' ) )
 			{
-				byte_value = (uint8_t) ( utf8_string[ string_index ] - (uint8_t) 'a' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint8_t) 'a' + 10 );
 			}
 			else
 			{
@@ -1967,37 +1976,41 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 				 "%s: unsupported character value: 0x%02" PRIx8 " at index: %d.",
 				 function,
-				 utf8_string[ string_index ],
-				 string_index );
+				 character_value,
+				 safe_utf8_string_index );
 
 				return( -1 );
 			}
 			value_64bit += byte_value;
 
-			string_index++;
+			safe_utf8_string_index++;
 		}
 	}
 	else
 	{
+		value_float64.floating_point = 0.0;
+
 		/* In the maximum possible string one character is substituted for the sign
 		 */
-		if( utf8_string[ string_index ] == (uint8_t) '-' )
+		if( utf8_string[ safe_utf8_string_index ] == (uint8_t) '-' )
 		{
-			string_index++;
+			safe_utf8_string_index++;
 
 			sign = -1;
 		}
-		else if( utf8_string[ string_index ] == (uint8_t) '+' )
+		else if( utf8_string[ safe_utf8_string_index ] == (uint8_t) '+' )
 		{
-			string_index++;
+			safe_utf8_string_index++;
 		}
-		while( string_index < utf8_string_length )
+		while( safe_utf8_string_index < utf8_string_length )
 		{
-			if( utf8_string[ string_index ] == 0 )
+			character_value = utf8_string[ safe_utf8_string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
-			if( string_index > (size_t) maximum_string_index )
+			if( safe_utf8_string_index > (size_t) maximum_string_index )
 			{
 				libcerror_error_set(
 				 error,
@@ -2008,10 +2021,17 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
-			value_64bit *= 10;
-
-			if( ( utf8_string[ string_index ] < (uint8_t) '0' )
-			 && ( utf8_string[ string_index ] > (uint8_t) '9' ) )
+			if( character_value == (uint8_t) '.' )
+			{
+				break;
+			}
+			if( ( character_value >= (uint8_t) '0' )
+			 && ( character_value <= (uint8_t) '9' ) )
+			{
+				value_float64.floating_point *= 10;
+				value_float64.floating_point += character_value - (uint8_t) '0';
+			}
+			else
 			{
 				libcerror_error_set(
 				 error,
@@ -2019,24 +2039,71 @@ int libfvalue_utf8_string_with_index_copy_to_floating_point(
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 				 "%s: unsupported character value: 0x%02" PRIx8 " at index: %d.",
 				 function,
-				 utf8_string[ string_index ],
-				 string_index );
+				 character_value,
+				 safe_utf8_string_index );
 
 				return( -1 );
 			}
-			character_value = (uint8_t) ( utf8_string[ string_index ] - (uint8_t) '0' );
+			safe_utf8_string_index++;
+		}
+		fraction_index = safe_utf8_string_index;
 
-			value_64bit += character_value;
+		safe_utf8_string_index++;
+		utf8_string_length--;
 
-			string_index++;
+		if( utf8_string_length > (size_t) maximum_string_index )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+			 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_LARGE,
+			 "%s: string too large.",
+			 function );
+
+			return( -1 );
+		}
+		while( fraction_index < utf8_string_length )
+		{
+			character_value = utf8_string[ utf8_string_length ];
+
+			if( character_value == 0 )
+			{
+				break;
+			}
+			if( ( character_value >= (uint8_t) '0' )
+			 && ( character_value <= (uint8_t) '9' ) )
+			{
+				value_fraction /= 10;
+				value_fraction += character_value - (uint8_t) '0';
+			}
+			else
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
+				 "%s: unsupported character value: 0x%02" PRIx8 " at index: %d.",
+				 function,
+				 character_value,
+				 utf8_string_length );
+
+				return( -1 );
+			}
+			safe_utf8_string_index++;
+			utf8_string_length--;
+		}
+		if( value_fraction != 0.0 )
+		{
+			value_float64.floating_point += value_fraction / 10;
 		}
 		if( sign == -1 )
 		{
-			value_64bit |= (uint64_t) 1 << bit_shift;
+			value_float64.floating_point *= 1.0;
 		}
+		value_64bit = value_float64.integer;
 	}
-	*utf8_string_index = string_index;
-	*floating_point_value     = value_64bit;
+	*utf8_string_index    = safe_utf8_string_index;
+	*floating_point_value = value_64bit;
 
 	return( 1 );
 }
@@ -2095,27 +2162,27 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 	byte_stream_float32_t value_float32;
 	byte_stream_float64_t value_float64;
 
-	static char *function        = "libfvalue_utf16_string_with_index_copy_from_floating_point";
-	size_t string_index          = 0;
-	uint64_t divider             = 0;
-	uint64_t multiplier          = 0;
-	uint64_t value_64bit         = 0;
-	uint32_t string_format_type  = 0;
-	uint32_t supported_flags     = 0;
-	uint16_t exponent_divider    = 0;
-	int16_t exponent             = 0;
-	int16_t exponent_value       = 0;
-	uint8_t byte_value           = 0;
-	uint8_t is_denormalized      = 0;
-	uint8_t is_indeterminate     = 0;
-	uint8_t is_infinite          = 0;
-	uint8_t is_not_a_number      = 0;
-	uint8_t is_signed            = 0;
-	uint8_t is_zero              = 0;
-	uint8_t number_of_characters = 0;
-	uint8_t use_value_string     = 0;
-	int8_t bit_shift             = 0;
-	int print_count              = 0;
+	static char *function          = "libfvalue_utf16_string_with_index_copy_from_floating_point";
+	size_t safe_utf16_string_index = 0;
+	uint64_t divider               = 0;
+	uint64_t multiplier            = 0;
+	uint64_t value_64bit           = 0;
+	uint32_t string_format_type    = 0;
+	uint32_t supported_flags       = 0;
+	uint16_t exponent_divider      = 0;
+	int16_t exponent               = 0;
+	int16_t exponent_value         = 0;
+	uint8_t byte_value             = 0;
+	uint8_t is_denormalized        = 0;
+	uint8_t is_indeterminate       = 0;
+	uint8_t is_infinite            = 0;
+	uint8_t is_not_a_number        = 0;
+	uint8_t is_signed              = 0;
+	uint8_t is_zero                = 0;
+	uint8_t number_of_characters   = 0;
+	uint8_t use_value_string       = 0;
+	int8_t bit_shift               = 0;
+	int print_count                = 0;
 
 	if( utf16_string == NULL )
 	{
@@ -2161,7 +2228,7 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 
 		return( -1 );
 	}
-	string_index = *utf16_string_index;
+	safe_utf16_string_index = *utf16_string_index;
 
 	if( ( floating_point_value_size != 32 )
 	 && ( floating_point_value_size != 64 ) )
@@ -2460,7 +2527,7 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 			}
 		}
 	}
-	if( ( string_index + number_of_characters ) > utf16_string_size )
+	if( ( safe_utf16_string_index + number_of_characters ) > utf16_string_size )
 	{
 		libcerror_error_set(
 		 error,
@@ -2473,8 +2540,8 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 	}
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		utf16_string[ string_index++ ] = (uint16_t) '0';
-		utf16_string[ string_index++ ] = (uint16_t) 'x';
+		utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '0';
+		utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'x';
 
 		bit_shift = (uint8_t) ( floating_point_value_size - 4 );
 
@@ -2484,11 +2551,11 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 
 			if( byte_value <= 9 )
 			{
-				utf16_string[ string_index++ ] = (uint16_t) '0' + byte_value;
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '0' + byte_value;
 			}
 			else
 			{
-				utf16_string[ string_index++ ] = (uint16_t) 'a' + byte_value - 10;
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'a' + byte_value - 10;
 			}
 			bit_shift -= 4;
 		}
@@ -2498,100 +2565,100 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 	{
 		if( is_signed != 0 )
 		{
-			utf16_string[ string_index++ ] = (uint16_t) '-';
+			utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '-';
 		}
 		if( is_indeterminate != 0 )
 		{
-			utf16_string[ string_index++ ] = (uint16_t) 'I';
-			utf16_string[ string_index++ ] = (uint16_t) 'n';
-			utf16_string[ string_index++ ] = (uint16_t) 'd';
+			utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'I';
+			utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'n';
+			utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'd';
 		}
 		else if( is_infinite != 0 )
 		{
-			utf16_string[ string_index++ ] = (uint16_t) 'I';
-			utf16_string[ string_index++ ] = (uint16_t) 'n';
-			utf16_string[ string_index++ ] = (uint16_t) 'f';
+			utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'I';
+			utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'n';
+			utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'f';
 		}
 		else if( is_not_a_number != 0 )
 		{
-			utf16_string[ string_index++ ] = (uint16_t) 'N';
-			utf16_string[ string_index++ ] = (uint16_t) 'a';
-			utf16_string[ string_index++ ] = (uint16_t) 'N';
+			utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'N';
+			utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'a';
+			utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'N';
 		}
 		else if( is_zero == 0 )
 		{
 			if( use_value_string != 0 )
 			{
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 0 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 1 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 2 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 3 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 4 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 5 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 6 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 7 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 8 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 9 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 10 ];
-				utf16_string[ string_index++ ] = (uint16_t) value_string[ 11 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 0 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 1 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 2 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 3 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 4 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 5 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 6 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 7 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 8 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 9 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 10 ];
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) value_string[ 11 ];
 			}
 			else
 			{
 				if( divider > 1 )
 				{
-					utf16_string[ string_index++ ] = (uint16_t) '0' + (uint16_t) ( floating_point_value / divider );
+					utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '0' + (uint16_t) ( floating_point_value / divider );
 
 					floating_point_value %= divider;
 
 					divider /= 10;
 
-					utf16_string[ string_index++ ] = (uint16_t) '.';
+					utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '.';
 
 					while( divider > 1 )
 					{
-						utf16_string[ string_index++ ] = (uint16_t) '0' + (uint16_t) ( floating_point_value / divider );
+						utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '0' + (uint16_t) ( floating_point_value / divider );
 
 						floating_point_value %= divider;
 
 						divider /= 10;
 					}
 				}
-				utf16_string[ string_index++ ] = (uint16_t) '0' + (uint16_t) ( floating_point_value / divider );
+				utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '0' + (uint16_t) ( floating_point_value / divider );
 
 				if( exponent != 0 )
 				{
-					utf16_string[ string_index++ ] = (uint16_t) 'e';
+					utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'e';
 
 					if( exponent < 0 )
 					{
 						exponent *= -1;
 
-						utf16_string[ string_index++ ] = (uint16_t) '-';
+						utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '-';
 					}
 					else
 					{
-						utf16_string[ string_index++ ] = (uint16_t) '+';
+						utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '+';
 					}
 					while( exponent_divider > 1 )
 					{
-						utf16_string[ string_index++ ] = (uint16_t) '0' + (uint16_t) ( exponent / exponent_divider );
+						utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '0' + (uint16_t) ( exponent / exponent_divider );
 
 						exponent %= exponent_divider;
 
 						exponent_divider /= 10;
 					}
-					utf16_string[ string_index++ ] = (uint16_t) '0' + (uint16_t) ( exponent / exponent_divider );
+					utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '0' + (uint16_t) ( exponent / exponent_divider );
 				}
 			}
 		}
 		else
 		{
-			utf16_string[ string_index++ ] = (uint16_t) '0';
+			utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '0';
 		}
 	}
-	utf16_string[ string_index++ ] = 0;
+	utf16_string[ safe_utf16_string_index++ ] = 0;
 
-	*utf16_string_index = string_index;
+	*utf16_string_index = safe_utf16_string_index;
 
 	return( 1 );
 }
@@ -2609,17 +2676,21 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
      uint32_t string_format_flags,
      libcerror_error_t **error )
 {
-	static char *function       = "libfvalue_utf16_string_with_index_copy_to_floating_point";
-	size_t maximum_string_index = 0;
-	size_t string_index         = 0;
-	uint64_t value_64bit        = 0;
-	uint64_t divider            = 0;
-	uint32_t string_format_type = 0;
-	uint32_t supported_flags    = 0;
-	uint8_t byte_value          = 0;
-	uint8_t character_value     = 0;
-	int8_t bit_shift            = 0;
-	int8_t sign                 = 1;
+	byte_stream_float64_t value_float64;
+
+	static char *function          = "libfvalue_utf16_string_with_index_copy_to_floating_point";
+	size_t fraction_index          = 0;
+	size_t maximum_string_index    = 0;
+	size_t safe_utf16_string_index = 0;
+	uint64_t divider               = 0;
+	uint64_t value_64bit           = 0;
+	uint32_t string_format_type    = 0;
+	uint32_t supported_flags       = 0;
+	uint8_t byte_value             = 0;
+	uint8_t character_value        = 0;
+	int8_t bit_shift               = 0;
+	int8_t sign                    = 1;
+	double value_fraction          = 0.0;
 
 	if( utf16_string == NULL )
 	{
@@ -2665,7 +2736,7 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 
 		return( -1 );
 	}
-	string_index = *utf16_string_index;
+	safe_utf16_string_index = *utf16_string_index;
 
 	if( floating_point_value == NULL )
 	{
@@ -2741,7 +2812,7 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 			maximum_string_index += 1;
 		}
 	}
-	maximum_string_index += string_index;
+	maximum_string_index += safe_utf16_string_index;
 
 	if( maximum_string_index > (size_t) SSIZE_MAX )
 	{
@@ -2758,43 +2829,45 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		if( utf16_string[ string_index ] != (uint16_t) '0' )
+		character_value = utf16_string[ safe_utf16_string_index++ ];
+
+		if(character_value != (uint16_t) '0' )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-			 "%s: unsupported character value: 0x04%" PRIx16 " at index: %d.",
+			 "%s: unsupported character value: 0x%02" PRIx16 " at index: %d.",
 			 function,
-			 utf16_string[ string_index ],
-			 string_index );
+			 character_value,
+			 safe_utf16_string_index );
 
 			return( -1 );
 		}
-		string_index++;
+		character_value = utf16_string[ safe_utf16_string_index++ ];
 
-		if( utf16_string[ string_index ] != (uint16_t) 'x' )
+		if( character_value != (uint16_t) 'x' )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-			 "%s: unsupported character value: 0x04%" PRIx16 " at index: %d.",
+			 "%s: unsupported character value: 0x%02" PRIx16 " at index: %d.",
 			 function,
-			 utf16_string[ string_index ],
-			 string_index );
+			 character_value,
+			 safe_utf16_string_index );
 
 			return( -1 );
 		}
-		string_index++;
-
-		while( string_index < utf16_string_length )
+		while( safe_utf16_string_index < utf16_string_length )
 		{
-			if( utf16_string[ string_index ] == 0 )
+			character_value = utf16_string[ safe_utf16_string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
-			if( string_index > (size_t) maximum_string_index )
+			if( safe_utf16_string_index > (size_t) maximum_string_index )
 			{
 				libcerror_error_set(
 				 error,
@@ -2807,20 +2880,20 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 			}
 			value_64bit <<= 4;
 
-			if( ( utf16_string[ string_index ] >= (uint16_t) '0' )
-			 && ( utf16_string[ string_index ] <= (uint16_t) '9' ) )
+			if( ( character_value >= (uint16_t) '0' )
+			 && ( character_value <= (uint16_t) '9' ) )
 			{
-				byte_value = (uint8_t) ( utf16_string[ string_index ] - (uint16_t) '0' );
+				byte_value = (uint8_t) ( character_value - (uint16_t) '0' );
 			}
-			else if( ( utf16_string[ string_index ] >= (uint16_t) 'A' )
-			      && ( utf16_string[ string_index ] <= (uint16_t) 'F' ) )
+			else if( ( character_value >= (uint16_t) 'A' )
+			      && ( character_value <= (uint16_t) 'F' ) )
 			{
-				byte_value = (uint8_t) ( utf16_string[ string_index ] - (uint16_t) 'A' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint16_t) 'A' + 10 );
 			}
-			else if( ( utf16_string[ string_index ] >= (uint16_t) 'a' )
-			      && ( utf16_string[ string_index ] <= (uint16_t) 'f' ) )
+			else if( ( character_value >= (uint16_t) 'a' )
+			      && ( character_value <= (uint16_t) 'f' ) )
 			{
-				byte_value = (uint8_t) ( utf16_string[ string_index ] - (uint16_t) 'a' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint16_t) 'a' + 10 );
 			}
 			else
 			{
@@ -2830,37 +2903,41 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 				 "%s: unsupported character value: 0x04%" PRIx16 " at index: %d.",
 				 function,
-				 utf16_string[ string_index ],
-				 string_index );
+				 character_value,
+				 safe_utf16_string_index );
 
 				return( -1 );
 			}
 			value_64bit += byte_value;
 
-			string_index++;
+			safe_utf16_string_index++;
 		}
 	}
 	else
 	{
+		value_float64.floating_point = 0.0;
+
 		/* In the maximum possible string one character is substituted for the sign
 		 */
-		if( utf16_string[ string_index ] == (uint16_t) '-' )
+		if( utf16_string[ safe_utf16_string_index ] == (uint16_t) '-' )
 		{
-			string_index++;
+			safe_utf16_string_index++;
 
 			sign = -1;
 		}
-		else if( utf16_string[ string_index ] == (uint16_t) '+' )
+		else if( utf16_string[ safe_utf16_string_index ] == (uint16_t) '+' )
 		{
-			string_index++;
+			safe_utf16_string_index++;
 		}
-		while( string_index < utf16_string_length )
+		while( safe_utf16_string_index < utf16_string_length )
 		{
-			if( utf16_string[ string_index ] == 0 )
+			character_value = utf16_string[ safe_utf16_string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
-			if( string_index > (size_t) maximum_string_index )
+			if( safe_utf16_string_index > (size_t) maximum_string_index )
 			{
 				libcerror_error_set(
 				 error,
@@ -2871,35 +2948,89 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
-			value_64bit *= 10;
-
-			if( ( utf16_string[ string_index ] < (uint16_t) '0' )
-			 && ( utf16_string[ string_index ] > (uint16_t) '9' ) )
+			if( character_value == (uint16_t) '.' )
+			{
+				break;
+			}
+			if( ( character_value >= (uint16_t) '0' )
+			 && ( character_value <= (uint16_t) '9' ) )
+			{
+				value_float64.floating_point *= 10;
+				value_float64.floating_point += character_value - (uint16_t) '0';
+			}
+			else
 			{
 				libcerror_error_set(
 				 error,
 				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-				 "%s: unsupported character value: 0x04%" PRIx16 " at index: %d.",
+				 "%s: unsupported character value: 0x%02" PRIx16 " at index: %d.",
 				 function,
-				 utf16_string[ string_index ],
-				 string_index );
+				 character_value,
+				 safe_utf16_string_index );
 
 				return( -1 );
 			}
-			character_value = (uint8_t) ( utf16_string[ string_index ] - (uint16_t) '0' );
+			safe_utf16_string_index++;
+		}
+		fraction_index = safe_utf16_string_index;
 
-			value_64bit += character_value;
+		safe_utf16_string_index++;
+		utf16_string_length--;
 
-			string_index++;
+		if( utf16_string_length > (size_t) maximum_string_index )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+			 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_LARGE,
+			 "%s: string too large.",
+			 function );
+
+			return( -1 );
+		}
+		while( fraction_index < utf16_string_length )
+		{
+			character_value = utf16_string[ utf16_string_length ];
+
+			if( character_value == 0 )
+			{
+				break;
+			}
+			if( ( character_value >= (uint16_t) '0' )
+			 && ( character_value <= (uint16_t) '9' ) )
+			{
+				value_fraction /= 10;
+				value_fraction += character_value - (uint16_t) '0';
+			}
+			else
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
+				 "%s: unsupported character value: 0x%02" PRIx16 " at index: %d.",
+				 function,
+				 character_value,
+				 utf16_string_length );
+
+				return( -1 );
+			}
+			safe_utf16_string_index++;
+			utf16_string_length--;
+		}
+		if( value_fraction != 0.0 )
+		{
+			value_float64.floating_point += value_fraction / 10;
 		}
 		if( sign == -1 )
 		{
-			value_64bit |= (uint64_t) 1 << bit_shift;
+			value_float64.floating_point *= 1.0;
 		}
+		value_64bit = value_float64.integer;
 	}
-	*utf16_string_index = string_index;
-	*floating_point_value      = value_64bit;
+	*utf16_string_index   = safe_utf16_string_index;
+	*floating_point_value = value_64bit;
 
 	return( 1 );
 }
@@ -2958,27 +3089,27 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 	byte_stream_float32_t value_float32;
 	byte_stream_float64_t value_float64;
 
-	static char *function        = "libfvalue_utf32_string_with_index_copy_from_floating_point";
-	size_t string_index          = 0;
-	uint64_t divider             = 0;
-	uint64_t multiplier          = 0;
-	uint64_t value_64bit         = 0;
-	uint32_t string_format_type  = 0;
-	uint32_t supported_flags     = 0;
-	uint16_t exponent_divider    = 0;
-	int16_t exponent             = 0;
-	int16_t exponent_value       = 0;
-	uint8_t byte_value           = 0;
-	uint8_t is_denormalized      = 0;
-	uint8_t is_indeterminate     = 0;
-	uint8_t is_infinite          = 0;
-	uint8_t is_not_a_number      = 0;
-	uint8_t is_signed            = 0;
-	uint8_t is_zero              = 0;
-	uint8_t number_of_characters = 0;
-	uint8_t use_value_string     = 0;
-	int8_t bit_shift             = 0;
-	int print_count              = 0;
+	static char *function          = "libfvalue_utf32_string_with_index_copy_from_floating_point";
+	size_t safe_utf32_string_index = 0;
+	uint64_t divider               = 0;
+	uint64_t multiplier            = 0;
+	uint64_t value_64bit           = 0;
+	uint32_t string_format_type    = 0;
+	uint32_t supported_flags       = 0;
+	uint16_t exponent_divider      = 0;
+	int16_t exponent               = 0;
+	int16_t exponent_value         = 0;
+	uint8_t byte_value             = 0;
+	uint8_t is_denormalized        = 0;
+	uint8_t is_indeterminate       = 0;
+	uint8_t is_infinite            = 0;
+	uint8_t is_not_a_number        = 0;
+	uint8_t is_signed              = 0;
+	uint8_t is_zero                = 0;
+	uint8_t number_of_characters   = 0;
+	uint8_t use_value_string       = 0;
+	int8_t bit_shift               = 0;
+	int print_count                = 0;
 
 	if( utf32_string == NULL )
 	{
@@ -3024,7 +3155,7 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 
 		return( -1 );
 	}
-	string_index = *utf32_string_index;
+	safe_utf32_string_index = *utf32_string_index;
 
 	if( ( floating_point_value_size != 32 )
 	 && ( floating_point_value_size != 64 ) )
@@ -3323,7 +3454,7 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 			}
 		}
 	}
-	if( ( string_index + number_of_characters ) > utf32_string_size )
+	if( ( safe_utf32_string_index + number_of_characters ) > utf32_string_size )
 	{
 		libcerror_error_set(
 		 error,
@@ -3336,8 +3467,8 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 	}
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		utf32_string[ string_index++ ] = (uint32_t) '0';
-		utf32_string[ string_index++ ] = (uint32_t) 'x';
+		utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '0';
+		utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'x';
 
 		bit_shift = (uint8_t) ( floating_point_value_size - 4 );
 
@@ -3347,11 +3478,11 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 
 			if( byte_value <= 9 )
 			{
-				utf32_string[ string_index++ ] = (uint32_t) '0' + byte_value;
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '0' + byte_value;
 			}
 			else
 			{
-				utf32_string[ string_index++ ] = (uint32_t) 'a' + byte_value - 10;
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'a' + byte_value - 10;
 			}
 			bit_shift -= 4;
 		}
@@ -3361,100 +3492,100 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 	{
 		if( is_signed != 0 )
 		{
-			utf32_string[ string_index++ ] = (uint32_t) '-';
+			utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '-';
 		}
 		if( is_indeterminate != 0 )
 		{
-			utf32_string[ string_index++ ] = (uint32_t) 'I';
-			utf32_string[ string_index++ ] = (uint32_t) 'n';
-			utf32_string[ string_index++ ] = (uint32_t) 'd';
+			utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'I';
+			utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'n';
+			utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'd';
 		}
 		else if( is_infinite != 0 )
 		{
-			utf32_string[ string_index++ ] = (uint32_t) 'I';
-			utf32_string[ string_index++ ] = (uint32_t) 'n';
-			utf32_string[ string_index++ ] = (uint32_t) 'f';
+			utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'I';
+			utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'n';
+			utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'f';
 		}
 		else if( is_not_a_number != 0 )
 		{
-			utf32_string[ string_index++ ] = (uint32_t) 'N';
-			utf32_string[ string_index++ ] = (uint32_t) 'a';
-			utf32_string[ string_index++ ] = (uint32_t) 'N';
+			utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'N';
+			utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'a';
+			utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'N';
 		}
 		else if( is_zero == 0 )
 		{
 			if( use_value_string != 0 )
 			{
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 0 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 1 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 2 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 3 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 4 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 5 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 6 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 7 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 8 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 9 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 10 ];
-				utf32_string[ string_index++ ] = (uint32_t) value_string[ 11 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 0 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 1 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 2 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 3 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 4 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 5 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 6 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 7 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 8 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 9 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 10 ];
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) value_string[ 11 ];
 			}
 			else
 			{
 				if( divider > 1 )
 				{
-					utf32_string[ string_index++ ] = (uint32_t) '0' + (uint32_t) ( floating_point_value / divider );
+					utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '0' + (uint32_t) ( floating_point_value / divider );
 
 					floating_point_value %= divider;
 
 					divider /= 10;
 
-					utf32_string[ string_index++ ] = (uint32_t) '.';
+					utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '.';
 
 					while( divider > 1 )
 					{
-						utf32_string[ string_index++ ] = (uint32_t) '0' + (uint32_t) ( floating_point_value / divider );
+						utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '0' + (uint32_t) ( floating_point_value / divider );
 
 						floating_point_value %= divider;
 
 						divider /= 10;
 					}
 				}
-				utf32_string[ string_index++ ] = (uint32_t) '0' + (uint32_t) ( floating_point_value / divider );
+				utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '0' + (uint32_t) ( floating_point_value / divider );
 
 				if( exponent != 0 )
 				{
-					utf32_string[ string_index++ ] = (uint32_t) 'e';
+					utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'e';
 
 					if( exponent < 0 )
 					{
 						exponent *= -1;
 
-						utf32_string[ string_index++ ] = (uint32_t) '-';
+						utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '-';
 					}
 					else
 					{
-						utf32_string[ string_index++ ] = (uint32_t) '+';
+						utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '+';
 					}
 					while( exponent_divider > 1 )
 					{
-						utf32_string[ string_index++ ] = (uint32_t) '0' + (uint32_t) ( exponent / exponent_divider );
+						utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '0' + (uint32_t) ( exponent / exponent_divider );
 
 						exponent %= exponent_divider;
 
 						exponent_divider /= 10;
 					}
-					utf32_string[ string_index++ ] = (uint32_t) '0' + (uint32_t) ( exponent / exponent_divider );
+					utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '0' + (uint32_t) ( exponent / exponent_divider );
 				}
 			}
 		}
 		else
 		{
-			utf32_string[ string_index++ ] = (uint32_t) '0';
+			utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '0';
 		}
 	}
-	utf32_string[ string_index++ ] = 0;
+	utf32_string[ safe_utf32_string_index++ ] = 0;
 
-	*utf32_string_index = string_index;
+	*utf32_string_index = safe_utf32_string_index;
 
 	return( 1 );
 }
@@ -3472,17 +3603,21 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
      uint32_t string_format_flags,
      libcerror_error_t **error )
 {
-	static char *function       = "libfvalue_utf32_string_with_index_copy_to_floating_point";
-	size_t maximum_string_index = 0;
-	size_t string_index         = 0;
-	uint64_t value_64bit        = 0;
-	uint64_t divider            = 0;
-	uint32_t string_format_type = 0;
-	uint32_t supported_flags    = 0;
-	uint8_t byte_value          = 0;
-	uint8_t character_value     = 0;
-	int8_t bit_shift            = 0;
-	int8_t sign                 = 1;
+	byte_stream_float64_t value_float64;
+
+	static char *function          = "libfvalue_utf32_string_with_index_copy_to_floating_point";
+	size_t fraction_index          = 0;
+	size_t maximum_string_index    = 0;
+	size_t safe_utf32_string_index = 0;
+	uint64_t divider               = 0;
+	uint64_t value_64bit           = 0;
+	uint32_t string_format_type    = 0;
+	uint32_t supported_flags       = 0;
+	uint8_t byte_value             = 0;
+	uint8_t character_value        = 0;
+	int8_t bit_shift               = 0;
+	int8_t sign                    = 1;
+	double value_fraction          = 0.0;
 
 	if( utf32_string == NULL )
 	{
@@ -3528,7 +3663,7 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 
 		return( -1 );
 	}
-	string_index = *utf32_string_index;
+	safe_utf32_string_index = *utf32_string_index;
 
 	if( floating_point_value == NULL )
 	{
@@ -3604,7 +3739,7 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 			maximum_string_index += 1;
 		}
 	}
-	maximum_string_index += string_index;
+	maximum_string_index += safe_utf32_string_index;
 
 	if( maximum_string_index > (size_t) SSIZE_MAX )
 	{
@@ -3621,43 +3756,45 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		if( utf32_string[ string_index ] != (uint32_t) '0' )
+		character_value = utf32_string[ safe_utf32_string_index++ ];
+
+		if(character_value != (uint32_t) '0' )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-			 "%s: unsupported character value: 0x08%" PRIx32 " at index: %d.",
+			 "%s: unsupported character value: 0x%02" PRIx32 " at index: %d.",
 			 function,
-			 utf32_string[ string_index ],
-			 string_index );
+			 character_value,
+			 safe_utf32_string_index );
 
 			return( -1 );
 		}
-		string_index++;
+		character_value = utf32_string[ safe_utf32_string_index++ ];
 
-		if( utf32_string[ string_index ] != (uint32_t) 'x' )
+		if( character_value != (uint32_t) 'x' )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-			 "%s: unsupported character value: 0x08%" PRIx32 " at index: %d.",
+			 "%s: unsupported character value: 0x%02" PRIx32 " at index: %d.",
 			 function,
-			 utf32_string[ string_index ],
-			 string_index );
+			 character_value,
+			 safe_utf32_string_index );
 
 			return( -1 );
 		}
-		string_index++;
-
-		while( string_index < utf32_string_length )
+		while( safe_utf32_string_index < utf32_string_length )
 		{
-			if( utf32_string[ string_index ] == 0 )
+			character_value = utf32_string[ safe_utf32_string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
-			if( string_index > (size_t) maximum_string_index )
+			if( safe_utf32_string_index > (size_t) maximum_string_index )
 			{
 				libcerror_error_set(
 				 error,
@@ -3670,20 +3807,20 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 			}
 			value_64bit <<= 4;
 
-			if( ( utf32_string[ string_index ] >= (uint32_t) '0' )
-			 && ( utf32_string[ string_index ] <= (uint32_t) '9' ) )
+			if( ( character_value >= (uint32_t) '0' )
+			 && ( character_value <= (uint32_t) '9' ) )
 			{
-				byte_value = (uint8_t) ( utf32_string[ string_index ] - (uint32_t) '0' );
+				byte_value = (uint8_t) ( character_value - (uint32_t) '0' );
 			}
-			else if( ( utf32_string[ string_index ] >= (uint32_t) 'A' )
-			      && ( utf32_string[ string_index ] <= (uint32_t) 'F' ) )
+			else if( ( character_value >= (uint32_t) 'A' )
+			      && ( character_value <= (uint32_t) 'F' ) )
 			{
-				byte_value = (uint8_t) ( utf32_string[ string_index ] - (uint32_t) 'A' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint32_t) 'A' + 10 );
 			}
-			else if( ( utf32_string[ string_index ] >= (uint32_t) 'a' )
-			      && ( utf32_string[ string_index ] <= (uint32_t) 'f' ) )
+			else if( ( character_value >= (uint32_t) 'a' )
+			      && ( character_value <= (uint32_t) 'f' ) )
 			{
-				byte_value = (uint8_t) ( utf32_string[ string_index ] - (uint32_t) 'a' + 10 );
+				byte_value = (uint8_t) ( character_value - (uint32_t) 'a' + 10 );
 			}
 			else
 			{
@@ -3693,37 +3830,41 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 				 "%s: unsupported character value: 0x08%" PRIx32 " at index: %d.",
 				 function,
-				 utf32_string[ string_index ],
-				 string_index );
+				 character_value,
+				 safe_utf32_string_index );
 
 				return( -1 );
 			}
 			value_64bit += byte_value;
 
-			string_index++;
+			safe_utf32_string_index++;
 		}
 	}
 	else
 	{
+		value_float64.floating_point = 0.0;
+
 		/* In the maximum possible string one character is substituted for the sign
 		 */
-		if( utf32_string[ string_index ] == (uint32_t) '-' )
+		if( utf32_string[ safe_utf32_string_index ] == (uint32_t) '-' )
 		{
-			string_index++;
+			safe_utf32_string_index++;
 
 			sign = -1;
 		}
-		else if( utf32_string[ string_index ] == (uint32_t) '+' )
+		else if( utf32_string[ safe_utf32_string_index ] == (uint32_t) '+' )
 		{
-			string_index++;
+			safe_utf32_string_index++;
 		}
-		while( string_index < utf32_string_length )
+		while( safe_utf32_string_index < utf32_string_length )
 		{
-			if( utf32_string[ string_index ] == 0 )
+			character_value = utf32_string[ safe_utf32_string_index ];
+
+			if( character_value == 0 )
 			{
 				break;
 			}
-			if( string_index > (size_t) maximum_string_index )
+			if( safe_utf32_string_index > (size_t) maximum_string_index )
 			{
 				libcerror_error_set(
 				 error,
@@ -3734,35 +3875,89 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 
 				return( -1 );
 			}
-			value_64bit *= 10;
-
-			if( ( utf32_string[ string_index ] < (uint32_t) '0' )
-			 && ( utf32_string[ string_index ] > (uint32_t) '9' ) )
+			if( character_value == (uint32_t) '.' )
+			{
+				break;
+			}
+			if( ( character_value >= (uint32_t) '0' )
+			 && ( character_value <= (uint32_t) '9' ) )
+			{
+				value_float64.floating_point *= 10;
+				value_float64.floating_point += character_value - (uint32_t) '0';
+			}
+			else
 			{
 				libcerror_error_set(
 				 error,
 				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-				 "%s: unsupported character value: 0x08%" PRIx32 " at index: %d.",
+				 "%s: unsupported character value: 0x%02" PRIx32 " at index: %d.",
 				 function,
-				 utf32_string[ string_index ],
-				 string_index );
+				 character_value,
+				 safe_utf32_string_index );
 
 				return( -1 );
 			}
-			character_value = (uint8_t) ( utf32_string[ string_index ] - (uint32_t) '0' );
+			safe_utf32_string_index++;
+		}
+		fraction_index = safe_utf32_string_index;
 
-			value_64bit += character_value;
+		safe_utf32_string_index++;
+		utf32_string_length--;
 
-			string_index++;
+		if( utf32_string_length > (size_t) maximum_string_index )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+			 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_LARGE,
+			 "%s: string too large.",
+			 function );
+
+			return( -1 );
+		}
+		while( fraction_index < utf32_string_length )
+		{
+			character_value = utf32_string[ utf32_string_length ];
+
+			if( character_value == 0 )
+			{
+				break;
+			}
+			if( ( character_value >= (uint32_t) '0' )
+			 && ( character_value <= (uint32_t) '9' ) )
+			{
+				value_fraction /= 10;
+				value_fraction += character_value - (uint32_t) '0';
+			}
+			else
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
+				 "%s: unsupported character value: 0x%02" PRIx32 " at index: %d.",
+				 function,
+				 character_value,
+				 utf32_string_length );
+
+				return( -1 );
+			}
+			safe_utf32_string_index++;
+			utf32_string_length--;
+		}
+		if( value_fraction != 0.0 )
+		{
+			value_float64.floating_point += value_fraction / 10;
 		}
 		if( sign == -1 )
 		{
-			value_64bit |= (uint64_t) 1 << bit_shift;
+			value_float64.floating_point *= 1.0;
 		}
+		value_64bit = value_float64.integer;
 	}
-	*utf32_string_index = string_index;
-	*floating_point_value      = value_64bit;
+	*utf32_string_index   = safe_utf32_string_index;
+	*floating_point_value = value_64bit;
 
 	return( 1 );
 }

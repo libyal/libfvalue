@@ -798,7 +798,7 @@ int libfvalue_data_handle_set_value_entry(
 {
 	libfvalue_internal_data_handle_t *internal_data_handle = NULL;
 	libfvalue_value_entry_t *value_entry                   = NULL;
-	static char *function                                  = "libfvalue_data_handle_set_value_entry_data";
+	static char *function                                  = "libfvalue_data_handle_set_value_entry";
 
 	if( data_handle == NULL )
 	{
@@ -869,7 +869,7 @@ int libfvalue_data_handle_set_value_entry(
 		return( -1 );
 	}
 	if( ( value_entry_size > internal_data_handle->data_size )
-	 || ( ( value_entry_offset + value_entry_size ) > internal_data_handle->data_size ) )
+	 || ( value_entry_offset > ( internal_data_handle->data_size - value_entry_size ) ) )
 	{
 		libcerror_error_set(
 		 error,
@@ -1064,7 +1064,7 @@ int libfvalue_data_handle_append_value_entry(
 		return( -1 );
 	}
 	if( ( value_entry_size > internal_data_handle->data_size )
-	 || ( ( value_entry_offset + value_entry_size ) > internal_data_handle->data_size ) )
+	 || ( value_entry_offset > ( internal_data_handle->data_size - value_entry_size ) ) )
 	{
 		libcerror_error_set(
 		 error,
@@ -1240,7 +1240,7 @@ int libfvalue_data_handle_get_value_entry_data(
 		return( -1 );
 	}
 	if( ( value_entry_size > internal_data_handle->data_size )
-	 || ( ( value_entry_offset + value_entry_size ) > internal_data_handle->data_size ) )
+	 || ( value_entry_offset > ( internal_data_handle->data_size - value_entry_size ) ) )
 	{
 		libcerror_error_set(
 		 error,
@@ -1306,6 +1306,7 @@ int libfvalue_data_handle_set_value_entry_data(
 
 		return( -1 );
 	}
+/* TODO remove limitation */
 	if( value_entry_index != 0 )	
 	{
 		libcerror_error_set(
@@ -1380,7 +1381,7 @@ int libfvalue_data_handle_set_value_entry_data(
 		return( -1 );
 	}
 	if( ( value_entry_size > internal_data_handle->data_size )
-	 || ( ( value_entry_offset + value_entry_size ) > internal_data_handle->data_size ) )
+	 || ( value_entry_offset > ( internal_data_handle->data_size - value_entry_size ) ) )
 	{
 		libcerror_error_set(
 		 error,
@@ -1436,8 +1437,9 @@ int libfvalue_data_handle_append_value_entry_data(
 {
 	libfvalue_internal_data_handle_t *internal_data_handle = NULL;
 	libfvalue_value_entry_t *value_entry                   = NULL;
-	void *reallocation                                     = NULL;
 	static char *function                                  = "libfvalue_data_handle_append_value_entry_data";
+	void *reallocation                                     = NULL;
+	size_t reallocation_data_size                          = 0;
 
 	if( data_handle == NULL )
 	{
@@ -1519,7 +1521,7 @@ int libfvalue_data_handle_append_value_entry_data(
 
 			return( -1 );
 		}
-		if( ( internal_data_handle->data_size + value_entry_data_size ) > (size_t) SSIZE_MAX )
+		if( internal_data_handle->data_size > ( (size_t) SSIZE_MAX - value_entry_data_size ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1592,12 +1594,13 @@ int libfvalue_data_handle_append_value_entry_data(
 
 			goto on_error;
 		}
-		value_entry->offset = internal_data_handle->data_size;
-		value_entry->size   = value_entry_data_size;
+		value_entry->offset    = internal_data_handle->data_size;
+		value_entry->size      = value_entry_data_size;
+		reallocation_data_size = internal_data_handle->data_size + value_entry_data_size;
 
 		reallocation = memory_reallocate(
 		                internal_data_handle->data,
-		                internal_data_handle->data_size + value_entry_data_size );
+		                reallocation_data_size );
 
 		if( reallocation == NULL )
 		{
@@ -1610,8 +1613,8 @@ int libfvalue_data_handle_append_value_entry_data(
 
 			goto on_error;
 		}
-		internal_data_handle->data       = (uint8_t *) reallocation;
-		internal_data_handle->data_size += value_entry_data_size;
+		internal_data_handle->data      = (uint8_t *) reallocation;
+		internal_data_handle->data_size = reallocation_data_size;
 
 		if( memory_copy(
 		     &( ( internal_data_handle->data )[ value_entry->offset ] ),

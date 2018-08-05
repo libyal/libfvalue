@@ -1,18 +1,18 @@
 TODO
 * integer
-  - libfvalue_integer_copy_from_utf8_string_with_index rename size to lenght?
   - libfvalue_integer_copy_from_utf8_string_with_index add support to not have
   to run libfvalue_integer_copy_from_byte_stream first
 * string
   - libfvalue_string_copy_from_utf8_string_with_index add support to not have
   to run libfvalue_string_copy_from_byte_stream first
+* data handle
+  - add flag to manage data handle ?
+  - fix libfvalue_data_handle_append_value_entry_data
+  - fully implement libfvalue_data_handle_set_value_entry_data and remove limitations
 
 * implement libfvalue_value_copy_entry_data
   - add to include header
 * fix append value entry and pointing to stale data
-* data handle
-  - add flag to manage data handle ?
-  - fix libfvalue_data_handle_append_value_entry_data
 * integer, use index to work from back-to-front instead of
   divider to work from front-to-back ?
 
