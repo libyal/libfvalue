@@ -552,6 +552,94 @@ int fvalue_test_integer_copy_from_byte_stream(
 	 */
 	result = libfvalue_integer_copy_from_byte_stream(
 	          integer,
+	          (uint8_t *) "\x12",
+	          1,
+	          LIBFVALUE_ENDIAN_BIG,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x12UL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_integer_copy_from_byte_stream(
+	          integer,
+	          (uint8_t *) "\x12\x34",
+	          2,
+	          LIBFVALUE_ENDIAN_BIG,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x1234UL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_integer_copy_from_byte_stream(
+	          integer,
+	          (uint8_t *) "\x34\x12",
+	          2,
+	          LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x1234UL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#if defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
+
+	result = libfvalue_integer_copy_from_byte_stream(
+	          integer,
+	          (uint8_t *) "\x34\x12",
+	          2,
+	          LIBFVALUE_ENDIAN_NATIVE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x1234UL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#endif /* defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE ) */
+
+	result = libfvalue_integer_copy_from_byte_stream(
+	          integer,
 	          (uint8_t *) "\x12\x34\x56\x78",
 	          4,
 	          LIBFVALUE_ENDIAN_BIG,
@@ -570,6 +658,119 @@ int fvalue_test_integer_copy_from_byte_stream(
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
+
+	result = libfvalue_integer_copy_from_byte_stream(
+	          integer,
+	          (uint8_t *) "\x78\x56\x34\x12",
+	          4,
+	          LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x12345678UL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#if defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
+
+	result = libfvalue_integer_copy_from_byte_stream(
+	          integer,
+	          (uint8_t *) "\x78\x56\x34\x12",
+	          4,
+	          LIBFVALUE_ENDIAN_NATIVE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x12345678UL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#endif /* defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE ) */
+
+	result = libfvalue_integer_copy_from_byte_stream(
+	          integer,
+	          (uint8_t *) "\x12\x34\x56\x78\x90\xab\xcd\xef",
+	          8,
+	          LIBFVALUE_ENDIAN_BIG,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x1234567890abcdefUL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_integer_copy_from_byte_stream(
+	          integer,
+	          (uint8_t *) "\xef\xcd\xab\x90\x78\x56\x34\x12",
+	          8,
+	          LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x1234567890abcdefUL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#if defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
+
+	result = libfvalue_integer_copy_from_byte_stream(
+	          integer,
+	          (uint8_t *) "\xef\xcd\xab\x90\x78\x56\x34\x12",
+	          8,
+	          LIBFVALUE_ENDIAN_NATIVE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x1234567890abcdefUL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#endif /* defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE ) */
 
 	/* Test error cases
 	 */
@@ -2241,8 +2442,54 @@ int fvalue_test_string_size_from_integer(
 
 	result = libfvalue_string_size_from_integer(
 	          &string_size,
+	          0,
+	          16,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_BOOLEAN,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 6 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_integer(
+	          &string_size,
+	          1,
+	          16,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_BOOLEAN,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 5 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_integer(
+	          &string_size,
 	          4890,
-	          64,
+	          32,
 	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_UNSIGNED,
 	          &error );
 
@@ -2255,6 +2502,55 @@ int fvalue_test_string_size_from_integer(
 	 "string_size",
 	 string_size,
 	 (size_t) 5 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#ifdef TODO
+/* TODO fix test */
+	string_size = 0;
+
+	result = libfvalue_string_size_from_integer(
+	          &string_size,
+	          -4890,
+	          32,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_SIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 6 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_integer(
+	          &string_size,
+	          4890,
+	          32,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_HEXADECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 11 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -2312,11 +2608,39 @@ int fvalue_test_string_size_from_integer(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_string_size_from_integer(
 	          &string_size,
 	          4890,
 	          64,
 	          0xffffffffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test with unsupported string format type
+	 */
+	result = libfvalue_string_size_from_integer(
+	          &string_size,
+	          4890,
+	          64,
+	          0x000000ffUL,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -2428,7 +2752,11 @@ on_error:
 int fvalue_test_utf8_string_with_index_copy_from_integer(
      void )
 {
-	uint8_t expected_utf8_string[ 5 ] = {
+	uint8_t expected_utf8_string_boolean_false[ 6 ] = {
+		'f', 'a', 'l', 's', 'e', 0 };
+	uint8_t expected_utf8_string_boolean_true[ 5 ] = {
+		't', 'r', 'u', 'e', 0 };
+	uint8_t expected_utf8_string_decimal[ 5 ] = {
 		'4', '8', '9', '0', 0 };
 	uint8_t utf8_string[ 32 ];
 
@@ -2438,6 +2766,76 @@ int fvalue_test_utf8_string_with_index_copy_from_integer(
 
 	/* Test regular cases
 	 */
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_integer(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          0,
+	          16,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_BOOLEAN,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 6 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_boolean_false,
+	          utf8_string,
+	          sizeof( uint8_t ) * 6 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_integer(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          1,
+	          16,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_BOOLEAN,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 5 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_boolean_true,
+	          utf8_string,
+	          sizeof( uint8_t ) * 5 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
 	utf8_string_index = 0;
 
 	result = libfvalue_utf8_string_with_index_copy_from_integer(
@@ -2464,7 +2862,7 @@ int fvalue_test_utf8_string_with_index_copy_from_integer(
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string_decimal,
 	          utf8_string,
 	          sizeof( uint8_t ) * 5 );
 
@@ -2611,6 +3009,8 @@ int fvalue_test_utf8_string_with_index_copy_from_integer(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf8_string_with_index_copy_from_integer(
 	          utf8_string,
 	          32,
@@ -2936,6 +3336,8 @@ int fvalue_test_utf8_string_with_index_copy_to_integer(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf8_string_with_index_copy_to_integer(
 	          utf8_string,
 	          4,
@@ -3092,7 +3494,11 @@ on_error:
 int fvalue_test_utf16_string_with_index_copy_from_integer(
      void )
 {
-	uint16_t expected_utf16_string[ 5 ] = {
+	uint16_t expected_utf16_string_boolean_false[ 6 ] = {
+		'f', 'a', 'l', 's', 'e', 0 };
+	uint16_t expected_utf16_string_boolean_true[ 5 ] = {
+		't', 'r', 'u', 'e', 0 };
+	uint16_t expected_utf16_string_decimal[ 5 ] = {
 		'4', '8', '9', '0', 0 };
 	uint16_t utf16_string[ 32 ];
 
@@ -3102,6 +3508,76 @@ int fvalue_test_utf16_string_with_index_copy_from_integer(
 
 	/* Test regular cases
 	 */
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_integer(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          0,
+	          16,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_BOOLEAN,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 6 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_boolean_false,
+	          utf16_string,
+	          sizeof( uint16_t ) * 6 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_integer(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          1,
+	          16,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_BOOLEAN,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 5 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_boolean_true,
+	          utf16_string,
+	          sizeof( uint16_t ) * 5 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
 	utf16_string_index = 0;
 
 	result = libfvalue_utf16_string_with_index_copy_from_integer(
@@ -3128,7 +3604,7 @@ int fvalue_test_utf16_string_with_index_copy_from_integer(
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string_decimal,
 	          utf16_string,
 	          sizeof( uint16_t ) * 5 );
 
@@ -3275,6 +3751,8 @@ int fvalue_test_utf16_string_with_index_copy_from_integer(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf16_string_with_index_copy_from_integer(
 	          utf16_string,
 	          32,
@@ -3600,6 +4078,8 @@ int fvalue_test_utf16_string_with_index_copy_to_integer(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf16_string_with_index_copy_to_integer(
 	          utf16_string,
 	          4,
@@ -3756,7 +4236,11 @@ on_error:
 int fvalue_test_utf32_string_with_index_copy_from_integer(
      void )
 {
-	uint32_t expected_utf32_string[ 5 ] = {
+	uint32_t expected_utf32_string_boolean_false[ 6 ] = {
+		'f', 'a', 'l', 's', 'e', 0 };
+	uint32_t expected_utf32_string_boolean_true[ 5 ] = {
+		't', 'r', 'u', 'e', 0 };
+	uint32_t expected_utf32_string_decimal[ 5 ] = {
 		'4', '8', '9', '0', 0 };
 	uint32_t utf32_string[ 32 ];
 
@@ -3766,6 +4250,76 @@ int fvalue_test_utf32_string_with_index_copy_from_integer(
 
 	/* Test regular cases
 	 */
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_integer(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          0,
+	          16,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_BOOLEAN,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 6 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_boolean_false,
+	          utf32_string,
+	          sizeof( uint32_t ) * 6 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_integer(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          1,
+	          16,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_BOOLEAN,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 5 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_boolean_true,
+	          utf32_string,
+	          sizeof( uint32_t ) * 5 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
 	utf32_string_index = 0;
 
 	result = libfvalue_utf32_string_with_index_copy_from_integer(
@@ -3792,7 +4346,7 @@ int fvalue_test_utf32_string_with_index_copy_from_integer(
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string_decimal,
 	          utf32_string,
 	          sizeof( uint32_t ) * 5 );
 
@@ -3939,6 +4493,8 @@ int fvalue_test_utf32_string_with_index_copy_from_integer(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf32_string_with_index_copy_from_integer(
 	          utf32_string,
 	          32,
@@ -4264,6 +4820,8 @@ int fvalue_test_utf32_string_with_index_copy_to_integer(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf32_string_with_index_copy_to_integer(
 	          utf32_string,
 	          4,

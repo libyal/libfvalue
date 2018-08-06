@@ -1093,7 +1093,8 @@ int libfvalue_utf8_string_with_index_copy_from_integer(
 			number_of_characters += 1;
 		}
 	}
-	if( ( safe_utf8_string_index + number_of_characters ) > utf8_string_size )
+	if( ( number_of_characters > utf8_string_size )
+	 || ( safe_utf8_string_index > ( utf8_string_size - number_of_characters ) ) )
 	{
 		libcerror_error_set(
 		 error,
@@ -1756,7 +1757,8 @@ int libfvalue_utf16_string_with_index_copy_from_integer(
 			number_of_characters += 1;
 		}
 	}
-	if( ( safe_utf16_string_index + number_of_characters ) > utf16_string_size )
+	if( ( number_of_characters > utf16_string_size )
+	 || ( safe_utf16_string_index > ( utf16_string_size - number_of_characters ) ) )
 	{
 		libcerror_error_set(
 		 error,
@@ -2419,7 +2421,8 @@ int libfvalue_utf32_string_with_index_copy_from_integer(
 			number_of_characters += 1;
 		}
 	}
-	if( ( safe_utf32_string_index + number_of_characters ) > utf32_string_size )
+	if( ( number_of_characters > utf32_string_size )
+	 || ( safe_utf32_string_index > ( utf32_string_size - number_of_characters ) ) )
 	{
 		libcerror_error_set(
 		 error,

@@ -20,6 +20,7 @@
  */
 
 #include <common.h>
+#include <byte_stream.h>
 #include <file_stream.h>
 #include <memory.h>
 #include <types.h>
@@ -570,6 +571,119 @@ int fvalue_test_floating_point_copy_from_byte_stream(
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
+
+	result = libfvalue_floating_point_copy_from_byte_stream(
+	          floating_point,
+	          (uint8_t *) "\xa4\x70\x45\x41",
+	          4,
+	          LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point->value",
+	 floating_point->value,
+	 (uint64_t) 0x414570a4UL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#if defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
+
+	result = libfvalue_floating_point_copy_from_byte_stream(
+	          floating_point,
+	          (uint8_t *) "\xa4\x70\x45\x41",
+	          4,
+	          LIBFVALUE_ENDIAN_NATIVE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point->value",
+	 floating_point->value,
+	 (uint64_t) 0x414570a4UL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#endif /* defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE ) */
+
+	result = libfvalue_floating_point_copy_from_byte_stream(
+	          floating_point,
+	          (uint8_t *) "\x40\xb3\x1a\x45\x1e\xb8\x51\xec",
+	          8,
+	          LIBFVALUE_ENDIAN_BIG,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point->value",
+	 floating_point->value,
+	 (uint64_t) 0x40b31a451eb851ecUL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_floating_point_copy_from_byte_stream(
+	          floating_point,
+	          (uint8_t *) "\xec\x51\xb8\x1e\x45\x1a\xb3\x40",
+	          8,
+	          LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point->value",
+	 floating_point->value,
+	 (uint64_t) 0x40b31a451eb851ecUL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#if defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
+
+	result = libfvalue_floating_point_copy_from_byte_stream(
+	          floating_point,
+	          (uint8_t *) "\xec\x51\xb8\x1e\x45\x1a\xb3\x40",
+	          8,
+	          LIBFVALUE_ENDIAN_NATIVE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point->value",
+	 floating_point->value,
+	 (uint64_t) 0x40b31a451eb851ecUL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+#endif /* defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE ) */
 
 	/* Test error cases
 	 */
@@ -2855,11 +2969,39 @@ int fvalue_test_string_size_from_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_string_size_from_floating_point(
 	          &string_size,
 	          (uint64_t) 0x40b31a451eb851ecUL,
 	          64,
 	          0xffffffffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test with unsupported string format type
+	 */
+	result = libfvalue_string_size_from_floating_point(
+	          &string_size,
+	          (uint64_t) 0x40b31a451eb851ecUL,
+	          64,
+	          0x000000ffUL,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -3556,6 +3698,8 @@ int fvalue_test_utf8_string_with_index_copy_from_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
 	          utf8_string,
 	          32,
@@ -3563,6 +3707,62 @@ int fvalue_test_utf8_string_with_index_copy_from_floating_point(
 	          (uint64_t) 0x40b31a451eb851ecUL,
 	          64,
 	          0xffffffffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test with unsupported string format type
+	 */
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          (uint64_t) 0x40b31a451eb851ecUL,
+	          64,
+	          0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test with string too small
+	 */
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          12,
+	          &utf8_string_index,
+	          (uint64_t) 0x40b31a451eb851ecUL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -3601,11 +3801,16 @@ int fvalue_test_utf8_string_with_index_copy_to_floating_point(
 {
 	uint8_t utf8_string_decimal[ 8 ] = {
 		'4', '8', '9', '0', '.', '2', '7', 0 };
-	uint8_t utf8_string_hexadecimal[ 19 ] = {
+	uint8_t utf8_string_hexadecimal_lower_case[ 19 ] = {
 		'0', 'x', '4', '1', 'd', '0', '5', '1', '5', 'c', '2', '9', '0', '0', '0', '0',
 		'0', '0', 0 };
-	uint8_t utf8_string_invalid[ 3 ] = {
+	uint8_t utf8_string_hexadecimal_upper_case[ 19 ] = {
+		'0', 'x', '4', '1', 'D', '0', '5', '1', '5', 'C', '2', '9', '0', '0', '0', '0',
+		'0', '0', 0 };
+	uint8_t utf8_string_invalid1[ 3 ] = {
 		'/', ':', 0 };
+	uint8_t utf8_string_invalid2[ 4 ] = {
+		'0', '/', ':', 0 };
 
 	libcerror_error_t *error      = NULL;
 	size_t string_index           = 0;
@@ -3649,7 +3854,38 @@ int fvalue_test_utf8_string_with_index_copy_to_floating_point(
 	floating_point_value = 0;
 
 	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
-	          utf8_string_hexadecimal,
+	          utf8_string_hexadecimal_lower_case,
+	          18,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 18 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0x41d0515c29000000UL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_index         = 0;
+	floating_point_value = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
+	          utf8_string_hexadecimal_upper_case,
 	          18,
 	          &string_index,
 	          &floating_point_value,
@@ -3683,7 +3919,7 @@ int fvalue_test_utf8_string_with_index_copy_to_floating_point(
 
 	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
 	          NULL,
-	          4,
+	          7,
 	          &string_index,
 	          &floating_point_value,
 	          64,
@@ -3745,7 +3981,7 @@ int fvalue_test_utf8_string_with_index_copy_to_floating_point(
 
 	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
 	          utf8_string_decimal,
-	          4,
+	          7,
 	          NULL,
 	          &floating_point_value,
 	          64,
@@ -3774,9 +4010,44 @@ int fvalue_test_utf8_string_with_index_copy_to_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	string_index = 7;
+
 	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
 	          utf8_string_decimal,
-	          4,
+	          7,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 7 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
+	          utf8_string_decimal,
+	          7,
 	          &string_index,
 	          NULL,
 	          64,
@@ -3807,7 +4078,7 @@ int fvalue_test_utf8_string_with_index_copy_to_floating_point(
 
 	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
 	          utf8_string_decimal,
-	          4,
+	          7,
 	          &string_index,
 	          &floating_point_value,
 	          4,
@@ -3836,9 +4107,11 @@ int fvalue_test_utf8_string_with_index_copy_to_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
 	          utf8_string_decimal,
-	          4,
+	          7,
 	          &string_index,
 	          &floating_point_value,
 	          64,
@@ -3867,10 +4140,43 @@ int fvalue_test_utf8_string_with_index_copy_to_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported string format type
+	 */
+	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
+	          utf8_string_decimal,
+	          7,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
 	/* Test with invalid input data
 	 */
 	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
-	          utf8_string_invalid,
+	          utf8_string_invalid1,
 	          2,
 	          &string_index,
 	          &floating_point_value,
@@ -3901,8 +4207,39 @@ int fvalue_test_utf8_string_with_index_copy_to_floating_point(
 	 &error );
 
 	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
-	          utf8_string_invalid,
+	          utf8_string_invalid1,
 	          2,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_utf8_string_with_index_copy_to_floating_point(
+	          utf8_string_invalid2,
+	          3,
 	          &string_index,
 	          &floating_point_value,
 	          64,
@@ -4608,6 +4945,8 @@ int fvalue_test_utf16_string_with_index_copy_from_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
 	          utf16_string,
 	          32,
@@ -4615,6 +4954,62 @@ int fvalue_test_utf16_string_with_index_copy_from_floating_point(
 	          (uint64_t) 0x40b31a451eb851ecUL,
 	          64,
 	          0xffffffffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test with unsupported string format type
+	 */
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          (uint64_t) 0x40b31a451eb851ecUL,
+	          64,
+	          0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test with string too small
+	 */
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          12,
+	          &utf16_string_index,
+	          (uint64_t) 0x40b31a451eb851ecUL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -4653,11 +5048,16 @@ int fvalue_test_utf16_string_with_index_copy_to_floating_point(
 {
 	uint16_t utf16_string_decimal[ 8 ] = {
 		'4', '8', '9', '0', '.', '2', '7', 0 };
-	uint16_t utf16_string_hexadecimal[ 19 ] = {
+	uint16_t utf16_string_hexadecimal_lower_case[ 19 ] = {
 		'0', 'x', '4', '1', 'd', '0', '5', '1', '5', 'c', '2', '9', '0', '0', '0', '0',
 		'0', '0', 0 };
-	uint16_t utf16_string_invalid[ 3 ] = {
+	uint16_t utf16_string_hexadecimal_upper_case[ 19 ] = {
+		'0', 'x', '4', '1', 'D', '0', '5', '1', '5', 'C', '2', '9', '0', '0', '0', '0',
+		'0', '0', 0 };
+	uint16_t utf16_string_invalid1[ 3 ] = {
 		'/', ':', 0 };
+	uint16_t utf16_string_invalid2[ 4 ] = {
+		'0', '/', ':', 0 };
 
 	libcerror_error_t *error      = NULL;
 	size_t string_index           = 0;
@@ -4701,7 +5101,38 @@ int fvalue_test_utf16_string_with_index_copy_to_floating_point(
 	floating_point_value = 0;
 
 	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
-	          utf16_string_hexadecimal,
+	          utf16_string_hexadecimal_lower_case,
+	          18,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 18 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0x41d0515c29000000UL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_index         = 0;
+	floating_point_value = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
+	          utf16_string_hexadecimal_upper_case,
 	          18,
 	          &string_index,
 	          &floating_point_value,
@@ -4735,7 +5166,7 @@ int fvalue_test_utf16_string_with_index_copy_to_floating_point(
 
 	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
 	          NULL,
-	          4,
+	          7,
 	          &string_index,
 	          &floating_point_value,
 	          64,
@@ -4797,7 +5228,7 @@ int fvalue_test_utf16_string_with_index_copy_to_floating_point(
 
 	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
 	          utf16_string_decimal,
-	          4,
+	          7,
 	          NULL,
 	          &floating_point_value,
 	          64,
@@ -4826,9 +5257,44 @@ int fvalue_test_utf16_string_with_index_copy_to_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	string_index = 7;
+
 	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
 	          utf16_string_decimal,
-	          4,
+	          7,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 7 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
+	          utf16_string_decimal,
+	          7,
 	          &string_index,
 	          NULL,
 	          64,
@@ -4859,7 +5325,7 @@ int fvalue_test_utf16_string_with_index_copy_to_floating_point(
 
 	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
 	          utf16_string_decimal,
-	          4,
+	          7,
 	          &string_index,
 	          &floating_point_value,
 	          4,
@@ -4888,9 +5354,11 @@ int fvalue_test_utf16_string_with_index_copy_to_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
 	          utf16_string_decimal,
-	          4,
+	          7,
 	          &string_index,
 	          &floating_point_value,
 	          64,
@@ -4919,10 +5387,43 @@ int fvalue_test_utf16_string_with_index_copy_to_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported string format type
+	 */
+	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
+	          utf16_string_decimal,
+	          7,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
 	/* Test with invalid input data
 	 */
 	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
-	          utf16_string_invalid,
+	          utf16_string_invalid1,
 	          2,
 	          &string_index,
 	          &floating_point_value,
@@ -4953,8 +5454,39 @@ int fvalue_test_utf16_string_with_index_copy_to_floating_point(
 	 &error );
 
 	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
-	          utf16_string_invalid,
+	          utf16_string_invalid1,
 	          2,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_utf16_string_with_index_copy_to_floating_point(
+	          utf16_string_invalid2,
+	          3,
 	          &string_index,
 	          &floating_point_value,
 	          64,
@@ -5660,6 +6192,8 @@ int fvalue_test_utf32_string_with_index_copy_from_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
 	          utf32_string,
 	          32,
@@ -5667,6 +6201,62 @@ int fvalue_test_utf32_string_with_index_copy_from_floating_point(
 	          (uint64_t) 0x40b31a451eb851ecUL,
 	          64,
 	          0xffffffffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test with unsupported string format type
+	 */
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          (uint64_t) 0x40b31a451eb851ecUL,
+	          64,
+	          0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test with string too small
+	 */
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          12,
+	          &utf32_string_index,
+	          (uint64_t) 0x40b31a451eb851ecUL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -5705,11 +6295,16 @@ int fvalue_test_utf32_string_with_index_copy_to_floating_point(
 {
 	uint32_t utf32_string_decimal[ 8 ] = {
 		'4', '8', '9', '0', '.', '2', '7', 0 };
-	uint32_t utf32_string_hexadecimal[ 19 ] = {
+	uint32_t utf32_string_hexadecimal_lower_case[ 19 ] = {
 		'0', 'x', '4', '1', 'd', '0', '5', '1', '5', 'c', '2', '9', '0', '0', '0', '0',
 		'0', '0', 0 };
-	uint32_t utf32_string_invalid[ 3 ] = {
+	uint32_t utf32_string_hexadecimal_upper_case[ 19 ] = {
+		'0', 'x', '4', '1', 'D', '0', '5', '1', '5', 'C', '2', '9', '0', '0', '0', '0',
+		'0', '0', 0 };
+	uint32_t utf32_string_invalid1[ 3 ] = {
 		'/', ':', 0 };
+	uint32_t utf32_string_invalid2[ 4 ] = {
+		'0', '/', ':', 0 };
 
 	libcerror_error_t *error      = NULL;
 	size_t string_index           = 0;
@@ -5753,7 +6348,38 @@ int fvalue_test_utf32_string_with_index_copy_to_floating_point(
 	floating_point_value = 0;
 
 	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
-	          utf32_string_hexadecimal,
+	          utf32_string_hexadecimal_lower_case,
+	          18,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 18 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0x41d0515c29000000UL );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_index         = 0;
+	floating_point_value = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
+	          utf32_string_hexadecimal_upper_case,
 	          18,
 	          &string_index,
 	          &floating_point_value,
@@ -5787,7 +6413,7 @@ int fvalue_test_utf32_string_with_index_copy_to_floating_point(
 
 	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
 	          NULL,
-	          4,
+	          7,
 	          &string_index,
 	          &floating_point_value,
 	          64,
@@ -5849,7 +6475,7 @@ int fvalue_test_utf32_string_with_index_copy_to_floating_point(
 
 	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
 	          utf32_string_decimal,
-	          4,
+	          7,
 	          NULL,
 	          &floating_point_value,
 	          64,
@@ -5878,9 +6504,44 @@ int fvalue_test_utf32_string_with_index_copy_to_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	string_index = 7;
+
 	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
 	          utf32_string_decimal,
-	          4,
+	          7,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 7 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
+	          utf32_string_decimal,
+	          7,
 	          &string_index,
 	          NULL,
 	          64,
@@ -5911,7 +6572,7 @@ int fvalue_test_utf32_string_with_index_copy_to_floating_point(
 
 	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
 	          utf32_string_decimal,
-	          4,
+	          7,
 	          &string_index,
 	          &floating_point_value,
 	          4,
@@ -5940,9 +6601,11 @@ int fvalue_test_utf32_string_with_index_copy_to_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported format flags
+	 */
 	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
 	          utf32_string_decimal,
-	          4,
+	          7,
 	          &string_index,
 	          &floating_point_value,
 	          64,
@@ -5971,10 +6634,43 @@ int fvalue_test_utf32_string_with_index_copy_to_floating_point(
 	libcerror_error_free(
 	 &error );
 
+	/* Test with unsupported string format type
+	 */
+	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
+	          utf32_string_decimal,
+	          7,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          0x000000ffUL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
 	/* Test with invalid input data
 	 */
 	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
-	          utf32_string_invalid,
+	          utf32_string_invalid1,
 	          2,
 	          &string_index,
 	          &floating_point_value,
@@ -6005,8 +6701,39 @@ int fvalue_test_utf32_string_with_index_copy_to_floating_point(
 	 &error );
 
 	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
-	          utf32_string_invalid,
+	          utf32_string_invalid1,
 	          2,
+	          &string_index,
+	          &floating_point_value,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point_value",
+	 floating_point_value,
+	 (uint64_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_utf32_string_with_index_copy_to_floating_point(
+	          utf32_string_invalid2,
+	          3,
 	          &string_index,
 	          &floating_point_value,
 	          64,
