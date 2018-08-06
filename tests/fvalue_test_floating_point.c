@@ -2541,11 +2541,217 @@ int fvalue_test_string_size_from_floating_point(
 	 result,
 	 1 );
 
-/* TODO check value */
 	FVALUE_TEST_ASSERT_EQUAL_SIZE(
 	 "string_size",
 	 string_size,
 	 (size_t) 14 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_floating_point(
+	          &string_size,
+	          (uint64_t) 0x807fffffUL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 15 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_floating_point(
+	          &string_size,
+	          (uint64_t) 0x7f800000UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_floating_point(
+	          &string_size,
+	          (uint64_t) 0xffc00000UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_floating_point(
+	          &string_size,
+	          (uint64_t) 0x7fffffffUL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_floating_point(
+	          &string_size,
+	          (uint64_t) 0x4598d229UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 11 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_floating_point(
+	          &string_size,
+	          (uint64_t) 0x800fffffffffffffUL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 15 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_floating_point(
+	          &string_size,
+	          (uint64_t) 0x7ff0000000000000UL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_floating_point(
+	          &string_size,
+	          (uint64_t) 0xfff8000000000000UL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = 0;
+
+	result = libfvalue_string_size_from_floating_point(
+	          &string_size,
+	          (uint64_t) 0x7fffffffffffffffUL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 4 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -2565,7 +2771,6 @@ int fvalue_test_string_size_from_floating_point(
 	 result,
 	 1 );
 
-/* TODO check value */
 	FVALUE_TEST_ASSERT_EQUAL_SIZE(
 	 "string_size",
 	 string_size,
@@ -2691,8 +2896,8 @@ on_error:
 int fvalue_test_utf8_string_copy_from_floating_point(
      void )
 {
-	uint8_t expected_utf8_string[ 13 ] = {
-		'4', '.', '8', '9', '0', '2', '7', '0', 'e', '+', '0', '3', 0 };
+	uint8_t expected_utf8_string[ 14 ] = {
+		'4', '.', '8', '9', '0', '2', '7', '0', 'e', '+', '0', '0', '3', 0 };
 	uint8_t utf8_string[ 32 ];
 
 	libcerror_error_t *error = NULL;
@@ -2720,7 +2925,7 @@ int fvalue_test_utf8_string_copy_from_floating_point(
 	result = memory_compare(
 	          expected_utf8_string,
 	          utf8_string,
-	          sizeof( uint8_t ) * 13 );
+	          sizeof( uint8_t ) * 14 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
@@ -2766,8 +2971,25 @@ on_error:
 int fvalue_test_utf8_string_with_index_copy_from_floating_point(
      void )
 {
-	uint8_t expected_utf8_string[ 13 ] = {
-		'4', '.', '8', '9', '0', '2', '7', '0', 'e', '+', '0', '3', 0 };
+	uint8_t expected_utf8_string_hexadecimal_32bit[ 11 ] = {
+		'0', 'x', '4', '5', '9', '8', 'd', '2', '2', '9', 0 };
+	uint8_t expected_utf8_string_hexadecimal_64bit[ 19 ] = {
+		'0', 'x', '4', '0', 'b', '3', '1', 'a', '4', '5', '1', 'e', 'b', '8', '5', '1',
+		'e', 'c', 0 };
+	uint8_t expected_utf8_string_indeterminate[ 4 ] = {
+		'I', 'n', 'd', 0 };
+	uint8_t expected_utf8_string_infinite[ 4 ] = {
+		'I', 'n', 'f', 0 };
+	uint8_t expected_utf8_string_negative_32bit[ 15 ] = {
+                '-', '1', '.', '1', '7', '5', '4', '9', '4', 'e', '-', '0', '3', '8', 0 };
+	uint8_t expected_utf8_string_negative_64bit[ 15 ] = {
+                '-', '2', '.', '2', '2', '5', '0', '7', '4', 'e', '-', '3', '0', '8', 0 };
+	uint8_t expected_utf8_string_not_a_number[ 4 ] = {
+		'N', 'a', 'N', 0 };
+	uint8_t expected_utf8_string_positive_32bit[ 14 ] = {
+		'3', '.', '4', '0', '2', '8', '2', '3', 'e', '+', '0', '3', '8', 0 };
+	uint8_t expected_utf8_string_positive_64bit[ 14 ] = {
+		'1', '.', '7', '9', '7', '6', '9', '3', 'e', '+', '3', '0', '8', 0 };
 	uint8_t utf8_string[ 32 ];
 
 	libcerror_error_t *error = NULL;
@@ -2782,7 +3004,7 @@ int fvalue_test_utf8_string_with_index_copy_from_floating_point(
 	          utf8_string,
 	          32,
 	          &utf8_string_index,
-	          (uint64_t) 0x4598d229UL,
+	          (uint64_t) 0x7f7fffffUL,
 	          32,
 	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
 	          &error );
@@ -2795,16 +3017,366 @@ int fvalue_test_utf8_string_with_index_copy_from_floating_point(
 	FVALUE_TEST_ASSERT_EQUAL_SIZE(
 	 "utf8_string_index",
 	 utf8_string_index,
-	 (size_t) 13 );
+	 (size_t) 14 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string_positive_32bit,
 	          utf8_string,
-	          sizeof( uint8_t ) * 13 );
+	          sizeof( uint8_t ) * 14 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          (uint64_t) 0x807fffffUL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 15 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_negative_32bit,
+	          utf8_string,
+	          sizeof( uint8_t ) * 15 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          (uint64_t) 0x7f800000UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_infinite,
+	          utf8_string,
+	          sizeof( uint8_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          (uint64_t) 0xffc00000UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_indeterminate,
+	          utf8_string,
+	          sizeof( uint8_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          (uint64_t) 0x7fffffffUL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_not_a_number,
+	          utf8_string,
+	          sizeof( uint8_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          (uint64_t) 0x4598d229UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 11 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_hexadecimal_32bit,
+	          utf8_string,
+	          sizeof( uint8_t ) * 11 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          (uint64_t) 0x7fefffffffffffffULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 14 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_positive_64bit,
+	          utf8_string,
+	          sizeof( uint8_t ) * 14 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          (uint64_t) 0x800fffffffffffffULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 15 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_negative_64bit,
+	          utf8_string,
+	          sizeof( uint8_t ) * 15 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          (uint64_t) 0x7ff0000000000000ULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_infinite,
+	          utf8_string,
+	          sizeof( uint8_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          (uint64_t) 0xfff8000000000000UL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_indeterminate,
+	          utf8_string,
+	          sizeof( uint8_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf8_string_index = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_from_floating_point(
+	          utf8_string,
+	          32,
+	          &utf8_string_index,
+	          (uint64_t) 0x7fffffffffffffffULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf8_string_index",
+	 utf8_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string_not_a_number,
+	          utf8_string,
+	          sizeof( uint8_t ) * 4 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
@@ -2819,7 +3391,7 @@ int fvalue_test_utf8_string_with_index_copy_from_floating_point(
 	          &utf8_string_index,
 	          (uint64_t) 0x40b31a451eb851ecUL,
 	          64,
-	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -2830,16 +3402,16 @@ int fvalue_test_utf8_string_with_index_copy_from_floating_point(
 	FVALUE_TEST_ASSERT_EQUAL_SIZE(
 	 "utf8_string_index",
 	 utf8_string_index,
-	 (size_t) 13 );
+	 (size_t) 19 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string_hexadecimal_64bit,
 	          utf8_string,
-	          sizeof( uint8_t ) * 13 );
+	          sizeof( uint8_t ) * 19 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
@@ -3376,8 +3948,8 @@ on_error:
 int fvalue_test_utf16_string_copy_from_floating_point(
      void )
 {
-	uint16_t expected_utf16_string[ 13 ] = {
-		'4', '.', '8', '9', '0', '2', '7', '0', 'e', '+', '0', '3', 0 };
+	uint16_t expected_utf16_string[ 14 ] = {
+		'4', '.', '8', '9', '0', '2', '7', '0', 'e', '+', '0', '0', '3', 0 };
 	uint16_t utf16_string[ 32 ];
 
 	libcerror_error_t *error = NULL;
@@ -3405,7 +3977,7 @@ int fvalue_test_utf16_string_copy_from_floating_point(
 	result = memory_compare(
 	          expected_utf16_string,
 	          utf16_string,
-	          sizeof( uint16_t ) * 13 );
+	          sizeof( uint16_t ) * 14 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
@@ -3451,8 +4023,25 @@ on_error:
 int fvalue_test_utf16_string_with_index_copy_from_floating_point(
      void )
 {
-	uint16_t expected_utf16_string[ 13 ] = {
-		'4', '.', '8', '9', '0', '2', '7', '0', 'e', '+', '0', '3', 0 };
+	uint16_t expected_utf16_string_hexadecimal_32bit[ 11 ] = {
+		'0', 'x', '4', '5', '9', '8', 'd', '2', '2', '9', 0 };
+	uint16_t expected_utf16_string_hexadecimal_64bit[ 19 ] = {
+		'0', 'x', '4', '0', 'b', '3', '1', 'a', '4', '5', '1', 'e', 'b', '8', '5', '1',
+		'e', 'c', 0 };
+	uint16_t expected_utf16_string_indeterminate[ 4 ] = {
+		'I', 'n', 'd', 0 };
+	uint16_t expected_utf16_string_infinite[ 4 ] = {
+		'I', 'n', 'f', 0 };
+	uint16_t expected_utf16_string_negative_32bit[ 15 ] = {
+                '-', '1', '.', '1', '7', '5', '4', '9', '4', 'e', '-', '0', '3', '8', 0 };
+	uint16_t expected_utf16_string_negative_64bit[ 15 ] = {
+                '-', '2', '.', '2', '2', '5', '0', '7', '4', 'e', '-', '3', '0', '8', 0 };
+	uint16_t expected_utf16_string_not_a_number[ 4 ] = {
+		'N', 'a', 'N', 0 };
+	uint16_t expected_utf16_string_positive_32bit[ 14 ] = {
+		'3', '.', '4', '0', '2', '8', '2', '3', 'e', '+', '0', '3', '8', 0 };
+	uint16_t expected_utf16_string_positive_64bit[ 14 ] = {
+		'1', '.', '7', '9', '7', '6', '9', '3', 'e', '+', '3', '0', '8', 0 };
 	uint16_t utf16_string[ 32 ];
 
 	libcerror_error_t *error  = NULL;
@@ -3467,7 +4056,7 @@ int fvalue_test_utf16_string_with_index_copy_from_floating_point(
 	          utf16_string,
 	          32,
 	          &utf16_string_index,
-	          (uint64_t) 0x4598d229UL,
+	          (uint64_t) 0x7f7fffffUL,
 	          32,
 	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
 	          &error );
@@ -3480,16 +4069,366 @@ int fvalue_test_utf16_string_with_index_copy_from_floating_point(
 	FVALUE_TEST_ASSERT_EQUAL_SIZE(
 	 "utf16_string_index",
 	 utf16_string_index,
-	 (size_t) 13 );
+	 (size_t) 14 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string_positive_32bit,
 	          utf16_string,
-	          sizeof( uint16_t ) * 13 );
+	          sizeof( uint16_t ) * 14 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          (uint64_t) 0x807fffffUL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 15 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_negative_32bit,
+	          utf16_string,
+	          sizeof( uint16_t ) * 15 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          (uint64_t) 0x7f800000UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_infinite,
+	          utf16_string,
+	          sizeof( uint16_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          (uint64_t) 0xffc00000UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_indeterminate,
+	          utf16_string,
+	          sizeof( uint16_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          (uint64_t) 0x7fffffffUL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_not_a_number,
+	          utf16_string,
+	          sizeof( uint16_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          (uint64_t) 0x4598d229UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 11 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_hexadecimal_32bit,
+	          utf16_string,
+	          sizeof( uint16_t ) * 11 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          (uint64_t) 0x7fefffffffffffffULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 14 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_positive_64bit,
+	          utf16_string,
+	          sizeof( uint16_t ) * 14 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          (uint64_t) 0x800fffffffffffffULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 15 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_negative_64bit,
+	          utf16_string,
+	          sizeof( uint16_t ) * 15 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          (uint64_t) 0x7ff0000000000000ULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_infinite,
+	          utf16_string,
+	          sizeof( uint16_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          (uint64_t) 0xfff8000000000000UL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_indeterminate,
+	          utf16_string,
+	          sizeof( uint16_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf16_string_index = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_from_floating_point(
+	          utf16_string,
+	          32,
+	          &utf16_string_index,
+	          (uint64_t) 0x7fffffffffffffffULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf16_string_index",
+	 utf16_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string_not_a_number,
+	          utf16_string,
+	          sizeof( uint16_t ) * 4 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
@@ -3504,7 +4443,7 @@ int fvalue_test_utf16_string_with_index_copy_from_floating_point(
 	          &utf16_string_index,
 	          (uint64_t) 0x40b31a451eb851ecUL,
 	          64,
-	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -3515,16 +4454,16 @@ int fvalue_test_utf16_string_with_index_copy_from_floating_point(
 	FVALUE_TEST_ASSERT_EQUAL_SIZE(
 	 "utf16_string_index",
 	 utf16_string_index,
-	 (size_t) 13 );
+	 (size_t) 19 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string_hexadecimal_64bit,
 	          utf16_string,
-	          sizeof( uint16_t ) * 13 );
+	          sizeof( uint16_t ) * 19 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
@@ -4061,8 +5000,8 @@ on_error:
 int fvalue_test_utf32_string_copy_from_floating_point(
      void )
 {
-	uint32_t expected_utf32_string[ 13 ] = {
-		'4', '.', '8', '9', '0', '2', '7', '0', 'e', '+', '0', '3', 0 };
+	uint32_t expected_utf32_string[ 14 ] = {
+		'4', '.', '8', '9', '0', '2', '7', '0', 'e', '+', '0', '0', '3', 0 };
 	uint32_t utf32_string[ 32 ];
 
 	libcerror_error_t *error = NULL;
@@ -4090,7 +5029,7 @@ int fvalue_test_utf32_string_copy_from_floating_point(
 	result = memory_compare(
 	          expected_utf32_string,
 	          utf32_string,
-	          sizeof( uint32_t ) * 13 );
+	          sizeof( uint32_t ) * 14 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
@@ -4136,8 +5075,25 @@ on_error:
 int fvalue_test_utf32_string_with_index_copy_from_floating_point(
      void )
 {
-	uint32_t expected_utf32_string[ 13 ] = {
-		'4', '.', '8', '9', '0', '2', '7', '0', 'e', '+', '0', '3', 0 };
+	uint32_t expected_utf32_string_hexadecimal_32bit[ 11 ] = {
+		'0', 'x', '4', '5', '9', '8', 'd', '2', '2', '9', 0 };
+	uint32_t expected_utf32_string_hexadecimal_64bit[ 19 ] = {
+		'0', 'x', '4', '0', 'b', '3', '1', 'a', '4', '5', '1', 'e', 'b', '8', '5', '1',
+		'e', 'c', 0 };
+	uint32_t expected_utf32_string_indeterminate[ 4 ] = {
+		'I', 'n', 'd', 0 };
+	uint32_t expected_utf32_string_infinite[ 4 ] = {
+		'I', 'n', 'f', 0 };
+	uint32_t expected_utf32_string_negative_32bit[ 15 ] = {
+                '-', '1', '.', '1', '7', '5', '4', '9', '4', 'e', '-', '0', '3', '8', 0 };
+	uint32_t expected_utf32_string_negative_64bit[ 15 ] = {
+                '-', '2', '.', '2', '2', '5', '0', '7', '4', 'e', '-', '3', '0', '8', 0 };
+	uint32_t expected_utf32_string_not_a_number[ 4 ] = {
+		'N', 'a', 'N', 0 };
+	uint32_t expected_utf32_string_positive_32bit[ 14 ] = {
+		'3', '.', '4', '0', '2', '8', '2', '3', 'e', '+', '0', '3', '8', 0 };
+	uint32_t expected_utf32_string_positive_64bit[ 14 ] = {
+		'1', '.', '7', '9', '7', '6', '9', '3', 'e', '+', '3', '0', '8', 0 };
 	uint32_t utf32_string[ 32 ];
 
 	libcerror_error_t *error  = NULL;
@@ -4152,7 +5108,7 @@ int fvalue_test_utf32_string_with_index_copy_from_floating_point(
 	          utf32_string,
 	          32,
 	          &utf32_string_index,
-	          (uint64_t) 0x4598d229UL,
+	          (uint64_t) 0x7f7fffffUL,
 	          32,
 	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
 	          &error );
@@ -4165,16 +5121,366 @@ int fvalue_test_utf32_string_with_index_copy_from_floating_point(
 	FVALUE_TEST_ASSERT_EQUAL_SIZE(
 	 "utf32_string_index",
 	 utf32_string_index,
-	 (size_t) 13 );
+	 (size_t) 14 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string_positive_32bit,
 	          utf32_string,
-	          sizeof( uint32_t ) * 13 );
+	          sizeof( uint32_t ) * 14 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          (uint64_t) 0x807fffffUL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 15 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_negative_32bit,
+	          utf32_string,
+	          sizeof( uint32_t ) * 15 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          (uint64_t) 0x7f800000UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_infinite,
+	          utf32_string,
+	          sizeof( uint32_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          (uint64_t) 0xffc00000UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_indeterminate,
+	          utf32_string,
+	          sizeof( uint32_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          (uint64_t) 0x7fffffffUL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_not_a_number,
+	          utf32_string,
+	          sizeof( uint32_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          (uint64_t) 0x4598d229UL,
+	          32,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 11 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_hexadecimal_32bit,
+	          utf32_string,
+	          sizeof( uint32_t ) * 11 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          (uint64_t) 0x7fefffffffffffffULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 14 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_positive_64bit,
+	          utf32_string,
+	          sizeof( uint32_t ) * 14 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          (uint64_t) 0x800fffffffffffffULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 15 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_negative_64bit,
+	          utf32_string,
+	          sizeof( uint32_t ) * 15 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          (uint64_t) 0x7ff0000000000000ULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_infinite,
+	          utf32_string,
+	          sizeof( uint32_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          (uint64_t) 0xfff8000000000000UL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_indeterminate,
+	          utf32_string,
+	          sizeof( uint32_t ) * 4 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	utf32_string_index = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_from_floating_point(
+	          utf32_string,
+	          32,
+	          &utf32_string_index,
+	          (uint64_t) 0x7fffffffffffffffULL,
+	          64,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "utf32_string_index",
+	 utf32_string_index,
+	 (size_t) 4 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string_not_a_number,
+	          utf32_string,
+	          sizeof( uint32_t ) * 4 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
@@ -4189,7 +5495,7 @@ int fvalue_test_utf32_string_with_index_copy_from_floating_point(
 	          &utf32_string_index,
 	          (uint64_t) 0x40b31a451eb851ecUL,
 	          64,
-	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_DECIMAL,
+	          LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -4200,16 +5506,16 @@ int fvalue_test_utf32_string_with_index_copy_from_floating_point(
 	FVALUE_TEST_ASSERT_EQUAL_SIZE(
 	 "utf32_string_index",
 	 utf32_string_index,
-	 (size_t) 13 );
+	 (size_t) 19 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string_hexadecimal_64bit,
 	          utf32_string,
-	          sizeof( uint32_t ) * 13 );
+	          sizeof( uint32_t ) * 19 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
