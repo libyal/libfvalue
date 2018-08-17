@@ -1381,18 +1381,21 @@ int libfvalue_utf8_string_with_index_copy_from_floating_point(
 					}
 				}
 			}
-			while( ( value_float < 1.0 )
-			    || ( value_float >= 10.0 ) )
+			if( value_float != 0.0 )
 			{
-				exponent10++;
+				while( ( value_float < 1.0 )
+				    || ( value_float >= 10.0 ) )
+				{
+					exponent10++;
 
-				if( exponent_sign == (uint8_t) '-' )
-				{
-					value_float *= 10;
-				}
-				else
-				{
-					value_float /= 10;
+					if( exponent_sign == (uint8_t) '-' )
+					{
+						value_float *= 10;
+					}
+					else
+					{
+						value_float /= 10;
+					}
 				}
 			}
 			for( digit_index = 0;
@@ -2195,18 +2198,21 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 					}
 				}
 			}
-			while( ( value_float < 1.0 )
-			    || ( value_float >= 10.0 ) )
+			if( value_float != 0.0 )
 			{
-				exponent10++;
+				while( ( value_float < 1.0 )
+				    || ( value_float >= 10.0 ) )
+				{
+					exponent10++;
 
-				if( exponent_sign == (uint16_t) '-' )
-				{
-					value_float *= 10;
-				}
-				else
-				{
-					value_float /= 10;
+					if( exponent_sign == (uint16_t) '-' )
+					{
+						value_float *= 10;
+					}
+					else
+					{
+						value_float /= 10;
+					}
 				}
 			}
 			for( digit_index = 0;
@@ -3009,18 +3015,21 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 					}
 				}
 			}
-			while( ( value_float < 1.0 )
-			    || ( value_float >= 10.0 ) )
+			if( value_float != 0.0 )
 			{
-				exponent10++;
+				while( ( value_float < 1.0 )
+				    || ( value_float >= 10.0 ) )
+				{
+					exponent10++;
 
-				if( exponent_sign == (uint32_t) '-' )
-				{
-					value_float *= 10;
-				}
-				else
-				{
-					value_float /= 10;
+					if( exponent_sign == (uint32_t) '-' )
+					{
+						value_float *= 10;
+					}
+					else
+					{
+						value_float /= 10;
+					}
 				}
 			}
 			for( digit_index = 0;

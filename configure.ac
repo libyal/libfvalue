@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [libfvalue],
- [20180806],
+ [20180817],
  [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
