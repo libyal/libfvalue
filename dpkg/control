@@ -9,6 +9,8 @@ Homepage: https://github.com/libyal/libfvalue
 Package: libfvalue
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: libfvalue1
+Replaces: libfvalue1
 Suggests: libfvalue-dbg
 Description: Library to support various format value types
  libfvalue is a library to support various format value types.
