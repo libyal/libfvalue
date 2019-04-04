@@ -13,6 +13,14 @@ BuildRequires: gcc @ax_libcdata_spec_build_requires@ @ax_libcerror_spec_build_re
 %description -n libfvalue
 Library to support various format value types
 
+%package -n libfvalue-static
+Summary: Library to support various format value types
+Group: Development/Libraries
+Requires: libfvalue = %{version}-%{release}
+
+%description -n libfvalue-static
+Static library version of libfvalue.
+
 %package -n libfvalue-devel
 Summary: Header files and libraries for developing applications for libfvalue
 Group: Development/Libraries
@@ -45,11 +53,16 @@ rm -rf %{buildroot}
 %doc AUTHORS README
 %attr(755,root,root) %{_libdir}/*.so.*
 
+%files -n libfvalue-static
+%defattr(644,root,root,755)
+%license COPYING
+%doc AUTHORS README
+%attr(755,root,root) %{_libdir}/*.a
+
 %files -n libfvalue-devel
 %defattr(644,root,root,755)
 %license COPYING
 %doc AUTHORS README
-%{_libdir}/*.a
 %{_libdir}/*.la
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/libfvalue.pc
