@@ -29,6 +29,7 @@
 
 #include "libfvalue_extern.h"
 #include "libfvalue_libcerror.h"
+#include "libfvalue_libfdatetime.h"
 #include "libfvalue_types.h"
 
 #if defined( __cplusplus )
@@ -79,6 +80,17 @@ ssize_t libfvalue_value_type_set_data_strings_array(
          size_t data_size,
          int encoding,
          libcerror_error_t **error );
+
+#if defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME )
+
+int libfvalue_value_type_posix_time_copy_from_byte_stream(
+     libfdatetime_posix_time_t *posix_time,
+     const uint8_t *byte_stream,
+     size_t byte_stream_size,
+     int encoding,
+     libcerror_error_t **error );
+
+#endif /* defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
 
 #if defined( __cplusplus )
 }

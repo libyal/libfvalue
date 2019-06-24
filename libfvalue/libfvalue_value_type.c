@@ -544,7 +544,7 @@ int libfvalue_value_type_initialize_with_data_handle(
 			          (int (*)(intptr_t **, libcerror_error_t **)) &libfdatetime_posix_time_free,
 			          NULL,
 
-			          (int (*)(intptr_t *, const uint8_t *, size_t, int, libcerror_error_t **)) &libfdatetime_posix_time_copy_from_byte_stream,
+			          (int (*)(intptr_t *, const uint8_t *, size_t, int, libcerror_error_t **)) &libfvalue_value_type_posix_time_copy_from_byte_stream,
 			          NULL,
 
 			          NULL,
@@ -1073,4 +1073,54 @@ ssize_t libfvalue_value_type_set_data_strings_array(
 	}
 	return( last_data_index );
 }
+
+#if defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME )
+
+/* Helper function for libfvalue value type to covert a byte stream into a POSIX time using libfdatetime
+ * Returns 1 if successful or -1 on error
+ */
+int libfvalue_value_type_posix_time_copy_from_byte_stream(
+     libfdatetime_posix_time_t *posix_time,
+     const uint8_t *byte_stream,
+     size_t byte_stream_size,
+     int encoding,
+     libcerror_error_t **error )
+{
+	static char *function = "libfvalue_value_type_posix_time_copy_from_byte_stream";
+	int byte_order        = 0;
+	uint8_t value_type    = 0;
+
+	if( ( encoding != LIBFVALUE_POSIX_TIME_ENCODING_32BIT_BIG_ENDIAN )
+	 && ( encoding != LIBFVALUE_POSIX_TIME_ENCODING_32BIT_LITTLE_ENDIAN ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported encoding.",
+		 function );
+
+		return( -1 );
+	}
+	if( libfdatetime_posix_time_copy_from_byte_stream(
+	     posix_time,
+	     byte_stream,
+	     byte_stream_size,
+	     byte_order,
+	     value_type,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy POSIX time from byte stream.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+#endif /* defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
 

@@ -36,7 +36,8 @@ check_PROGRAMS = \
 	fvalue_test_support \
 	fvalue_test_table \
 	fvalue_test_value \
-	fvalue_test_value_entry
+	fvalue_test_value_entry \
+	fvalue_test_value_type
 
 fvalue_test_binary_data_SOURCES = \
 	fvalue_test_binary_data.c \
@@ -185,6 +186,18 @@ fvalue_test_value_entry_SOURCES = \
 	fvalue_test_value_entry.c
 
 fvalue_test_value_entry_LDADD = \
+	../libfvalue/libfvalue.la \
+	@LIBCERROR_LIBADD@
+
+fvalue_test_value_type_SOURCES = \
+	fvalue_test_libcerror.h \
+	fvalue_test_libfvalue.h \
+	fvalue_test_macros.h \
+	fvalue_test_memory.c fvalue_test_memory.h \
+	fvalue_test_unused.h \
+	fvalue_test_value_type.c
+
+fvalue_test_value_type_LDADD = \
 	../libfvalue/libfvalue.la \
 	@LIBCERROR_LIBADD@
 

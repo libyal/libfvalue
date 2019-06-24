@@ -12,6 +12,7 @@ MSVSCPP_FILES = \
 	fvalue_test_table/fvalue_test_table.vcproj \
 	fvalue_test_value/fvalue_test_value.vcproj \
 	fvalue_test_value_entry/fvalue_test_value_entry.vcproj \
+	fvalue_test_value_type/fvalue_test_value_type.vcproj \
 	libcdata/libcdata.vcproj \
 	libcerror/libcerror.vcproj \
 	libcnotify/libcnotify.vcproj \

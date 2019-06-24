@@ -134,6 +134,7 @@ stamp-h[1-9]
 /tests/fvalue_test_table
 /tests/fvalue_test_value
 /tests/fvalue_test_value_entry
+/tests/fvalue_test_value_type
 /tests/tmp*
 
 # Local library dependencies specific files
