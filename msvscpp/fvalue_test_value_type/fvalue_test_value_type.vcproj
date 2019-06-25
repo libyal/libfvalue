@@ -194,7 +194,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\tests\fvalue_test_libfdatetime.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\tests\fvalue_test_libfguid.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\tests\fvalue_test_libfvalue.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\tests\fvalue_test_libfwnte.h"
 				>
 			</File>
 			<File

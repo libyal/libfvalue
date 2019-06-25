@@ -605,7 +605,8 @@ int libfvalue_value_type_initialize_with_data_handle(
 			          flags,
 			          error );
 			break;
-#endif
+#endif /* defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
+
 #if defined( HAVE_LIBFGUID_H ) || defined( HAVE_LOCAL_LIBFGUID )
 		case LIBFVALUE_VALUE_TYPE_GUID:
 			result = libfvalue_value_initialize(
@@ -643,7 +644,8 @@ int libfvalue_value_type_initialize_with_data_handle(
 			          flags,
 			          error );
 			break;
-#endif
+#endif /* defined( HAVE_LIBFGUID_H ) || defined( HAVE_LOCAL_LIBFGUID ) */
+
 #if defined( HAVE_LIBFWNT_H ) || defined( HAVE_LOCAL_LIBFWNT )
 		case LIBFVALUE_VALUE_TYPE_NT_SECURITY_IDENTIFIER:
 			result = libfvalue_value_initialize(
@@ -681,7 +683,8 @@ int libfvalue_value_type_initialize_with_data_handle(
 			          flags,
 			          error );
 			break;
-#endif
+#endif /* defined( HAVE_LIBFWNT_H ) || defined( HAVE_LOCAL_LIBFWNT ) */
+
 		default:
 			libcerror_error_set(
 			 error,
@@ -1090,17 +1093,65 @@ int libfvalue_value_type_posix_time_copy_from_byte_stream(
 	int byte_order        = 0;
 	uint8_t value_type    = 0;
 
-	if( ( encoding != LIBFVALUE_POSIX_TIME_ENCODING_32BIT_BIG_ENDIAN )
-	 && ( encoding != LIBFVALUE_POSIX_TIME_ENCODING_32BIT_LITTLE_ENDIAN ) )
+	byte_order = encoding & 0xff;
+
+	if( ( byte_order != LIBFVALUE_ENDIAN_BIG )
+	 && ( byte_order != LIBFVALUE_ENDIAN_LITTLE ) )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported encoding.",
-		 function );
+		 "%s: unsupported byte order in encoding: 0x%08x.",
+		 function,
+		 encoding );
 
 		return( -1 );
+	}
+	switch( encoding >> 8 )
+	{
+		case LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_SIGNED:
+			value_type = LIBFDATETIME_POSIX_TIME_VALUE_TYPE_SECONDS_32BIT_SIGNED;
+			break;
+
+		case LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_UNSIGNED:
+			value_type = LIBFDATETIME_POSIX_TIME_VALUE_TYPE_SECONDS_32BIT_UNSIGNED;
+			break;
+
+		case LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_64BIT_SIGNED:
+			value_type = LIBFDATETIME_POSIX_TIME_VALUE_TYPE_SECONDS_64BIT_SIGNED;
+			break;
+
+		case LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_64BIT_UNSIGNED:
+			value_type = LIBFDATETIME_POSIX_TIME_VALUE_TYPE_SECONDS_64BIT_UNSIGNED;
+			break;
+
+		case LIBFVALUE_POSIX_TIME_ENCODING_MICRO_SECONDS_64BIT_SIGNED:
+			value_type = LIBFDATETIME_POSIX_TIME_VALUE_TYPE_MICRO_SECONDS_64BIT_SIGNED;
+			break;
+
+		case LIBFVALUE_POSIX_TIME_ENCODING_MICRO_SECONDS_64BIT_UNSIGNED:
+			value_type = LIBFDATETIME_POSIX_TIME_VALUE_TYPE_MICRO_SECONDS_64BIT_UNSIGNED;
+			break;
+
+		case LIBFVALUE_POSIX_TIME_ENCODING_NANO_SECONDS_64BIT_SIGNED:
+			value_type = LIBFDATETIME_POSIX_TIME_VALUE_TYPE_NANO_SECONDS_64BIT_SIGNED;
+			break;
+
+		case LIBFVALUE_POSIX_TIME_ENCODING_NANO_SECONDS_64BIT_UNSIGNED:
+			value_type = LIBFDATETIME_POSIX_TIME_VALUE_TYPE_NANO_SECONDS_64BIT_UNSIGNED;
+			break;
+
+		default:
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+			 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+			 "%s: unsupported value type in encoding: 0x%08x.",
+			 function,
+			 encoding );
+
+			return( -1 );
 	}
 	if( libfdatetime_posix_time_copy_from_byte_stream(
 	     posix_time,
