@@ -686,6 +686,61 @@ int fvalue_test_value_type_get_string_size(
 	 "error",
 	 error );
 
+	/* Test with unsupported value type
+	 */
+	result = libfvalue_value_type_initialize(
+	          &value,
+	          LIBFVALUE_VALUE_TYPE_INTEGER_8BIT,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_size = libfvalue_value_type_get_string_size(
+	               value,
+	               binary_data,
+	               5,
+	               &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_SSIZE(
+	 "string_size",
+	 string_size,
+	 (ssize_t) -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
 	return( 1 );
 
 on_error:
@@ -703,6 +758,640 @@ on_error:
 	return( 0 );
 }
 
+#endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
+
+/* Tests the libfvalue_value_type_set_data_string function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_type_set_data_string(
+     void )
+{
+	uint8_t utf16_data[ 10 ] = {
+		't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
+
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	ssize_t string_size      = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_type_initialize(
+	          &value,
+	          LIBFVALUE_VALUE_TYPE_STRING_UTF16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	string_size = libfvalue_value_type_set_data_string(
+	               value,
+	               utf16_data,
+	               10,
+	               0,
+	               LIBFVALUE_VALUE_DATA_FLAG_MANAGED,
+	               &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_SSIZE(
+	 "string_size",
+	 string_size,
+	 (ssize_t) 10 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	string_size = libfvalue_value_type_set_data_string(
+	               NULL,
+	               utf16_data,
+	               10,
+	               0,
+	               LIBFVALUE_VALUE_DATA_FLAG_MANAGED,
+	               &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_SSIZE(
+	 "string_size",
+	 string_size,
+	 (ssize_t) -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_type_append_data_string function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_type_append_data_string(
+     void )
+{
+	uint8_t utf16_data[ 10 ] = {
+		't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
+
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	ssize_t string_size      = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_type_initialize(
+	          &value,
+	          LIBFVALUE_VALUE_TYPE_STRING_UTF16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	string_size = libfvalue_value_type_append_data_string(
+	               value,
+	               utf16_data,
+	               10,
+	               0,
+	               &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_SSIZE(
+	 "string_size",
+	 string_size,
+	 (ssize_t) 10 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	string_size = libfvalue_value_type_append_data_string(
+	               NULL,
+	               utf16_data,
+	               10,
+	               0,
+	               &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_SSIZE(
+	 "string_size",
+	 string_size,
+	 (ssize_t) -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_type_set_data_strings_array function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_type_set_data_strings_array(
+     void )
+{
+	uint8_t utf16_data[ 10 ] = {
+		't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
+
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	ssize_t string_size      = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_type_initialize(
+	          &value,
+	          LIBFVALUE_VALUE_TYPE_STRING_UTF16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	string_size = libfvalue_value_type_set_data_strings_array(
+	               value,
+	               utf16_data,
+	               10,
+	               0,
+	               &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_SSIZE(
+	 "string_size",
+	 string_size,
+	 (ssize_t) 10 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	string_size = libfvalue_value_type_set_data_strings_array(
+	               NULL,
+	               utf16_data,
+	               10,
+	               0,
+	               &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_SSIZE(
+	 "string_size",
+	 string_size,
+	 (ssize_t) -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+#if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT )
+#if defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME )
+
+/* Tests the libfvalue_value_type_posix_time_copy_from_byte_stream function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_type_posix_time_copy_from_byte_stream(
+     void )
+{
+	uint8_t byte_stream_32bit[ 4 ] = {
+		0x90, 0x6d, 0x12, 0x5d };
+
+	uint8_t byte_stream_64bit[ 8 ] = {
+		0x00, 0x84, 0x4a, 0x70, 0x2a, 0x8c, 0x05, 0x00 };
+
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_type_initialize(
+	          &value,
+	          LIBFVALUE_VALUE_TYPE_STRING_UTF16,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          byte_stream_32bit,
+	          4,
+	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          byte_stream_32bit,
+	          4,
+	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_UNSIGNED | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          byte_stream_64bit,
+	          8,
+	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_64BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          byte_stream_64bit,
+	          8,
+	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_64BIT_UNSIGNED | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          byte_stream_64bit,
+	          8,
+	          LIBFVALUE_POSIX_TIME_ENCODING_MICRO_SECONDS_64BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          byte_stream_64bit,
+	          8,
+	          LIBFVALUE_POSIX_TIME_ENCODING_MICRO_SECONDS_64BIT_UNSIGNED | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          byte_stream_64bit,
+	          8,
+	          LIBFVALUE_POSIX_TIME_ENCODING_NANO_SECONDS_64BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          byte_stream_64bit,
+	          8,
+	          LIBFVALUE_POSIX_TIME_ENCODING_NANO_SECONDS_64BIT_UNSIGNED | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          NULL,
+	          byte_stream_32bit,
+	          4,
+	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          NULL,
+	          4,
+	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          byte_stream_32bit,
+	          (size_t) SSIZE_MAX + 1,
+	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          byte_stream_32bit,
+	          4,
+	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_SIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
+	          value,
+	          byte_stream_32bit,
+	          4,
+	          0xffffff00UL | LIBFVALUE_ENDIAN_LITTLE,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+#endif /* defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
 #endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 /* The main program
@@ -736,16 +1425,26 @@ int main(
 
 #endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
-	/* TODO: add tests for libfvalue_value_type_set_data_string */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_type_set_data_string",
+	 fvalue_test_value_type_set_data_string );
 
-	/* TODO: add tests for libfvalue_value_type_append_data_string */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_type_append_data_string",
+	 fvalue_test_value_type_append_data_string );
 
-	/* TODO: add tests for libfvalue_value_type_initialize_with_data_handle */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_type_set_data_strings_array",
+	 fvalue_test_value_type_set_data_strings_array );
 
 #if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT )
+#if defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME )
 
-	/* TODO: add tests for libfvalue_value_type_posix_time_copy_from_byte_stream */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_type_posix_time_copy_from_byte_stream",
+	 fvalue_test_value_type_posix_time_copy_from_byte_stream );
 
+#endif /* defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
 #endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 	return( EXIT_SUCCESS );

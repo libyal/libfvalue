@@ -194,7 +194,7 @@ fvalue_test_value_type_SOURCES = \
 	fvalue_test_libfdatetime.h \
 	fvalue_test_libfguid.h \
 	fvalue_test_libfvalue.h \
-	fvalue_test_libfwnte.h \
+	fvalue_test_libfwnt.h \
 	fvalue_test_macros.h \
 	fvalue_test_memory.c fvalue_test_memory.h \
 	fvalue_test_unused.h \

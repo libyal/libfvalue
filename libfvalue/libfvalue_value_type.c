@@ -1102,13 +1102,14 @@ int libfvalue_value_type_posix_time_copy_from_byte_stream(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported byte order in encoding: 0x%08x.",
+		 "%s: unsupported byte order: 0x%02x in encoding: 0x%08x.",
 		 function,
+		 byte_order,
 		 encoding );
 
 		return( -1 );
 	}
-	switch( encoding >> 8 )
+	switch( encoding & 0xffffff00UL )
 	{
 		case LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_SIGNED:
 			value_type = LIBFDATETIME_POSIX_TIME_VALUE_TYPE_SECONDS_32BIT_SIGNED;
@@ -1147,8 +1148,9 @@ int libfvalue_value_type_posix_time_copy_from_byte_stream(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 			 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-			 "%s: unsupported value type in encoding: 0x%08x.",
+			 "%s: unsupported value type: 0x%08x in encoding: 0x%08x.",
 			 function,
+			 encoding & 0xffffff00UL,
 			 encoding );
 
 			return( -1 );
