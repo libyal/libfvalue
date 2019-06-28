@@ -1823,6 +1823,28 @@ int libfvalue_value_get_entry(
 	}
 	internal_value = (libfvalue_internal_value_t *) value;
 
+	if( entry_data_offset == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid entry data offset.",
+		 function );
+
+		return( -1 );
+	}
+	if( entry_data_size == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid entry data size.",
+		 function );
+
+		return( -1 );
+	}
 	result = libfvalue_value_has_data(
 	          value,
 	          error );
@@ -2162,6 +2184,39 @@ int libfvalue_value_get_entry_data(
 	}
 	internal_value = (libfvalue_internal_value_t *) value;
 
+	if( entry_data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid entry data.",
+		 function );
+
+		return( -1 );
+	}
+	if( entry_data_size == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid entry data size.",
+		 function );
+
+		return( -1 );
+	}
+	if( encoding == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid encoding.",
+		 function );
+
+		return( -1 );
+	}
 	result = libfvalue_value_has_data(
 	          value,
 	          error );

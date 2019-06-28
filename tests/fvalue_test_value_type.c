@@ -582,7 +582,7 @@ int fvalue_test_value_type_get_string_size(
 	FVALUE_TEST_ASSERT_EQUAL_SSIZE(
 	 "string_size",
 	 string_size,
-	 (size_t) -1 );
+	 (ssize_t) -1 );
 
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
@@ -641,7 +641,7 @@ int fvalue_test_value_type_get_string_size(
 	FVALUE_TEST_ASSERT_EQUAL_SSIZE(
 	 "string_size",
 	 string_size,
-	 (size_t) 20 );
+	 (ssize_t) 20 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -658,7 +658,7 @@ int fvalue_test_value_type_get_string_size(
 	FVALUE_TEST_ASSERT_EQUAL_SSIZE(
 	 "string_size",
 	 string_size,
-	 (size_t) -1 );
+	 (ssize_t) -1 );
 
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
@@ -1104,15 +1104,14 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	uint8_t byte_stream_64bit[ 8 ] = {
 		0x00, 0x84, 0x4a, 0x70, 0x2a, 0x8c, 0x05, 0x00 };
 
-	libcerror_error_t *error = NULL;
-	libfvalue_value_t *value = NULL;
-	int result               = 0;
+	libcerror_error_t *error              = NULL;
+	libfdatetime_posix_time_t *posix_time = NULL;
+	int result                            = 0;
 
 	/* Initialize test
 	 */
-	result = libfvalue_value_type_initialize(
-	          &value,
-	          LIBFVALUE_VALUE_TYPE_STRING_UTF16,
+	result = libfdatetime_posix_time_initialize(
+	          &posix_time,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -1121,8 +1120,8 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 1 );
 
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
-	 "value",
-	 value );
+	 "posix_time",
+	 posix_time );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1131,7 +1130,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	/* Test regular cases
 	 */
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          byte_stream_32bit,
 	          4,
 	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
@@ -1147,7 +1146,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 error );
 
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          byte_stream_32bit,
 	          4,
 	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_UNSIGNED | LIBFVALUE_ENDIAN_LITTLE,
@@ -1163,7 +1162,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 error );
 
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          byte_stream_64bit,
 	          8,
 	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_64BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
@@ -1179,7 +1178,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 error );
 
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          byte_stream_64bit,
 	          8,
 	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_64BIT_UNSIGNED | LIBFVALUE_ENDIAN_LITTLE,
@@ -1195,7 +1194,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 error );
 
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          byte_stream_64bit,
 	          8,
 	          LIBFVALUE_POSIX_TIME_ENCODING_MICRO_SECONDS_64BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
@@ -1211,7 +1210,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 error );
 
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          byte_stream_64bit,
 	          8,
 	          LIBFVALUE_POSIX_TIME_ENCODING_MICRO_SECONDS_64BIT_UNSIGNED | LIBFVALUE_ENDIAN_LITTLE,
@@ -1227,7 +1226,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 error );
 
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          byte_stream_64bit,
 	          8,
 	          LIBFVALUE_POSIX_TIME_ENCODING_NANO_SECONDS_64BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
@@ -1243,7 +1242,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 error );
 
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          byte_stream_64bit,
 	          8,
 	          LIBFVALUE_POSIX_TIME_ENCODING_NANO_SECONDS_64BIT_UNSIGNED | LIBFVALUE_ENDIAN_LITTLE,
@@ -1280,7 +1279,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 &error );
 
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          NULL,
 	          4,
 	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
@@ -1299,7 +1298,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 &error );
 
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          byte_stream_32bit,
 	          (size_t) SSIZE_MAX + 1,
 	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_SIGNED | LIBFVALUE_ENDIAN_LITTLE,
@@ -1318,7 +1317,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 &error );
 
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          byte_stream_32bit,
 	          4,
 	          LIBFVALUE_POSIX_TIME_ENCODING_SECONDS_32BIT_SIGNED,
@@ -1337,7 +1336,7 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 &error );
 
 	result = libfvalue_value_type_posix_time_copy_from_byte_stream(
-	          value,
+	          posix_time,
 	          byte_stream_32bit,
 	          4,
 	          0xffffff00UL | LIBFVALUE_ENDIAN_LITTLE,
@@ -1357,8 +1356,8 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 
 	/* Clean up
 	 */
-	result = libfvalue_value_free(
-	          &value,
+	result = libfdatetime_posix_time_free(
+	          &posix_time,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -1367,8 +1366,8 @@ int fvalue_test_value_type_posix_time_copy_from_byte_stream(
 	 1 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
-	 "value",
-	 value );
+	 "posix_time",
+	 posix_time );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1382,10 +1381,10 @@ on_error:
 		libcerror_error_free(
 		 &error );
 	}
-	if( value != NULL )
+	if( posix_time != NULL )
 	{
-		libfvalue_value_free(
-		 &value,
+		libfdatetime_posix_time_free(
+		 &posix_time,
 		 NULL );
 	}
 	return( 0 );
