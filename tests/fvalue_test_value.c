@@ -35,6 +35,7 @@
 #include "fvalue_test_unused.h"
 
 #include "../libfvalue/libfvalue_value.h"
+#include "../libfvalue/libfvalue_value_type.h"
 
 /* Tests the libfvalue_value_initialize function
  * Returns 1 if successful or 0 if not
@@ -3544,6 +3545,135 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the libfvalue_value_set_entry function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_set_entry(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+#ifdef TODO
+/* TODO initialize value with data */
+	result = libfvalue_value_set_entry(
+	          value,
+	          0,
+	          0,
+	          32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_set_entry(
+	          NULL,
+	          0,
+	          0,
+	          32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
 /* Tests the libfvalue_value_get_entry_data function
  * Returns 1 if successful or 0 if not
  */
@@ -3663,12 +3793,209 @@ int fvalue_test_value_get_entry_data(
 
 	libcerror_error_free(
 	 &error );
+#endif
 
 	result = libfvalue_value_get_entry_data(
 	          value,
-	          -1,
+	          0,
+	          NULL,
+	          &entry_data_size,
+	          &encoding,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_get_entry_data(
+	          value,
+	          0,
+	          &entry_data,
+	          NULL,
+	          &encoding,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_get_entry_data(
+	          value,
+	          0,
 	          &entry_data,
 	          &entry_data_size,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_entry_data function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_entry_data(
+     void )
+{
+	uint8_t entry_data[ 32 ];
+
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int encoding             = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+#ifdef TODO
+/* TODO initialize value with data */
+	result = libfvalue_value_copy_entry_data(
+	          value,
+	          0,
+	          entry_data,
+	          32,
+	          &encoding,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_entry_data(
+	          NULL,
+	          0,
+	          entry_data,
+	          32,
+	          &encoding,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_entry_data(
+	          value,
+	          -1,
+	          entry_data,
+	          32,
 	          &encoding,
 	          &error );
 
@@ -3685,11 +4012,11 @@ int fvalue_test_value_get_entry_data(
 	 &error );
 #endif
 
-	result = libfvalue_value_get_entry_data(
+	result = libfvalue_value_copy_entry_data(
 	          value,
-	          1,
+	          0,
 	          NULL,
-	          &entry_data_size,
+	          32,
 	          &encoding,
 	          &error );
 
@@ -3705,11 +4032,11 @@ int fvalue_test_value_get_entry_data(
 	libcerror_error_free(
 	 &error );
 
-	result = libfvalue_value_get_entry_data(
+	result = libfvalue_value_copy_entry_data(
 	          value,
-	          1,
-	          &entry_data,
-	          NULL,
+	          0,
+	          entry_data,
+	          (size_t) SSIZE_MAX + 1,
 	          &encoding,
 	          &error );
 
@@ -3725,11 +4052,2205 @@ int fvalue_test_value_get_entry_data(
 	libcerror_error_free(
 	 &error );
 
-	result = libfvalue_value_get_entry_data(
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_entry_data(
 	          value,
+	          0,
+	          entry_data,
+	          32,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_from_boolean function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_from_boolean(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_from_boolean(
+	          value,
+	          0,
 	          1,
-	          &entry_data,
-	          &entry_data_size,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_from_boolean(
+	          NULL,
+	          0,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_boolean(
+	          value,
+	          -1,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_boolean function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_boolean(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	uint8_t value_boolean    = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_to_boolean(
+	          value,
+	          0,
+	          &value_boolean,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_to_boolean(
+	          NULL,
+	          0,
+	          &value_boolean,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_to_boolean(
+	          value,
+	          -1,
+	          &value_boolean,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	result = libfvalue_value_copy_to_boolean(
+	          value,
+	          0,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_from_8bit function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_from_8bit(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_from_8bit(
+	          value,
+	          0,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_from_8bit(
+	          NULL,
+	          0,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_8bit(
+	          value,
+	          -1,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_8bit function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_8bit(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	uint8_t value_8bit       = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_to_8bit(
+	          value,
+	          0,
+	          &value_8bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_to_8bit(
+	          NULL,
+	          0,
+	          &value_8bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_to_8bit(
+	          value,
+	          -1,
+	          &value_8bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	result = libfvalue_value_copy_to_8bit(
+	          value,
+	          0,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_from_16bit function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_from_16bit(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_from_16bit(
+	          value,
+	          0,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_from_16bit(
+	          NULL,
+	          0,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_16bit(
+	          value,
+	          -1,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_16bit function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_16bit(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	uint16_t value_16bit     = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_to_16bit(
+	          value,
+	          0,
+	          &value_16bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_to_16bit(
+	          NULL,
+	          0,
+	          &value_16bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_to_16bit(
+	          value,
+	          -1,
+	          &value_16bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	result = libfvalue_value_copy_to_16bit(
+	          value,
+	          0,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_from_32bit function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_from_32bit(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_from_32bit(
+	          value,
+	          0,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_from_32bit(
+	          NULL,
+	          0,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_32bit(
+	          value,
+	          -1,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_32bit function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_32bit(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	uint32_t value_32bit     = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_to_32bit(
+	          value,
+	          0,
+	          &value_32bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_to_32bit(
+	          NULL,
+	          0,
+	          &value_32bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_to_32bit(
+	          value,
+	          -1,
+	          &value_32bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	result = libfvalue_value_copy_to_32bit(
+	          value,
+	          0,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_from_64bit function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_from_64bit(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_from_64bit(
+	          value,
+	          0,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_from_64bit(
+	          NULL,
+	          0,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_64bit(
+	          value,
+	          -1,
+	          1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_64bit function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_64bit(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	uint64_t value_64bit     = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_to_64bit(
+	          value,
+	          0,
+	          &value_64bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_to_64bit(
+	          NULL,
+	          0,
+	          &value_64bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_to_64bit(
+	          value,
+	          -1,
+	          &value_64bit,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	result = libfvalue_value_copy_to_64bit(
+	          value,
+	          0,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_from_float function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_from_float(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_from_float(
+	          value,
+	          0,
+	          1.0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_from_float(
+	          NULL,
+	          0,
+	          1.0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_float(
+	          value,
+	          -1,
+	          1.0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_float function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_float(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	float value_float        = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_to_float(
+	          value,
+	          0,
+	          &value_float,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_to_float(
+	          NULL,
+	          0,
+	          &value_float,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_to_float(
+	          value,
+	          -1,
+	          &value_float,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	result = libfvalue_value_copy_to_float(
+	          value,
+	          0,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_from_double function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_from_double(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_from_double(
+	          value,
+	          0,
+	          1.0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_from_double(
+	          NULL,
+	          0,
+	          1.0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_double(
+	          value,
+	          -1,
+	          1.0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_double function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_double(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	double value_double      = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_to_double(
+	          value,
+	          0,
+	          &value_double,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_to_double(
+	          NULL,
+	          0,
+	          &value_double,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_to_double(
+	          value,
+	          -1,
+	          &value_double,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	result = libfvalue_value_copy_to_double(
+	          value,
+	          0,
 	          NULL,
 	          &error );
 
@@ -3880,7 +6401,9 @@ int main(
 	 "libfvalue_value_get_entry",
 	 fvalue_test_value_get_entry );
 
-	/* TODO: add tests for libfvalue_value_set_entry */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_set_entry",
+	 fvalue_test_value_set_entry );
 
 	/* TODO: add tests for libfvalue_value_append_entry */
 
@@ -3892,35 +6415,65 @@ int main(
 
 	/* TODO: add tests for libfvalue_value_append_entry_data */
 
-	/* TODO: add tests for libfvalue_value_copy_entry_data */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_entry_data",
+	 fvalue_test_value_copy_entry_data );
 
-	/* TODO: add tests for libfvalue_value_copy_from_boolean */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_from_boolean",
+	 fvalue_test_value_copy_from_boolean );
 
-	/* TODO: add tests for libfvalue_value_copy_to_boolean */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_boolean",
+	 fvalue_test_value_copy_to_boolean );
 
-	/* TODO: add tests for libfvalue_value_copy_from_8bit */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_from_8bit",
+	 fvalue_test_value_copy_from_8bit );
 
-	/* TODO: add tests for libfvalue_value_copy_to_8bit */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_8bit",
+	 fvalue_test_value_copy_to_8bit );
 
-	/* TODO: add tests for libfvalue_value_copy_from_16bit */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_from_16bit",
+	 fvalue_test_value_copy_from_16bit );
 
-	/* TODO: add tests for libfvalue_value_copy_to_16bit */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_16bit",
+	 fvalue_test_value_copy_to_16bit );
 
-	/* TODO: add tests for libfvalue_value_copy_from_32bit */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_from_32bit",
+	 fvalue_test_value_copy_from_32bit );
 
-	/* TODO: add tests for libfvalue_value_copy_to_32bit */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_32bit",
+	 fvalue_test_value_copy_to_32bit );
 
-	/* TODO: add tests for libfvalue_value_copy_from_64bit */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_from_64bit",
+	 fvalue_test_value_copy_from_64bit );
 
-	/* TODO: add tests for libfvalue_value_copy_to_64bit */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_64bit",
+	 fvalue_test_value_copy_to_64bit );
 
-	/* TODO: add tests for libfvalue_value_copy_from_float */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_from_float",
+	 fvalue_test_value_copy_from_float );
 
-	/* TODO: add tests for libfvalue_value_copy_to_float */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_float",
+	 fvalue_test_value_copy_to_float );
 
-	/* TODO: add tests for libfvalue_value_copy_from_double */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_from_double",
+	 fvalue_test_value_copy_from_double );
 
-	/* TODO: add tests for libfvalue_value_copy_to_double */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_double",
+	 fvalue_test_value_copy_to_double );
 
 	/* TODO: add tests for libfvalue_value_copy_from_utf8_string */
 
