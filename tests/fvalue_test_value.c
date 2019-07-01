@@ -6302,6 +6302,2130 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the libfvalue_value_copy_from_utf8_string function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_from_utf8_string(
+     void )
+{
+	uint8_t utf8_string[ 5 ] = { 't', 'e', 's', 't', 0 };
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_utf8_string(
+	          value,
+	          0,
+	          utf8_string,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_from_utf8_string(
+	          NULL,
+	          0,
+	          utf8_string,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_utf8_string(
+	          value,
+	          -1,
+	          utf8_string,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	result = libfvalue_value_copy_from_utf8_string(
+	          value,
+	          0,
+	          NULL,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_from_utf8_string(
+	          value,
+	          0,
+	          utf8_string,
+	          (size_t) SSIZE_MAX + 1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_get_utf8_string_size function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_get_utf8_string_size(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	size_t string_size       = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_get_utf8_string_size(
+	          value,
+	          0,
+	          &string_size,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_get_utf8_string_size(
+	          NULL,
+	          0,
+	          &string_size,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_get_utf8_string_size(
+	          value,
+	          -1,
+	          &string_size,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_get_utf8_string_size(
+	          value,
+	          0,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_utf8_string function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_utf8_string(
+     void )
+{
+	uint8_t utf8_string[ 32 ];
+
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_to_utf8_string(
+	          value,
+	          0,
+	          utf8_string,
+	          32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_to_utf8_string(
+	          NULL,
+	          0,
+	          utf8_string,
+	          32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_utf8_string_with_index function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_utf8_string_with_index(
+     void )
+{
+	uint8_t utf8_string[ 32 ];
+
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	size_t string_index      = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	string_index = 0;
+
+	result = libfvalue_value_copy_to_utf8_string_with_index(
+	          value,
+	          0,
+	          utf8_string,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	string_index = 0;
+
+	result = libfvalue_value_copy_to_utf8_string_with_index(
+	          NULL,
+	          0,
+	          utf8_string,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_to_utf8_string_with_index(
+	          value,
+	          -1,
+	          utf8_string,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_to_utf8_string_with_index(
+	          value,
+	          0,
+	          NULL,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_to_utf8_string_with_index(
+	          value,
+	          0,
+	          utf8_string,
+	          (size_t) SSIZE_MAX + 1,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_to_utf8_string_with_index(
+	          value,
+	          0,
+	          utf8_string,
+	          32,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_from_utf16_string function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_from_utf16_string(
+     void )
+{
+	uint16_t utf16_string[ 5 ] = { 't', 'e', 's', 't', 0 };
+	libcerror_error_t *error   = NULL;
+	libfvalue_value_t *value   = NULL;
+	int result                 = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_utf16_string(
+	          value,
+	          0,
+	          utf16_string,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_from_utf16_string(
+	          NULL,
+	          0,
+	          utf16_string,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_utf16_string(
+	          value,
+	          -1,
+	          utf16_string,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	result = libfvalue_value_copy_from_utf16_string(
+	          value,
+	          0,
+	          NULL,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_from_utf16_string(
+	          value,
+	          0,
+	          utf16_string,
+	          (size_t) SSIZE_MAX + 1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_get_utf16_string_size function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_get_utf16_string_size(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	size_t string_size       = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_get_utf16_string_size(
+	          value,
+	          0,
+	          &string_size,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_get_utf16_string_size(
+	          NULL,
+	          0,
+	          &string_size,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_get_utf16_string_size(
+	          value,
+	          -1,
+	          &string_size,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_get_utf16_string_size(
+	          value,
+	          0,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_utf16_string function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_utf16_string(
+     void )
+{
+	uint16_t utf16_string[ 32 ];
+
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_to_utf16_string(
+	          value,
+	          0,
+	          utf16_string,
+	          32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_to_utf16_string(
+	          NULL,
+	          0,
+	          utf16_string,
+	          32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_utf16_string_with_index function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_utf16_string_with_index(
+     void )
+{
+	uint16_t utf16_string[ 32 ];
+
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	size_t string_index      = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	string_index = 0;
+
+	result = libfvalue_value_copy_to_utf16_string_with_index(
+	          value,
+	          0,
+	          utf16_string,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	string_index = 0;
+
+	result = libfvalue_value_copy_to_utf16_string_with_index(
+	          NULL,
+	          0,
+	          utf16_string,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_to_utf16_string_with_index(
+	          value,
+	          -1,
+	          utf16_string,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_to_utf16_string_with_index(
+	          value,
+	          0,
+	          NULL,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_to_utf16_string_with_index(
+	          value,
+	          0,
+	          utf16_string,
+	          (size_t) SSIZE_MAX + 1,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_to_utf16_string_with_index(
+	          value,
+	          0,
+	          utf16_string,
+	          32,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_from_utf32_string function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_from_utf32_string(
+     void )
+{
+	uint32_t utf32_string[ 5 ] = { 't', 'e', 's', 't', 0 };
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_utf32_string(
+	          value,
+	          0,
+	          utf32_string,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_from_utf32_string(
+	          NULL,
+	          0,
+	          utf32_string,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_from_utf32_string(
+	          value,
+	          -1,
+	          utf32_string,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	result = libfvalue_value_copy_from_utf32_string(
+	          value,
+	          0,
+	          NULL,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_from_utf32_string(
+	          value,
+	          0,
+	          utf32_string,
+	          (size_t) SSIZE_MAX + 1,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_get_utf32_string_size function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_get_utf32_string_size(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	size_t string_size       = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_get_utf32_string_size(
+	          value,
+	          0,
+	          &string_size,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_get_utf32_string_size(
+	          NULL,
+	          0,
+	          &string_size,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_get_utf32_string_size(
+	          value,
+	          -1,
+	          &string_size,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_get_utf32_string_size(
+	          value,
+	          0,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_utf32_string function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_utf32_string(
+     void )
+{
+	uint32_t utf32_string[ 32 ];
+
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_value_copy_to_utf32_string(
+	          value,
+	          0,
+	          utf32_string,
+	          32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	result = libfvalue_value_copy_to_utf32_string(
+	          NULL,
+	          0,
+	          utf32_string,
+	          32,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_value_copy_to_utf32_string_with_index function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_value_copy_to_utf32_string_with_index(
+     void )
+{
+	uint32_t utf32_string[ 32 ];
+
+	libcerror_error_t *error = NULL;
+	libfvalue_value_t *value = NULL;
+	size_t string_index      = 0;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_value_initialize(
+	          &value,
+	          "test",
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	string_index = 0;
+
+	result = libfvalue_value_copy_to_utf32_string_with_index(
+	          value,
+	          0,
+	          utf32_string,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+/* TODO test with value entries */
+
+	/* Test error cases
+	 */
+	string_index = 0;
+
+	result = libfvalue_value_copy_to_utf32_string_with_index(
+	          NULL,
+	          0,
+	          utf32_string,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#ifdef TODO
+/* TODO fix test */
+	result = libfvalue_value_copy_to_utf32_string_with_index(
+	          value,
+	          -1,
+	          utf32_string,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_to_utf32_string_with_index(
+	          value,
+	          0,
+	          NULL,
+	          32,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_to_utf32_string_with_index(
+	          value,
+	          0,
+	          utf32_string,
+	          (size_t) SSIZE_MAX + 1,
+	          &string_index,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_value_copy_to_utf32_string_with_index(
+	          value,
+	          0,
+	          utf32_string,
+	          32,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+#endif
+
+	/* Clean up
+	 */
+	result = libfvalue_value_free(
+	          &value,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "value",
+	 value );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( value != NULL )
+	{
+		libfvalue_value_free(
+		 &value,
+		 NULL );
+	}
+	return( 0 );
+}
+
 /* The main program
  */
 #if defined( HAVE_WIDE_SYSTEM_CHARACTER )
@@ -6475,29 +8599,53 @@ int main(
 	 "libfvalue_value_copy_to_double",
 	 fvalue_test_value_copy_to_double );
 
-	/* TODO: add tests for libfvalue_value_copy_from_utf8_string */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_from_utf8_string",
+	 fvalue_test_value_copy_from_utf8_string );
 
-	/* TODO: add tests for libfvalue_value_get_utf8_string_size */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_get_utf8_string_size",
+	 fvalue_test_value_get_utf8_string_size );
 
-	/* TODO: add tests for libfvalue_value_copy_to_utf8_string */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_utf8_string",
+	 fvalue_test_value_copy_to_utf8_string );
 
-	/* TODO: add tests for libfvalue_value_copy_to_utf8_string_with_index */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_utf8_string_with_index",
+	 fvalue_test_value_copy_to_utf8_string_with_index );
 
-	/* TODO: add tests for libfvalue_value_copy_from_utf16_string */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_from_utf16_string",
+	 fvalue_test_value_copy_from_utf16_string );
 
-	/* TODO: add tests for libfvalue_value_get_utf16_string_size */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_get_utf16_string_size",
+	 fvalue_test_value_get_utf16_string_size );
 
-	/* TODO: add tests for libfvalue_value_copy_to_utf16_string */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_utf16_string",
+	 fvalue_test_value_copy_to_utf16_string );
 
-	/* TODO: add tests for libfvalue_value_copy_to_utf16_string_with_index */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_utf16_string_with_index",
+	 fvalue_test_value_copy_to_utf16_string_with_index );
 
-	/* TODO: add tests for libfvalue_value_copy_from_utf32_string */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_from_utf32_string",
+	 fvalue_test_value_copy_from_utf32_string );
 
-	/* TODO: add tests for libfvalue_value_get_utf32_string_size */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_get_utf32_string_size",
+	 fvalue_test_value_get_utf32_string_size );
 
-	/* TODO: add tests for libfvalue_value_copy_to_utf32_string */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_utf32_string",
+	 fvalue_test_value_copy_to_utf32_string );
 
-	/* TODO: add tests for libfvalue_value_copy_to_utf32_string_with_index */
+	FVALUE_TEST_RUN(
+	 "libfvalue_value_copy_to_utf32_string_with_index",
+	 fvalue_test_value_copy_to_utf32_string_with_index );
 
 	/* TODO: add tests for libfvalue_value_read_from_file_stream */
 
