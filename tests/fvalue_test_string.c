@@ -282,6 +282,16 @@ int fvalue_test_string_clone(
 	libfvalue_string_t *source_string      = NULL;
 	int result                             = 0;
 
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+	int number_of_malloc_fail_tests        = 2;
+	int number_of_memset_fail_tests        = 1;
+	int test_number                        = 0;
+
+#if defined( OPTIMIZATION_DISABLED )
+	int number_of_memcpy_fail_tests        = 2;
+#endif
+#endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
+
 	/* Initialize test
 	 */
 	result = libfvalue_string_initialize(
@@ -302,6 +312,29 @@ int fvalue_test_string_clone(
 	 error );
 
 	/* Test regular cases
+	 */
+
+	/* Test without source
+	 */
+	result = libfvalue_string_clone(
+	          &destination_string,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "destination_string",
+	 destination_string );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test without data
 	 */
 	result = libfvalue_string_clone(
 	          &destination_string,
@@ -338,9 +371,44 @@ int fvalue_test_string_clone(
 	 "error",
 	 error );
 
+	/* Test with data
+	 */
+	result = libfvalue_string_copy_from_byte_stream(
+	          source_string,
+	          (uint8_t *) "test",
+	          5,
+	          LIBFVALUE_CODEPAGE_ASCII,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
 	result = libfvalue_string_clone(
 	          &destination_string,
-	          NULL,
+	          source_string,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "destination_string",
+	 destination_string );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_string_free(
+	          &destination_string,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -398,82 +466,137 @@ int fvalue_test_string_clone(
 
 #if defined( HAVE_FVALUE_TEST_MEMORY )
 
-	/* Test libfvalue_string_clone with malloc failing
-	 */
-	fvalue_test_malloc_attempts_before_fail = 0;
-
-	result = libfvalue_string_clone(
-	          &destination_string,
-	          source_string,
-	          &error );
-
-	if( fvalue_test_malloc_attempts_before_fail != -1 )
+	for( test_number = 0;
+	     test_number < number_of_malloc_fail_tests;
+	     test_number++ )
 	{
-		fvalue_test_malloc_attempts_before_fail = -1;
+		/* Test libfvalue_string_clone with malloc failing
+		 */
+		fvalue_test_malloc_attempts_before_fail = test_number;
 
-		if( destination_string != NULL )
+		result = libfvalue_string_clone(
+		          &destination_string,
+		          source_string,
+		          &error );
+
+		if( fvalue_test_malloc_attempts_before_fail != -1 )
 		{
-			libfvalue_string_free(
-			 &destination_string,
-			 NULL );
+			fvalue_test_malloc_attempts_before_fail = -1;
+
+			if( destination_string != NULL )
+			{
+				libfvalue_string_free(
+				 &destination_string,
+				 NULL );
+			}
+		}
+		else
+		{
+			FVALUE_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			FVALUE_TEST_ASSERT_IS_NULL(
+			 "destination_string",
+			 destination_string );
+
+			FVALUE_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
 		}
 	}
-	else
+#if defined( OPTIMIZATION_DISABLED )
+	for( test_number = 0;
+	     test_number < number_of_memcpy_fail_tests;
+	     test_number++ )
 	{
-		FVALUE_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		/* Test libfvalue_string_clone with memcpy failing
+		 */
+		fvalue_test_memcpy_attempts_before_fail = test_number;
 
-		FVALUE_TEST_ASSERT_IS_NULL(
-		 "destination_string",
-		 destination_string );
+		result = libfvalue_string_clone(
+		          &destination_string,
+		          source_string,
+		          &error );
 
-		FVALUE_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
-
-		libcerror_error_free(
-		 &error );
-	}
-
-	/* Test libfvalue_string_clone with memcpy failing
-	 */
-	fvalue_test_memcpy_attempts_before_fail = 0;
-
-	result = libfvalue_string_clone(
-	          &destination_string,
-	          source_string,
-	          &error );
-
-	if( fvalue_test_memcpy_attempts_before_fail != -1 )
-	{
-		fvalue_test_memcpy_attempts_before_fail = -1;
-
-		if( destination_string != NULL )
+		if( fvalue_test_memcpy_attempts_before_fail != -1 )
 		{
-			libfvalue_string_free(
-			 &destination_string,
-			 NULL );
+			fvalue_test_memcpy_attempts_before_fail = -1;
+
+			if( destination_string != NULL )
+			{
+				libfvalue_string_free(
+				 &destination_string,
+				 NULL );
+			}
+		}
+		else
+		{
+			FVALUE_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			FVALUE_TEST_ASSERT_IS_NULL(
+			 "destination_string",
+			 destination_string );
+
+			FVALUE_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
 		}
 	}
-	else
+#endif /* defined( OPTIMIZATION_DISABLED ) */
+
+	for( test_number = 0;
+	     test_number < number_of_memset_fail_tests;
+	     test_number++ )
 	{
-		FVALUE_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		/* Test libfvalue_string_clone with memset failing
+		 */
+		fvalue_test_memset_attempts_before_fail = test_number;
 
-		FVALUE_TEST_ASSERT_IS_NULL(
-		 "destination_string",
-		 destination_string );
+		result = libfvalue_string_clone(
+		          &destination_string,
+		          source_string,
+		          &error );
 
-		FVALUE_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+		if( fvalue_test_memset_attempts_before_fail != -1 )
+		{
+			fvalue_test_memset_attempts_before_fail = -1;
 
-		libcerror_error_free(
-		 &error );
+			if( destination_string != NULL )
+			{
+				libfvalue_string_free(
+				 &destination_string,
+				 NULL );
+			}
+		}
+		else
+		{
+			FVALUE_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			FVALUE_TEST_ASSERT_IS_NULL(
+			 "destination_string",
+			 destination_string );
+
+			FVALUE_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
+		}
 	}
 #endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
 
@@ -550,6 +673,8 @@ int fvalue_test_string_copy_from_byte_stream(
 
 	/* Test regular cases
 	 */
+	/* Test without data
+	 */
 	result = libfvalue_string_copy_from_byte_stream(
 	          string,
 	          (uint8_t *) "12345678",
@@ -565,6 +690,24 @@ int fvalue_test_string_copy_from_byte_stream(
 	FVALUE_TEST_ASSERT_IS_NOT_NULL(
 	 "string->data",
 	 string->data );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test with data
+	 */
+	result = libfvalue_string_copy_from_byte_stream(
+	          string,
+	          (uint8_t *) "test",
+	          5,
+	          LIBFVALUE_CODEPAGE_ASCII,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -648,6 +791,71 @@ int fvalue_test_string_copy_from_byte_stream(
 	libcerror_error_free(
 	 &error );
 
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+
+	/* Test libfvalue_string_copy_from_byte_stream with malloc failing
+	 */
+	fvalue_test_malloc_attempts_before_fail = 0;
+
+	result = libfvalue_string_copy_from_byte_stream(
+	          string,
+	          (uint8_t *) "12345678",
+	          9,
+	          LIBFVALUE_CODEPAGE_ASCII,
+	          &error );
+
+	if( fvalue_test_malloc_attempts_before_fail != -1 )
+	{
+		fvalue_test_malloc_attempts_before_fail = -1;
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#if defined( OPTIMIZATION_DISABLED )
+
+	/* Test libfvalue_string_copy_from_byte_stream with memcpy failing
+	 */
+	fvalue_test_memcpy_attempts_before_fail = 0;
+
+	result = libfvalue_string_copy_from_byte_stream(
+	          string,
+	          (uint8_t *) "12345678",
+	          9,
+	          LIBFVALUE_CODEPAGE_ASCII,
+	          &error );
+
+	if( fvalue_test_memcpy_attempts_before_fail != -1 )
+	{
+		fvalue_test_memcpy_attempts_before_fail = -1;
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( OPTIMIZATION_DISABLED ) */
+#endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
+
 	/* Clean up
 	 */
 	result = libfvalue_string_free(
@@ -690,6 +898,9 @@ on_error:
 int fvalue_test_string_copy_from_utf8_string_with_index(
      void )
 {
+	uint8_t utf8_error_string[ 4 ] = {
+		0xff, 0xff, 0xff, 0 };
+
 	uint8_t utf8_string[ 9 ] = {
 		'1', '2', '3', '4', '5', '6', '7', '8', 0 };
 
@@ -1081,6 +1292,201 @@ int fvalue_test_string_copy_from_utf8_string_with_index(
 	libcerror_error_free(
 	 &error );
 
+	/* Test libfvalue_string_copy_from_utf8_string_with_index with libuna_utf16_stream_size_from_utf8 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
+
+	result = libfvalue_string_copy_from_utf8_string_with_index(
+	          string,
+	          utf8_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf8_string_with_index with libuna_utf32_stream_size_from_utf8 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF32_BIG_ENDIAN;
+
+	result = libfvalue_string_copy_from_utf8_string_with_index(
+	          string,
+	          utf8_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf8_string_with_index with libuna_utf7_stream_size_from_utf8 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF7;
+
+	result = libfvalue_string_copy_from_utf8_string_with_index(
+	          string,
+	          utf8_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf8_string_with_index with libuna_utf8_stream_size_from_utf8 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF8;
+
+	result = libfvalue_string_copy_from_utf8_string_with_index(
+	          string,
+	          utf8_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf8_string_with_index with libuna_byte_stream_size_from_utf8 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_ASCII;
+
+	result = libfvalue_string_copy_from_utf8_string_with_index(
+	          string,
+	          utf8_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+
+	/* Test libfvalue_string_copy_from_utf8_string_with_index with malloc failing
+	 */
+	fvalue_test_malloc_attempts_before_fail = 0;
+
+	string->codepage = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
+
+	result = libfvalue_string_copy_from_utf8_string_with_index(
+	          string,
+	          utf8_string,
+	          9,
+	          &string_index,
+	          0,
+	          &error );
+
+	if( fvalue_test_malloc_attempts_before_fail != -1 )
+	{
+		fvalue_test_malloc_attempts_before_fail = -1;
+
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
+
+		FVALUE_TEST_ASSERT_EQUAL_SIZE(
+		 "string_index",
+		 string_index,
+		 (size_t) 9 );
+
+		FVALUE_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
+
 	/* Clean up
 	 */
 	result = libfvalue_string_free(
@@ -1463,6 +1869,9 @@ on_error:
 int fvalue_test_string_copy_from_utf16_string_with_index(
      void )
 {
+	uint16_t utf16_error_string[ 4 ] = {
+		0xd800, 0xd800, 0xffff, 0 };
+
 	uint16_t utf16_string[ 9 ] = {
 		'1', '2', '3', '4', '5', '6', '7', '8', 0 };
 
@@ -1854,6 +2263,206 @@ int fvalue_test_string_copy_from_utf16_string_with_index(
 	libcerror_error_free(
 	 &error );
 
+#ifdef TODO
+/* TODO fix tests */
+
+	/* Test libfvalue_string_copy_from_utf16_string_with_index with libuna_utf16_stream_size_from_utf16 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
+
+	result = libfvalue_string_copy_from_utf16_string_with_index(
+	          string,
+	          utf16_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf16_string_with_index with libuna_utf32_stream_size_from_utf16 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF32_BIG_ENDIAN;
+
+	result = libfvalue_string_copy_from_utf16_string_with_index(
+	          string,
+	          utf16_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf16_string_with_index with libuna_utf7_stream_size_from_utf16 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF7;
+
+	result = libfvalue_string_copy_from_utf16_string_with_index(
+	          string,
+	          utf16_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf16_string_with_index with libuna_utf8_stream_size_from_utf16 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF8;
+
+	result = libfvalue_string_copy_from_utf16_string_with_index(
+	          string,
+	          utf16_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf16_string_with_index with libuna_byte_stream_size_from_utf16 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_ASCII;
+
+	result = libfvalue_string_copy_from_utf16_string_with_index(
+	          string,
+	          utf16_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#endif /* TODO */
+
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+
+	/* Test libfvalue_string_copy_from_utf16_string_with_index with malloc failing
+	 */
+	fvalue_test_malloc_attempts_before_fail = 0;
+
+	string->codepage = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
+
+	result = libfvalue_string_copy_from_utf16_string_with_index(
+	          string,
+	          utf16_string,
+	          9,
+	          &string_index,
+	          0,
+	          &error );
+
+	if( fvalue_test_malloc_attempts_before_fail != -1 )
+	{
+		fvalue_test_malloc_attempts_before_fail = -1;
+
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
+
+		FVALUE_TEST_ASSERT_EQUAL_SIZE(
+		 "string_index",
+		 string_index,
+		 (size_t) 9 );
+
+		FVALUE_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
+
 	/* Clean up
 	 */
 	result = libfvalue_string_free(
@@ -2236,6 +2845,9 @@ on_error:
 int fvalue_test_string_copy_from_utf32_string_with_index(
      void )
 {
+	uint32_t utf32_error_string[ 4 ] = {
+		0xd800d8ffUL, 0xffffffffUL, 0xffffffffUL, 0 };
+
 	uint32_t utf32_string[ 9 ] = {
 		'1', '2', '3', '4', '5', '6', '7', '8', 0 };
 
@@ -2626,6 +3238,206 @@ int fvalue_test_string_copy_from_utf32_string_with_index(
 
 	libcerror_error_free(
 	 &error );
+
+#ifdef TODO
+/* TODO fix tests */
+
+	/* Test libfvalue_string_copy_from_utf32_string_with_index with libuna_utf16_stream_size_from_utf32 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
+
+	result = libfvalue_string_copy_from_utf32_string_with_index(
+	          string,
+	          utf32_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf32_string_with_index with libuna_utf32_stream_size_from_utf32 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF32_BIG_ENDIAN;
+
+	result = libfvalue_string_copy_from_utf32_string_with_index(
+	          string,
+	          utf32_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf32_string_with_index with libuna_utf7_stream_size_from_utf32 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF7;
+
+	result = libfvalue_string_copy_from_utf32_string_with_index(
+	          string,
+	          utf32_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf32_string_with_index with libuna_utf8_stream_size_from_utf32 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_UTF8;
+
+	result = libfvalue_string_copy_from_utf32_string_with_index(
+	          string,
+	          utf32_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test libfvalue_string_copy_from_utf32_string_with_index with libuna_byte_stream_size_from_utf32 failing
+	 */
+	string->codepage = LIBFVALUE_CODEPAGE_ASCII;
+
+	result = libfvalue_string_copy_from_utf32_string_with_index(
+	          string,
+	          utf32_error_string,
+	          4,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 0 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#endif /* TODO */
+
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+
+	/* Test libfvalue_string_copy_from_utf32_string_with_index with malloc failing
+	 */
+	fvalue_test_malloc_attempts_before_fail = 0;
+
+	string->codepage = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
+
+	result = libfvalue_string_copy_from_utf32_string_with_index(
+	          string,
+	          utf32_string,
+	          9,
+	          &string_index,
+	          0,
+	          &error );
+
+	if( fvalue_test_malloc_attempts_before_fail != -1 )
+	{
+		fvalue_test_malloc_attempts_before_fail = -1;
+
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
+
+		FVALUE_TEST_ASSERT_EQUAL_SIZE(
+		 "string_index",
+		 string_index,
+		 (size_t) 9 );
+
+		FVALUE_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
 
 	/* Clean up
 	 */
