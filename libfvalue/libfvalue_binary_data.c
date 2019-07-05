@@ -304,6 +304,17 @@ int libfvalue_binary_data_get_utf8_string_size(
 
 		return( -1 );
 	}
+	if( utf8_string_size == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid UTF-8 string size.",
+		 function );
+
+		return( -1 );
+	}
 	supported_flags = 0x000000ffUL
 	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_LOWER
 	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER;
@@ -331,17 +342,6 @@ int libfvalue_binary_data_get_utf8_string_size(
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported string format type.",
-		 function );
-
-		return( -1 );
-	}
-	if( utf8_string_size == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-8 string size.",
 		 function );
 
 		return( -1 );
@@ -456,37 +456,6 @@ int libfvalue_binary_data_copy_to_utf8_string_with_index(
 
 		return( -1 );
 	}
-	supported_flags = 0x000000ffUL
-	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_LOWER
-	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER;
-
-	if( ( string_format_flags & ~( supported_flags ) ) != 0 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported string format flags: 0x%08" PRIx32 ".",
-		 function,
-		 string_format_flags );
-
-		return( -1 );
-	}
-	string_format_type = string_format_flags & 0x000000ffUL;
-
-	if( ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16 )
-	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32 )
-	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64 ) )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported string format type.",
-		 function );
-
-		return( -1 );
-	}
 	if( utf8_string == NULL )
 	{
 		libcerror_error_set(
@@ -527,6 +496,37 @@ int libfvalue_binary_data_copy_to_utf8_string_with_index(
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: UTF-8 string is too small.",
+		 function );
+
+		return( -1 );
+	}
+	supported_flags = 0x000000ffUL
+	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_LOWER
+	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER;
+
+	if( ( string_format_flags & ~( supported_flags ) ) != 0 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported string format flags: 0x%08" PRIx32 ".",
+		 function,
+		 string_format_flags );
+
+		return( -1 );
+	}
+	string_format_type = string_format_flags & 0x000000ffUL;
+
+	if( ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16 )
+	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32 )
+	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64 ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported string format type.",
 		 function );
 
 		return( -1 );
@@ -643,6 +643,17 @@ int libfvalue_binary_data_get_utf16_string_size(
 
 		return( -1 );
 	}
+	if( utf16_string_size == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid UTF-16 string size.",
+		 function );
+
+		return( -1 );
+	}
 	supported_flags = 0x000000ffUL
 	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_LOWER
 	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER;
@@ -670,17 +681,6 @@ int libfvalue_binary_data_get_utf16_string_size(
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported string format type.",
-		 function );
-
-		return( -1 );
-	}
-	if( utf16_string_size == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-16 string size.",
 		 function );
 
 		return( -1 );
@@ -858,70 +858,6 @@ int libfvalue_binary_data_copy_to_utf16_string_with_index(
 
 		return( -1 );
 	}
-	if( utf16_string_size > (size_t) SSIZE_MAX )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: invalid UTF-16 string size value exceeds maximum.",
-		 function );
-
-		return( -1 );
-	}
-	if( utf16_string_index == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-16 string index.",
-		 function );
-
-		return( -1 );
-	}
-	if( *utf16_string_index > utf16_string_size )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-		 "%s: UTF-16 string is too small.",
-		 function );
-
-		return( -1 );
-	}
-	supported_flags = 0x000000ffUL
-	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_LOWER
-	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER;
-
-	if( ( string_format_flags & ~( supported_flags ) ) != 0 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported string format flags: 0x%08" PRIx32 ".",
-		 function,
-		 string_format_flags );
-
-		return( -1 );
-	}
-	string_format_type = string_format_flags & 0x000000ffUL;
-
-	if( ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16 )
-	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32 )
-	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64 ) )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported string format type.",
-		 function );
-
-		return( -1 );
-	}
 	if( utf16_string == NULL )
 	{
 		libcerror_error_set(
@@ -962,6 +898,37 @@ int libfvalue_binary_data_copy_to_utf16_string_with_index(
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: UTF-16 string is too small.",
+		 function );
+
+		return( -1 );
+	}
+	supported_flags = 0x000000ffUL
+	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_LOWER
+	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER;
+
+	if( ( string_format_flags & ~( supported_flags ) ) != 0 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported string format flags: 0x%08" PRIx32 ".",
+		 function,
+		 string_format_flags );
+
+		return( -1 );
+	}
+	string_format_type = string_format_flags & 0x000000ffUL;
+
+	if( ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16 )
+	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32 )
+	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64 ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported string format type.",
 		 function );
 
 		return( -1 );
@@ -1139,6 +1106,17 @@ int libfvalue_binary_data_get_utf32_string_size(
 
 		return( -1 );
 	}
+	if( utf32_string_size == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid UTF-32 string size.",
+		 function );
+
+		return( -1 );
+	}
 	supported_flags = 0x000000ffUL
 	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_LOWER
 	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER;
@@ -1166,17 +1144,6 @@ int libfvalue_binary_data_get_utf32_string_size(
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported string format type.",
-		 function );
-
-		return( -1 );
-	}
-	if( utf32_string_size == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-32 string size.",
 		 function );
 
 		return( -1 );
@@ -1354,70 +1321,6 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 
 		return( -1 );
 	}
-	if( utf32_string_size > (size_t) SSIZE_MAX )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: invalid UTF-32 string size value exceeds maximum.",
-		 function );
-
-		return( -1 );
-	}
-	if( utf32_string_index == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-32 string index.",
-		 function );
-
-		return( -1 );
-	}
-	if( *utf32_string_index > utf32_string_size )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-		 "%s: UTF-32 string is too small.",
-		 function );
-
-		return( -1 );
-	}
-	supported_flags = 0x000000ffUL
-	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_LOWER
-	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER;
-
-	if( ( string_format_flags & ~( supported_flags ) ) != 0 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported string format flags: 0x%08" PRIx32 ".",
-		 function,
-		 string_format_flags );
-
-		return( -1 );
-	}
-	string_format_type = string_format_flags & 0x000000ffUL;
-
-	if( ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16 )
-	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32 )
-	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64 ) )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported string format type.",
-		 function );
-
-		return( -1 );
-	}
 	if( utf32_string == NULL )
 	{
 		libcerror_error_set(
@@ -1458,6 +1361,37 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: UTF-32 string is too small.",
+		 function );
+
+		return( -1 );
+	}
+	supported_flags = 0x000000ffUL
+	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_LOWER
+	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER;
+
+	if( ( string_format_flags & ~( supported_flags ) ) != 0 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported string format flags: 0x%08" PRIx32 ".",
+		 function,
+		 string_format_flags );
+
+		return( -1 );
+	}
+	string_format_type = string_format_flags & 0x000000ffUL;
+
+	if( ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16 )
+	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32 )
+	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64 ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported string format type.",
 		 function );
 
 		return( -1 );

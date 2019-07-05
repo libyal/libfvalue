@@ -436,6 +436,7 @@ int fvalue_test_binary_data_clone(
 		libcerror_error_free(
 		 &error );
 	}
+#if defined( OPTIMIZATION_DISABLED )
 
 	/* Test libfvalue_binary_data_clone with memcpy failing
 	 */
@@ -475,6 +476,7 @@ int fvalue_test_binary_data_clone(
 		libcerror_error_free(
 		 &error );
 	}
+#endif /* defined( OPTIMIZATION_DISABLED ) */
 #endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
 
 	/* Clean up
@@ -878,6 +880,12 @@ int fvalue_test_binary_data_get_utf8_string_size(
 	libcerror_error_free(
 	 &error );
 
+	/* TODO test with libuna_base16_stream_size_from_byte_stream failing */
+
+	/* TODO test with libuna_base32_stream_size_from_byte_stream failing */
+
+	/* TODO test with libuna_base64_stream_size_from_byte_stream failing */
+
 	/* Clean up
 	 */
 	result = libfvalue_binary_data_free(
@@ -1254,6 +1262,12 @@ int fvalue_test_binary_data_copy_to_utf8_string_with_index(
 	libcerror_error_free(
 	 &error );
 
+	/* TODO test with libuna_base16_stream_with_index_copy_from_byte_stream failing */
+
+	/* TODO test with libuna_base32_stream_with_index_copy_from_byte_stream failing */
+
+	/* TODO test with libuna_base64_stream_with_index_copy_from_byte_stream failing */
+
 	/* Clean up
 	 */
 	result = libfvalue_binary_data_free(
@@ -1398,6 +1412,8 @@ int fvalue_test_binary_data_get_utf16_string_size(
 	 "error",
 	 error );
 
+	/* TODO test with big endian byte order */
+
 	/* Test error cases
 	 */
 	result = libfvalue_binary_data_get_utf16_string_size(
@@ -1471,6 +1487,14 @@ int fvalue_test_binary_data_get_utf16_string_size(
 
 	libcerror_error_free(
 	 &error );
+
+	/* TODO test with unsupported byte order */
+
+	/* TODO test with libuna_base16_stream_size_from_byte_stream failing */
+
+	/* TODO test with libuna_base32_stream_size_from_byte_stream failing */
+
+	/* TODO test with libuna_base64_stream_size_from_byte_stream failing */
 
 	/* Clean up
 	 */
