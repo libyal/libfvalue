@@ -530,7 +530,7 @@ int fvalue_test_data_handle_clone(
 
 #if defined( HAVE_FVALUE_TEST_MEMORY )
 
-	/* Test libfvalue_data_handle_clone with malloc failing
+	/* Test libfvalue_data_handle_clone with malloc failing in libfvalue_data_handle_initialize
 	 */
 	fvalue_test_malloc_attempts_before_fail = 0;
 
@@ -568,8 +568,9 @@ int fvalue_test_data_handle_clone(
 		libcerror_error_free(
 		 &error );
 	}
+#if defined( OPTIMIZATION_DISABLED )
 
-	/* Test libfvalue_data_handle_clone with memcpy failing
+	/* Test libfvalue_data_handle_clone with memcpy failing in libfvalue_data_handle_set_data
 	 */
 	fvalue_test_memcpy_attempts_before_fail = 0;
 
@@ -607,6 +608,7 @@ int fvalue_test_data_handle_clone(
 		libcerror_error_free(
 		 &error );
 	}
+#endif /* defined( OPTIMIZATION_DISABLED ) */
 #endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
 
 	/* Clean up
@@ -965,6 +967,73 @@ int fvalue_test_data_handle_set_data(
 
 	libcerror_error_free(
 	 &error );
+
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+
+	/* Test libfvalue_data_handle_set_data with malloc failing
+	 */
+	fvalue_test_malloc_attempts_before_fail = 0;
+
+	result = libfvalue_data_handle_set_data(
+	          data_handle,
+	          data,
+	          32,
+	          0,
+	          LIBFVALUE_VALUE_DATA_FLAG_MANAGED,
+	          &error );
+
+	if( fvalue_test_malloc_attempts_before_fail != -1 )
+	{
+		fvalue_test_malloc_attempts_before_fail = -1;
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#if defined( OPTIMIZATION_DISABLED )
+
+	/* Test libfvalue_data_handle_set_data with memcpy failing
+	 */
+	fvalue_test_memcpy_attempts_before_fail = 0;
+
+	result = libfvalue_data_handle_set_data(
+	          data_handle,
+	          data,
+	          32,
+	          0,
+	          LIBFVALUE_VALUE_DATA_FLAG_MANAGED,
+	          &error );
+
+	if( fvalue_test_memcpy_attempts_before_fail != -1 )
+	{
+		fvalue_test_memcpy_attempts_before_fail = -1;
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( OPTIMIZATION_DISABLED ) */
+#endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
 
 	/* Clean up
 	 */

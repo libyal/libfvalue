@@ -35,6 +35,206 @@
 
 #include "../libfvalue/libfvalue_table.h"
 
+/* Tests the libfvalue_table_initialize function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_table_initialize(
+     void )
+{
+	libcerror_error_t *error        = NULL;
+	libfvalue_table_t *table        = NULL;
+	int result                      = 0;
+
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+	int number_of_malloc_fail_tests = 2;
+	int number_of_memset_fail_tests = 1;
+	int test_number                 = 0;
+#endif
+
+	/* Test regular cases
+	 */
+	result = libfvalue_table_initialize(
+	          &table,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "table",
+	 table );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_table_free(
+	          &table,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "table",
+	 table );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_table_initialize(
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	table = (libfvalue_table_t *) 0x12345678UL;
+
+	result = libfvalue_table_initialize(
+	          &table,
+	          0,
+	          &error );
+
+	table = NULL;
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+
+	for( test_number = 0;
+	     test_number < number_of_malloc_fail_tests;
+	     test_number++ )
+	{
+		/* Test libfvalue_table_initialize with malloc failing
+		 */
+		fvalue_test_malloc_attempts_before_fail = test_number;
+
+		result = libfvalue_table_initialize(
+		          &table,
+		          0,
+		          &error );
+
+		if( fvalue_test_malloc_attempts_before_fail != -1 )
+		{
+			fvalue_test_malloc_attempts_before_fail = -1;
+
+			if( table != NULL )
+			{
+				libfvalue_table_free(
+				 &table,
+				 NULL );
+			}
+		}
+		else
+		{
+			FVALUE_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			FVALUE_TEST_ASSERT_IS_NULL(
+			 "table",
+			 table );
+
+			FVALUE_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
+		}
+	}
+	for( test_number = 0;
+	     test_number < number_of_memset_fail_tests;
+	     test_number++ )
+	{
+		/* Test libfvalue_table_initialize with memset failing
+		 */
+		fvalue_test_memset_attempts_before_fail = test_number;
+
+		result = libfvalue_table_initialize(
+		          &table,
+		          0,
+		          &error );
+
+		if( fvalue_test_memset_attempts_before_fail != -1 )
+		{
+			fvalue_test_memset_attempts_before_fail = -1;
+
+			if( table != NULL )
+			{
+				libfvalue_table_free(
+				 &table,
+				 NULL );
+			}
+		}
+		else
+		{
+			FVALUE_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			FVALUE_TEST_ASSERT_IS_NULL(
+			 "table",
+			 table );
+
+			FVALUE_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
+		}
+	}
+#endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( table != NULL )
+	{
+		libfvalue_table_free(
+		 &table,
+		 NULL );
+	}
+	return( 0 );
+}
+
 /* Tests the libfvalue_table_free function
  * Returns 1 if successful or 0 if not
  */
@@ -135,6 +335,161 @@ int fvalue_test_table_empty(
 
 	libcerror_error_free(
 	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_table_free(
+	          &table,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "table",
+	 table );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( table != NULL )
+	{
+		libfvalue_table_free(
+		 &table,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_table_resize function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_table_resize(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	libfvalue_table_t *table = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_table_initialize(
+	          &table,
+	          10,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "table",
+	 table );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test libfvalue_table_resize to resize to a larger number of entries
+	 */
+	result = libfvalue_table_resize(
+	          table,
+	          35,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test libfvalue_table_resize to resize to a smaller number of entries
+	 */
+	result = libfvalue_table_resize(
+	          table,
+	          4,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_table_resize(
+	          NULL,
+	          10,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_table_resize(
+	          table,
+	          -10,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#if INT_MAX == SSIZE_MAX
+
+	result = libfvalue_table_resize(
+	          table,
+	          INT_MAX,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#endif /* INT_MAX == SSIZE_MAX */
 
 	/* Clean up
 	 */
@@ -338,19 +693,56 @@ int fvalue_test_table_clone(
 		libcerror_error_free(
 		 &error );
 	}
-
-	/* Test libfvalue_table_clone with memcpy failing
+	/* Test libfvalue_table_clone with malloc failing in libcdata_array_clone
 	 */
-	fvalue_test_memcpy_attempts_before_fail = 0;
+	fvalue_test_malloc_attempts_before_fail = 1;
 
 	result = libfvalue_table_clone(
 	          &destination_table,
 	          source_table,
 	          &error );
 
-	if( fvalue_test_memcpy_attempts_before_fail != -1 )
+	if( fvalue_test_malloc_attempts_before_fail != -1 )
 	{
-		fvalue_test_memcpy_attempts_before_fail = -1;
+		fvalue_test_malloc_attempts_before_fail = -1;
+
+		if( destination_table != NULL )
+		{
+			libfvalue_table_free(
+			 &destination_table,
+			 NULL );
+		}
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NULL(
+		 "destination_table",
+		 destination_table );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+	/* Test libfvalue_table_clone with memset failing
+	 */
+	fvalue_test_memset_attempts_before_fail = 0;
+
+	result = libfvalue_table_clone(
+	          &destination_table,
+	          source_table,
+	          &error );
+
+	if( fvalue_test_memset_attempts_before_fail != -1 )
+	{
+		fvalue_test_memset_attempts_before_fail = -1;
 
 		if( destination_table != NULL )
 		{
@@ -416,161 +808,6 @@ on_error:
 	{
 		libfvalue_table_free(
 		 &source_table,
-		 NULL );
-	}
-	return( 0 );
-}
-
-/* Tests the libfvalue_table_resize function
- * Returns 1 if successful or 0 if not
- */
-int fvalue_test_table_resize(
-     void )
-{
-	libcerror_error_t *error = NULL;
-	libfvalue_table_t *table = NULL;
-	int result               = 0;
-
-	/* Initialize test
-	 */
-	result = libfvalue_table_initialize(
-	          &table,
-	          10,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	FVALUE_TEST_ASSERT_IS_NOT_NULL(
-	 "table",
-	 table );
-
-	FVALUE_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
-	/* Test libfvalue_table_resize to resize to a larger number of entries
-	 */
-	result = libfvalue_table_resize(
-	          table,
-	          35,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	FVALUE_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
-	/* Test libfvalue_table_resize to resize to a smaller number of entries
-	 */
-	result = libfvalue_table_resize(
-	          table,
-	          4,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	FVALUE_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
-	/* Test error cases
-	 */
-	result = libfvalue_table_resize(
-	          NULL,
-	          10,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	FVALUE_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-	result = libfvalue_table_resize(
-	          table,
-	          -10,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	FVALUE_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-#if INT_MAX == SSIZE_MAX
-
-	result = libfvalue_table_resize(
-	          table,
-	          INT_MAX,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	FVALUE_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-#endif /* INT_MAX == SSIZE_MAX */
-
-	/* Clean up
-	 */
-	result = libfvalue_table_free(
-	          &table,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	FVALUE_TEST_ASSERT_IS_NULL(
-	 "table",
-	 table );
-
-	FVALUE_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
-	return( 1 );
-
-on_error:
-	if( error != NULL )
-	{
-		libcerror_error_free(
-		 &error );
-	}
-	if( table != NULL )
-	{
-		libfvalue_table_free(
-		 &table,
 		 NULL );
 	}
 	return( 0 );
@@ -645,6 +882,218 @@ int fvalue_test_table_get_number_of_values(
 	result = libfvalue_table_get_number_of_values(
 	          table,
 	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_table_free(
+	          &table,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "table",
+	 table );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( table != NULL )
+	{
+		libfvalue_table_free(
+		 &table,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_table_get_index_by_identifier function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_table_get_index_by_identifier(
+     void )
+{
+	uint8_t value_identifier[ 5 ] = { 't', 'e', 's', 't', 0 };
+	libcerror_error_t *error      = NULL;
+	libfvalue_table_t *table      = NULL;
+	int result                    = 0;
+	int value_index               = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_table_initialize(
+	          &table,
+	          10,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "table",
+	 table );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+#ifdef TODO
+/* TODO set table value with identifier */
+	result = libfvalue_table_get_index_by_identifier(
+	          table,
+	          value_identifier,
+	          5,
+	          &value_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+	/* Test error cases
+	 */
+	result = libfvalue_table_get_index_by_identifier(
+	          NULL,
+	          value_identifier,
+	          5,
+	          &value_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_table_get_index_by_identifier(
+	          table,
+	          NULL,
+	          5,
+	          &value_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_table_get_index_by_identifier(
+	          table,
+	          value_identifier,
+	          0,
+	          &value_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_table_get_index_by_identifier(
+	          table,
+	          value_identifier,
+	          (size_t) SSIZE_MAX + 1,
+	          &value_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_table_get_index_by_identifier(
+	          table,
+	          value_identifier,
+	          5,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_table_get_index_by_identifier(
+	          table,
+	          value_identifier,
+	          5,
+	          &value_index,
+	          0xff,
 	          &error );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
@@ -868,6 +1317,158 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the libfvalue_table_get_value_by_identifier function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_table_get_value_by_identifier(
+     void )
+{
+	uint8_t value_identifier[ 5 ] = { 't', 'e', 's', 't', 0 };
+	libcerror_error_t *error      = NULL;
+	libfvalue_table_t *table      = NULL;
+	libfvalue_value_t *value      = NULL;
+	int result                    = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_table_initialize(
+	          &table,
+	          10,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "table",
+	 table );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+#ifdef TODO
+/* TODO set table value with identifier */
+	result = libfvalue_table_get_value_by_identifier(
+	          table,
+	          value_identifier,
+	          5,
+	          &value,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+#endif
+
+	/* Test error cases
+	 */
+	result = libfvalue_table_get_value_by_identifier(
+	          NULL,
+	          value_identifier,
+	          5,
+	          &value,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_table_get_value_by_identifier(
+	          table,
+	          NULL,
+	          5,
+	          &value,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_table_get_value_by_identifier(
+	          table,
+	          value_identifier,
+	          5,
+	          NULL,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = libfvalue_table_free(
+	          &table,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "table",
+	 table );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( table != NULL )
+	{
+		libfvalue_table_free(
+		 &table,
+		 NULL );
+	}
+	return( 0 );
+}
+
 /* The main program
  */
 #if defined( HAVE_WIDE_SYSTEM_CHARACTER )
@@ -884,20 +1485,12 @@ int main(
 	FVALUE_TEST_UNREFERENCED_PARAMETER( argv )
 
 	FVALUE_TEST_RUN(
+	 "libfvalue_table_initialize",
+	 fvalue_test_table_initialize );
+
+	FVALUE_TEST_RUN(
 	 "libfvalue_table_free",
 	 fvalue_test_table_free );
-
-	FVALUE_TEST_RUN(
-	 "libfvalue_table_empty",
-	 fvalue_test_table_empty );
-
-	FVALUE_TEST_RUN(
-	 "libfvalue_table_clone",
-	 fvalue_test_table_clone );
-
-	FVALUE_TEST_RUN(
-	 "libfvalue_table_resize",
-	 fvalue_test_table_resize );
 
 #if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT )
 
@@ -906,16 +1499,32 @@ int main(
 #endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
 
 	FVALUE_TEST_RUN(
+	 "libfvalue_table_empty",
+	 fvalue_test_table_empty );
+
+	FVALUE_TEST_RUN(
+	 "libfvalue_table_resize",
+	 fvalue_test_table_resize );
+
+	FVALUE_TEST_RUN(
+	 "libfvalue_table_clone",
+	 fvalue_test_table_clone );
+
+	FVALUE_TEST_RUN(
 	 "libfvalue_table_get_number_of_values",
 	 fvalue_test_table_get_number_of_values );
 
-	/* TODO: add tests for libfvalue_table_get_index_by_identifier */
+	FVALUE_TEST_RUN(
+	 "libfvalue_table_get_index_by_identifier",
+	 fvalue_test_table_get_index_by_identifier );
 
 	FVALUE_TEST_RUN(
 	 "libfvalue_table_get_value_by_index",
 	 fvalue_test_table_get_value_by_index );
 
-	/* TODO: add tests for libfvalue_table_get_value_by_identifier */
+	FVALUE_TEST_RUN(
+	 "libfvalue_table_get_value_by_identifier",
+	 fvalue_test_table_get_value_by_identifier );
 
 	/* TODO: add tests for libfvalue_table_set_value_by_index */
 

@@ -93,7 +93,10 @@ int libfvalue_table_initialize(
 		 "%s: unable to clear values table.",
 		 function );
 
-		goto on_error;
+		memory_free(
+		 internal_table );
+
+		return( -1 );
 	}
 	if( libcdata_array_initialize(
 	     &( internal_table->values ),
