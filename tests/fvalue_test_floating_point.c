@@ -593,8 +593,6 @@ int fvalue_test_floating_point_copy_from_byte_stream(
 	 "error",
 	 error );
 
-#if defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-
 	result = libfvalue_floating_point_copy_from_byte_stream(
 	          floating_point,
 	          (uint8_t *) "\xa4\x70\x45\x41",
@@ -607,16 +605,23 @@ int fvalue_test_floating_point_copy_from_byte_stream(
 	 result,
 	 1 );
 
-	FVALUE_TEST_ASSERT_EQUAL_UINT64(
-	 "floating_point->value",
-	 floating_point->value,
-	 (uint64_t) 0x414570a4UL );
-
+	if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
+	{
+		FVALUE_TEST_ASSERT_EQUAL_UINT64(
+		 "floating_point->value",
+		 floating_point->value,
+		 (uint64_t) 0xa4704541UL );
+	}
+	else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
+	{
+		FVALUE_TEST_ASSERT_EQUAL_UINT64(
+		 "floating_point->value",
+		 floating_point->value,
+		 (uint64_t) 0x414570a4UL );
+	}
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-#endif /* defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE ) */
 
 	result = libfvalue_floating_point_copy_from_byte_stream(
 	          floating_point,
@@ -660,8 +665,6 @@ int fvalue_test_floating_point_copy_from_byte_stream(
 	 "error",
 	 error );
 
-#if defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-
 	result = libfvalue_floating_point_copy_from_byte_stream(
 	          floating_point,
 	          (uint8_t *) "\xec\x51\xb8\x1e\x45\x1a\xb3\x40",
@@ -674,16 +677,23 @@ int fvalue_test_floating_point_copy_from_byte_stream(
 	 result,
 	 1 );
 
-	FVALUE_TEST_ASSERT_EQUAL_UINT64(
-	 "floating_point->value",
-	 floating_point->value,
-	 (uint64_t) 0x40b31a451eb851ecUL );
-
+	if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
+	{
+		FVALUE_TEST_ASSERT_EQUAL_UINT64(
+		 "floating_point->value",
+		 floating_point->value,
+		 (uint64_t) 0xec51b81e451ab340UL );
+	}
+	else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
+	{
+		FVALUE_TEST_ASSERT_EQUAL_UINT64(
+		 "floating_point->value",
+		 floating_point->value,
+		 (uint64_t) 0x40b31a451eb851ecUL );
+	}
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-#endif /* defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE ) */
 
 	/* Test error cases
 	 */

@@ -20,6 +20,7 @@
  */
 
 #include <common.h>
+#include <byte_stream.h>
 #include <file_stream.h>
 #include <memory.h>
 #include <types.h>
@@ -613,8 +614,6 @@ int fvalue_test_integer_copy_from_byte_stream(
 	 "error",
 	 error );
 
-#if defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-
 	result = libfvalue_integer_copy_from_byte_stream(
 	          integer,
 	          (uint8_t *) "\x34\x12",
@@ -627,16 +626,23 @@ int fvalue_test_integer_copy_from_byte_stream(
 	 result,
 	 1 );
 
-	FVALUE_TEST_ASSERT_EQUAL_UINT64(
-	 "integer->value",
-	 integer->value,
-	 (uint64_t) 0x1234UL );
-
+	if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
+	{
+		FVALUE_TEST_ASSERT_EQUAL_UINT64(
+		 "integer->value",
+		 integer->value,
+		 (uint64_t) 0x3412UL );
+	}
+	else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
+	{
+		FVALUE_TEST_ASSERT_EQUAL_UINT64(
+		 "integer->value",
+		 integer->value,
+		 (uint64_t) 0x1234UL );
+	}
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-#endif /* defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE ) */
 
 	result = libfvalue_integer_copy_from_byte_stream(
 	          integer,
@@ -680,8 +686,6 @@ int fvalue_test_integer_copy_from_byte_stream(
 	 "error",
 	 error );
 
-#if defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-
 	result = libfvalue_integer_copy_from_byte_stream(
 	          integer,
 	          (uint8_t *) "\x78\x56\x34\x12",
@@ -694,16 +698,23 @@ int fvalue_test_integer_copy_from_byte_stream(
 	 result,
 	 1 );
 
-	FVALUE_TEST_ASSERT_EQUAL_UINT64(
-	 "integer->value",
-	 integer->value,
-	 (uint64_t) 0x12345678UL );
-
+	if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
+	{
+		FVALUE_TEST_ASSERT_EQUAL_UINT64(
+		 "integer->value",
+		 integer->value,
+		 (uint64_t) 0x78563412UL );
+	}
+	else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
+	{
+		FVALUE_TEST_ASSERT_EQUAL_UINT64(
+		 "integer->value",
+		 integer->value,
+		 (uint64_t) 0x12345678UL );
+	}
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-#endif /* defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE ) */
 
 	result = libfvalue_integer_copy_from_byte_stream(
 	          integer,
@@ -747,8 +758,6 @@ int fvalue_test_integer_copy_from_byte_stream(
 	 "error",
 	 error );
 
-#if defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-
 	result = libfvalue_integer_copy_from_byte_stream(
 	          integer,
 	          (uint8_t *) "\xef\xcd\xab\x90\x78\x56\x34\x12",
@@ -761,16 +770,23 @@ int fvalue_test_integer_copy_from_byte_stream(
 	 result,
 	 1 );
 
-	FVALUE_TEST_ASSERT_EQUAL_UINT64(
-	 "integer->value",
-	 integer->value,
-	 (uint64_t) 0x1234567890abcdefUL );
-
+	if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
+	{
+		FVALUE_TEST_ASSERT_EQUAL_UINT64(
+		 "integer->value",
+		 integer->value,
+		 (uint64_t) 0xefcdab9078563412UL );
+	}
+	else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
+	{
+		FVALUE_TEST_ASSERT_EQUAL_UINT64(
+		 "integer->value",
+		 integer->value,
+		 (uint64_t) 0x1234567890abcdefUL );
+	}
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-#endif /* defined( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE ) */
 
 	/* Test error cases
 	 */
