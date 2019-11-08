@@ -40,7 +40,7 @@
 
 /* Note that libfvalue does not require to have libfwnt support
  */
-#elif defined( HAVE_LIBFWNT_H )
+#elif defined( HAVE_LIBFWNT )
 
 /* If libtool DLL support is enabled set LIBFWNT_DLL_IMPORT
  * before including libfwnt.h

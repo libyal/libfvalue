@@ -32,7 +32,7 @@
 extern "C" {
 #endif
 
-#if defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME )
+#if defined( HAVE_LIBFDATETIME ) || defined( HAVE_LOCAL_LIBFDATETIME )
 
 int libfvalue_filetime_copy_from_integer(
      libfdatetime_filetime_t *filetime,
@@ -46,7 +46,7 @@ int libfvalue_filetime_copy_to_integer(
      size_t *integer_value_size,
      libcerror_error_t **error );
 
-#endif /* defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
+#endif /* defined( HAVE_LIBFDATETIME ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
 
 #if defined( __cplusplus )
 }

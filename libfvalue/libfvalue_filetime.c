@@ -27,7 +27,7 @@
 #include "libfvalue_libcerror.h"
 #include "libfvalue_libfdatetime.h"
 
-#if defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME )
+#if defined( HAVE_LIBFDATETIME ) || defined( HAVE_LOCAL_LIBFDATETIME )
 
 /* Copies the filetime from an integer value
  * Returns 1 if successful or -1 on error
@@ -109,5 +109,5 @@ int libfvalue_filetime_copy_to_integer(
 	return( 1 );
 }
 
-#endif /* defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
+#endif /* defined( HAVE_LIBFDATETIME ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
 

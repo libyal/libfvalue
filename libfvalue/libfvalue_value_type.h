@@ -81,7 +81,7 @@ ssize_t libfvalue_value_type_set_data_strings_array(
          int encoding,
          libcerror_error_t **error );
 
-#if defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME )
+#if defined( HAVE_LIBFDATETIME ) || defined( HAVE_LOCAL_LIBFDATETIME )
 
 int libfvalue_value_type_posix_time_copy_from_byte_stream(
      libfdatetime_posix_time_t *posix_time,
@@ -90,7 +90,7 @@ int libfvalue_value_type_posix_time_copy_from_byte_stream(
      int encoding,
      libcerror_error_t **error );
 
-#endif /* defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
+#endif /* defined( HAVE_LIBFDATETIME ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
 
 #if defined( __cplusplus )
 }

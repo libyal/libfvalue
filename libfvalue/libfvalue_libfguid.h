@@ -34,7 +34,7 @@
 
 /* Note that libfvalue does not require to have libfguid support
  */
-#elif defined( HAVE_LIBFGUID_H )
+#elif defined( HAVE_LIBFGUID )
 
 /* If libtool DLL support is enabled set LIBFGUID_DLL_IMPORT
  * before including libfguid.h

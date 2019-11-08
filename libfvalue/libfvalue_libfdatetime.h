@@ -41,7 +41,7 @@
 
 /* Note that libfvalue does not require to have libfdatetime support
  */
-#elif defined( HAVE_LIBFDATETIME_H )
+#elif defined( HAVE_LIBFDATETIME )
 
 /* If libtool DLL support is enabled set LIBFDATETIME_DLL_IMPORT
  * before including libfdatetime.h
