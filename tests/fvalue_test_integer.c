@@ -3070,19 +3070,17 @@ on_error:
 int fvalue_test_utf8_string_copy_to_integer(
      void )
 {
-	uint8_t utf8_string[ 5 ] = {
-		'4', '8', '9', '0', 0 };
-
-	libcerror_error_t *error = NULL;
-	uint64_t integer_value   = 0;
-	int result               = 0;
+	uint8_t utf8_string1[ 5 ] = { '4', '8', '9', '0', 0 };
+	libcerror_error_t *error  = NULL;
+	uint64_t integer_value    = 0;
+	int result                = 0;
 
 	/* Test regular cases
 	 */
 	integer_value = 0;
 
 	result = libfvalue_utf8_string_copy_to_integer(
-	          utf8_string,
+	          utf8_string1,
 	          4,
 	          &integer_value,
 	          64,
@@ -3149,15 +3147,13 @@ on_error:
 int fvalue_test_utf8_string_with_index_copy_to_integer(
      void )
 {
-	uint8_t utf8_string[ 5 ] = {
-		'4', '8', '9', '0', 0 };
-	uint8_t utf8_string_invalid[ 3 ] = {
-		'/', ':', 0 };
-
-	libcerror_error_t *error = NULL;
-	uint64_t integer_value   = 0;
-	size_t string_index      = 0;
-	int result               = 0;
+	uint8_t utf8_string1[ 5 ]        = { '4', '8', '9', '0', 0 };
+	uint8_t utf8_string2[ 3 ]        = { '-', '1', 0 };
+	uint8_t utf8_string_invalid[ 3 ] = { '/', ':', 0 };
+	libcerror_error_t *error         = NULL;
+	size_t string_index              = 0;
+	uint64_t integer_value           = 0;
+	int result                       = 0;
 
 	/* Test regular cases
 	 */
@@ -3165,7 +3161,7 @@ int fvalue_test_utf8_string_with_index_copy_to_integer(
 	integer_value = 0;
 
 	result = libfvalue_utf8_string_with_index_copy_to_integer(
-	          utf8_string,
+	          utf8_string1,
 	          4,
 	          &string_index,
 	          &integer_value,
@@ -3187,6 +3183,68 @@ int fvalue_test_utf8_string_with_index_copy_to_integer(
 	 "integer_value",
 	 integer_value,
 	 (uint64_t) 4890 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_index  = 0;
+	integer_value = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_to_integer(
+	          utf8_string2,
+	          2,
+	          &string_index,
+	          &integer_value,
+	          32,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_SIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 2 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT32(
+	 "integer_value",
+	 (int32_t) integer_value,
+	 (int32_t) -1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_index  = 0;
+	integer_value = 0;
+
+	result = libfvalue_utf8_string_with_index_copy_to_integer(
+	          utf8_string2,
+	          2,
+	          &string_index,
+	          &integer_value,
+	          64,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_SIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 2 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT64(
+	 "integer_value",
+	 (int64_t) integer_value,
+	 (int64_t) -1 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -3229,7 +3287,7 @@ int fvalue_test_utf8_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf8_string_with_index_copy_to_integer(
-	          utf8_string,
+	          utf8_string1,
 	          (size_t) SSIZE_MAX + 1,
 	          &string_index,
 	          &integer_value,
@@ -3260,7 +3318,7 @@ int fvalue_test_utf8_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf8_string_with_index_copy_to_integer(
-	          utf8_string,
+	          utf8_string1,
 	          4,
 	          NULL,
 	          &integer_value,
@@ -3291,7 +3349,7 @@ int fvalue_test_utf8_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf8_string_with_index_copy_to_integer(
-	          utf8_string,
+	          utf8_string1,
 	          4,
 	          &string_index,
 	          NULL,
@@ -3322,7 +3380,7 @@ int fvalue_test_utf8_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf8_string_with_index_copy_to_integer(
-	          utf8_string,
+	          utf8_string1,
 	          4,
 	          &string_index,
 	          &integer_value,
@@ -3355,7 +3413,7 @@ int fvalue_test_utf8_string_with_index_copy_to_integer(
 	/* Test with unsupported format flags
 	 */
 	result = libfvalue_utf8_string_with_index_copy_to_integer(
-	          utf8_string,
+	          utf8_string1,
 	          4,
 	          &string_index,
 	          &integer_value,
@@ -3812,19 +3870,17 @@ on_error:
 int fvalue_test_utf16_string_copy_to_integer(
      void )
 {
-	uint16_t utf16_string[ 5 ] = {
-		'4', '8', '9', '0', 0 };
-
-	libcerror_error_t *error = NULL;
-	uint64_t integer_value   = 0;
-	int result               = 0;
+	uint16_t utf16_string1[ 5 ] = { '4', '8', '9', '0', 0 };
+	libcerror_error_t *error    = NULL;
+	uint64_t integer_value      = 0;
+	int result                  = 0;
 
 	/* Test regular cases
 	 */
 	integer_value = 0;
 
 	result = libfvalue_utf16_string_copy_to_integer(
-	          utf16_string,
+	          utf16_string1,
 	          4,
 	          &integer_value,
 	          64,
@@ -3891,15 +3947,13 @@ on_error:
 int fvalue_test_utf16_string_with_index_copy_to_integer(
      void )
 {
-	uint16_t utf16_string[ 5 ] = {
-		'4', '8', '9', '0', 0 };
-	uint16_t utf16_string_invalid[ 3 ] = {
-		'/', ':', 0 };
-
-	libcerror_error_t *error = NULL;
-	uint64_t integer_value   = 0;
-	size_t string_index      = 0;
-	int result               = 0;
+	uint16_t utf16_string1[ 5 ]        = { '4', '8', '9', '0', 0 };
+	uint16_t utf16_string2[ 3 ]        = { '-', '1', 0 };
+	uint16_t utf16_string_invalid[ 3 ] = { '/', ':', 0 };
+	libcerror_error_t *error           = NULL;
+	size_t string_index                = 0;
+	uint64_t integer_value             = 0;
+	int result                         = 0;
 
 	/* Test regular cases
 	 */
@@ -3907,7 +3961,7 @@ int fvalue_test_utf16_string_with_index_copy_to_integer(
 	integer_value = 0;
 
 	result = libfvalue_utf16_string_with_index_copy_to_integer(
-	          utf16_string,
+	          utf16_string1,
 	          4,
 	          &string_index,
 	          &integer_value,
@@ -3929,6 +3983,68 @@ int fvalue_test_utf16_string_with_index_copy_to_integer(
 	 "integer_value",
 	 integer_value,
 	 (uint64_t) 4890 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_index  = 0;
+	integer_value = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_to_integer(
+	          utf16_string2,
+	          2,
+	          &string_index,
+	          &integer_value,
+	          32,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_SIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 2 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT32(
+	 "integer_value",
+	 (int32_t) integer_value,
+	 (int32_t) -1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_index  = 0;
+	integer_value = 0;
+
+	result = libfvalue_utf16_string_with_index_copy_to_integer(
+	          utf16_string2,
+	          2,
+	          &string_index,
+	          &integer_value,
+	          64,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_SIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 2 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT64(
+	 "integer_value",
+	 (int64_t) integer_value,
+	 (int64_t) -1 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -3971,7 +4087,7 @@ int fvalue_test_utf16_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf16_string_with_index_copy_to_integer(
-	          utf16_string,
+	          utf16_string1,
 	          (size_t) SSIZE_MAX + 1,
 	          &string_index,
 	          &integer_value,
@@ -4002,7 +4118,7 @@ int fvalue_test_utf16_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf16_string_with_index_copy_to_integer(
-	          utf16_string,
+	          utf16_string1,
 	          4,
 	          NULL,
 	          &integer_value,
@@ -4033,7 +4149,7 @@ int fvalue_test_utf16_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf16_string_with_index_copy_to_integer(
-	          utf16_string,
+	          utf16_string1,
 	          4,
 	          &string_index,
 	          NULL,
@@ -4064,7 +4180,7 @@ int fvalue_test_utf16_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf16_string_with_index_copy_to_integer(
-	          utf16_string,
+	          utf16_string1,
 	          4,
 	          &string_index,
 	          &integer_value,
@@ -4097,7 +4213,7 @@ int fvalue_test_utf16_string_with_index_copy_to_integer(
 	/* Test with unsupported format flags
 	 */
 	result = libfvalue_utf16_string_with_index_copy_to_integer(
-	          utf16_string,
+	          utf16_string1,
 	          4,
 	          &string_index,
 	          &integer_value,
@@ -4554,19 +4670,17 @@ on_error:
 int fvalue_test_utf32_string_copy_to_integer(
      void )
 {
-	uint32_t utf32_string[ 5 ] = {
-		'4', '8', '9', '0', 0 };
-
-	libcerror_error_t *error = NULL;
-	uint64_t integer_value   = 0;
-	int result               = 0;
+	uint32_t utf32_string1[ 5 ] = { '4', '8', '9', '0', 0 };
+	libcerror_error_t *error    = NULL;
+	uint64_t integer_value      = 0;
+	int result                  = 0;
 
 	/* Test regular cases
 	 */
 	integer_value = 0;
 
 	result = libfvalue_utf32_string_copy_to_integer(
-	          utf32_string,
+	          utf32_string1,
 	          4,
 	          &integer_value,
 	          64,
@@ -4633,15 +4747,13 @@ on_error:
 int fvalue_test_utf32_string_with_index_copy_to_integer(
      void )
 {
-	uint32_t utf32_string[ 5 ] = {
-		'4', '8', '9', '0', 0 };
-	uint32_t utf32_string_invalid[ 3 ] = {
-		'/', ':', 0 };
-
-	libcerror_error_t *error = NULL;
-	uint64_t integer_value   = 0;
-	size_t string_index      = 0;
-	int result               = 0;
+	uint32_t utf32_string1[ 5 ]        = { '4', '8', '9', '0', 0 };
+	uint32_t utf32_string2[ 3 ]        = { '-', '1', 0 };
+	uint32_t utf32_string_invalid[ 3 ] = { '/', ':', 0 };
+	libcerror_error_t *error           = NULL;
+	size_t string_index                = 0;
+	uint64_t integer_value             = 0;
+	int result                         = 0;
 
 	/* Test regular cases
 	 */
@@ -4649,7 +4761,7 @@ int fvalue_test_utf32_string_with_index_copy_to_integer(
 	integer_value = 0;
 
 	result = libfvalue_utf32_string_with_index_copy_to_integer(
-	          utf32_string,
+	          utf32_string1,
 	          4,
 	          &string_index,
 	          &integer_value,
@@ -4671,6 +4783,68 @@ int fvalue_test_utf32_string_with_index_copy_to_integer(
 	 "integer_value",
 	 integer_value,
 	 (uint64_t) 4890 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_index  = 0;
+	integer_value = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_to_integer(
+	          utf32_string2,
+	          2,
+	          &string_index,
+	          &integer_value,
+	          32,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_SIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 2 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT32(
+	 "integer_value",
+	 (int32_t) integer_value,
+	 (int32_t) -1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	string_index  = 0;
+	integer_value = 0;
+
+	result = libfvalue_utf32_string_with_index_copy_to_integer(
+	          utf32_string2,
+	          2,
+	          &string_index,
+	          &integer_value,
+	          64,
+	          LIBFVALUE_INTEGER_FORMAT_TYPE_DECIMAL | LIBFVALUE_INTEGER_FORMAT_FLAG_SIGNED,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 2 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT64(
+	 "integer_value",
+	 (int64_t) integer_value,
+	 (int64_t) -1 );
 
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -4713,7 +4887,7 @@ int fvalue_test_utf32_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf32_string_with_index_copy_to_integer(
-	          utf32_string,
+	          utf32_string1,
 	          (size_t) SSIZE_MAX + 1,
 	          &string_index,
 	          &integer_value,
@@ -4744,7 +4918,7 @@ int fvalue_test_utf32_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf32_string_with_index_copy_to_integer(
-	          utf32_string,
+	          utf32_string1,
 	          4,
 	          NULL,
 	          &integer_value,
@@ -4775,7 +4949,7 @@ int fvalue_test_utf32_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf32_string_with_index_copy_to_integer(
-	          utf32_string,
+	          utf32_string1,
 	          4,
 	          &string_index,
 	          NULL,
@@ -4806,7 +4980,7 @@ int fvalue_test_utf32_string_with_index_copy_to_integer(
 	 &error );
 
 	result = libfvalue_utf32_string_with_index_copy_to_integer(
-	          utf32_string,
+	          utf32_string1,
 	          4,
 	          &string_index,
 	          &integer_value,
@@ -4839,7 +5013,7 @@ int fvalue_test_utf32_string_with_index_copy_to_integer(
 	/* Test with unsupported format flags
 	 */
 	result = libfvalue_utf32_string_with_index_copy_to_integer(
-	          utf32_string,
+	          utf32_string1,
 	          4,
 	          &string_index,
 	          &integer_value,

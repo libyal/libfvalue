@@ -1542,9 +1542,10 @@ int libfvalue_utf8_string_with_index_copy_to_integer(
 
 			safe_utf8_string_index++;
 		}
-		if( sign == -1 )
+		if( ( sign == -1 )
+		 && ( value_64bit != 0 ) )
 		{
-			value_64bit |= (uint64_t) 1 << bit_shift;
+			value_64bit = ~( value_64bit - 1 );
 		}
 	}
 	*utf8_string_index = safe_utf8_string_index;
@@ -2206,9 +2207,10 @@ int libfvalue_utf16_string_with_index_copy_to_integer(
 
 			safe_utf16_string_index++;
 		}
-		if( sign == -1 )
+		if( ( sign == -1 )
+		 && ( value_64bit != 0 ) )
 		{
-			value_64bit |= (uint64_t) 1 << bit_shift;
+			value_64bit = ~( value_64bit - 1 );
 		}
 	}
 	*utf16_string_index = safe_utf16_string_index;
@@ -2870,9 +2872,10 @@ int libfvalue_utf32_string_with_index_copy_to_integer(
 
 			safe_utf32_string_index++;
 		}
-		if( sign == -1 )
+		if( ( sign == -1 )
+		 && ( value_64bit != 0 ) )
 		{
-			value_64bit |= (uint64_t) 1 << bit_shift;
+			value_64bit = ~( value_64bit - 1 );
 		}
 	}
 	*utf32_string_index = safe_utf32_string_index;
