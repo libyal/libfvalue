@@ -1616,7 +1616,35 @@ int fvalue_test_string_get_utf8_string_size(
 	 "error",
 	 error );
 
-	/* Test with data
+	/* Test with data without end-of-string character
+	 */
+	string->data      = utf16le_stream;
+	string->data_size = 8;
+	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+
+	string_size = 0;
+
+	result = libfvalue_string_get_utf8_string_size(
+	          string,
+	          &string_size,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 5 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test with data with end-of-string character
 	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
@@ -2162,7 +2190,47 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 	 "error",
 	 error );
 
-	/* Test with data
+	/* Test with data without end-of-string character
+	 */
+	string->data      = utf16le_stream;
+	string->data_size = 8;
+	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+
+	string_index = 0;
+
+	result = libfvalue_string_copy_to_utf8_string_with_index(
+	          string,
+	          utf8_string,
+	          32,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 5 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string,
+	          utf8_string,
+	          sizeof( uint8_t ) * 5 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	/* Test with data with end-of-string character
 	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
@@ -3613,7 +3681,35 @@ int fvalue_test_string_get_utf16_string_size(
 	 "error",
 	 error );
 
-	/* Test with data
+	/* Test with data without end-of-string character
+	 */
+	string->data      = utf16le_stream;
+	string->data_size = 8;
+	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+
+	string_size = 0;
+
+	result = libfvalue_string_get_utf16_string_size(
+	          string,
+	          &string_size,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 5 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test with data with end-of-string character
 	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
@@ -4159,7 +4255,47 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 	 "error",
 	 error );
 
-	/* Test with data
+	/* Test with data without end-of-string character
+	 */
+	string->data      = utf16le_stream;
+	string->data_size = 8;
+	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+
+	string_index = 0;
+
+	result = libfvalue_string_copy_to_utf16_string_with_index(
+	          string,
+	          utf16_string,
+	          32,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 5 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string,
+	          utf16_string,
+	          sizeof( uint16_t ) * 5 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	/* Test with data with end-of-string character
 	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
@@ -5610,7 +5746,35 @@ int fvalue_test_string_get_utf32_string_size(
 	 "error",
 	 error );
 
-	/* Test with data
+	/* Test with data without end-of-string character
+	 */
+	string->data      = utf16le_stream;
+	string->data_size = 8;
+	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+
+	string_size = 0;
+
+	result = libfvalue_string_get_utf32_string_size(
+	          string,
+	          &string_size,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 5 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test with data with end-of-string character
 	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
@@ -6156,7 +6320,47 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 	 "error",
 	 error );
 
-	/* Test with data
+	/* Test with data without end-of-string character
+	 */
+	string->data      = utf16le_stream;
+	string->data_size = 8;
+	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+
+	string_index = 0;
+
+	result = libfvalue_string_copy_to_utf32_string_with_index(
+	          string,
+	          utf32_string,
+	          32,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 5 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string,
+	          utf32_string,
+	          sizeof( uint32_t ) * 5 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	/* Test with data with end-of-string character
 	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
