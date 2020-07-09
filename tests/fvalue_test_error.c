@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #endif
 
-#include "fvalue_test_libcerror.h"
 #include "fvalue_test_libfvalue.h"
 #include "fvalue_test_macros.h"
 #include "fvalue_test_unused.h"
