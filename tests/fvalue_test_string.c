@@ -1529,6 +1529,7 @@ on_error:
 int fvalue_test_string_get_utf8_string_size(
      void )
 {
+	uint8_t scsu_stream[ 9 ]     = { 0xd6, 0x6c, 0x20, 0x66, 0x6c, 0x69, 0x65, 0xdf, 0x74 };
 	uint8_t utf16be_stream[ 10 ] = { 0, 't', 0, 'e', 0, 's', 0, 't', 0, 0 };
 	uint8_t utf16le_stream[ 10 ] = { 't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
 	uint8_t utf32be_stream[ 20 ] = { 0, 0, 0, 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0 };
@@ -1618,9 +1619,9 @@ int fvalue_test_string_get_utf8_string_size(
 
 	/* Test with data without end-of-string character
 	 */
-	string->data      = utf16le_stream;
+	string->data      = utf16be_stream;
 	string->data_size = 8;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
 
 	string_size = 0;
 
@@ -1646,34 +1647,6 @@ int fvalue_test_string_get_utf8_string_size(
 
 	/* Test with data with end-of-string character
 	 */
-	string->data      = utf16le_stream;
-	string->data_size = 10;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
-
-	string_size = 0;
-
-	result = libfvalue_string_get_utf8_string_size(
-	          string,
-	          &string_size,
-	          0,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	FVALUE_TEST_ASSERT_EQUAL_SIZE(
-	 "string_size",
-	 string_size,
-	 (size_t) 5 );
-
-	FVALUE_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
-/* TODO add tests */
-
 	string->data      = utf16be_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
@@ -1700,6 +1673,8 @@ int fvalue_test_string_get_utf8_string_size(
 	 "error",
 	 error );
 
+	/* Tests with data different codepages
+	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN;
@@ -1856,6 +1831,32 @@ int fvalue_test_string_get_utf8_string_size(
 	 "error",
 	 error );
 
+	string->data      = scsu_stream;
+	string->data_size = 9;
+	string->codepage  = LIBFVALUE_CODEPAGE_SCSU;
+
+	string_size = 0;
+
+	result = libfvalue_string_get_utf8_string_size(
+	          string,
+	          &string_size,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 12 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
 	/* Test error cases
 	 */
 	string_size = 0;
@@ -1900,9 +1901,9 @@ int fvalue_test_string_get_utf8_string_size(
 	libcerror_error_free(
 	 &error );
 
-	string->data      = utf16le_stream;
-	string->data_size = 10;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+	string->data      = scsu_stream;
+	string->data_size = 9;
+	string->codepage  = LIBFVALUE_CODEPAGE_SCSU;
 
 	result = libfvalue_string_get_utf8_string_size(
 	          string,
@@ -2098,16 +2099,18 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 {
 	uint8_t utf8_string[ 32 ];
 
-	uint8_t expected_utf8_string[ 5 ] = { 't', 'e', 's', 't', 0 };
-	uint8_t utf16be_stream[ 10 ]      = { 0, 't', 0, 'e', 0, 's', 0, 't', 0, 0 };
-	uint8_t utf16le_stream[ 10 ]      = { 't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
-	uint8_t utf32be_stream[ 20 ]      = { 0, 0, 0, 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0 };
-	uint8_t utf32le_stream[ 20 ]      = { 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0, 0, 0, 0 };
-	uint8_t utf8_stream[ 5 ]          = { 't', 'e', 's', 't', 0 };
-	libcerror_error_t *error          = NULL;
-	libfvalue_string_t *string        = NULL;
-	size_t string_index               = 0;
-	int result                        = 0;
+	uint8_t expected_utf8_string1[ 5 ]  = { 't', 'e', 's', 't', 0 };
+	uint8_t expected_utf8_string2[ 12 ] = { 0xc3, 0x96, 'l', ' ', 'f', 'l', 'i', 'e', 0xc3, 0x9f, 't', 0 };
+	uint8_t scsu_stream[ 9 ]            = { 0xd6, 0x6c, 0x20, 0x66, 0x6c, 0x69, 0x65, 0xdf, 0x74 };
+	uint8_t utf16be_stream[ 10 ]        = { 0, 't', 0, 'e', 0, 's', 0, 't', 0, 0 };
+	uint8_t utf16le_stream[ 10 ]        = { 't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
+	uint8_t utf32be_stream[ 20 ]        = { 0, 0, 0, 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0 };
+	uint8_t utf32le_stream[ 20 ]        = { 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0, 0, 0, 0 };
+	uint8_t utf8_stream[ 5 ]            = { 't', 'e', 's', 't', 0 };
+	libcerror_error_t *error            = NULL;
+	libfvalue_string_t *string          = NULL;
+	size_t string_index                 = 0;
+	int result                          = 0;
 
 	/* Initialize test
 	 */
@@ -2192,9 +2195,9 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 
 	/* Test with data without end-of-string character
 	 */
-	string->data      = utf16le_stream;
+	string->data      = utf16be_stream;
 	string->data_size = 8;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
 
 	string_index = 0;
 
@@ -2221,7 +2224,7 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string1,
 	          utf8_string,
 	          sizeof( uint8_t ) * 5 );
 
@@ -2232,46 +2235,6 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 
 	/* Test with data with end-of-string character
 	 */
-	string->data      = utf16le_stream;
-	string->data_size = 10;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
-
-	string_index = 0;
-
-	result = libfvalue_string_copy_to_utf8_string_with_index(
-	          string,
-	          utf8_string,
-	          32,
-	          &string_index,
-	          0,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	FVALUE_TEST_ASSERT_EQUAL_SIZE(
-	 "string_index",
-	 string_index,
-	 (size_t) 5 );
-
-	FVALUE_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
-	result = memory_compare(
-	          expected_utf8_string,
-	          utf8_string,
-	          sizeof( uint8_t ) * 5 );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 0 );
-
-/* TODO add tests */
-
 	string->data      = utf16be_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
@@ -2301,7 +2264,7 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string1,
 	          utf8_string,
 	          sizeof( uint8_t ) * 5 );
 
@@ -2310,6 +2273,8 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 	 result,
 	 0 );
 
+	/* Tests with data different codepages
+	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN;
@@ -2339,7 +2304,7 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string1,
 	          utf8_string,
 	          sizeof( uint8_t ) * 5 );
 
@@ -2377,7 +2342,7 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string1,
 	          utf8_string,
 	          sizeof( uint8_t ) * 5 );
 
@@ -2415,7 +2380,7 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string1,
 	          utf8_string,
 	          sizeof( uint8_t ) * 5 );
 
@@ -2453,7 +2418,7 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string1,
 	          utf8_string,
 	          sizeof( uint8_t ) * 5 );
 
@@ -2491,7 +2456,7 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string1,
 	          utf8_string,
 	          sizeof( uint8_t ) * 5 );
 
@@ -2529,7 +2494,7 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string1,
 	          utf8_string,
 	          sizeof( uint8_t ) * 5 );
 
@@ -2567,9 +2532,47 @@ int fvalue_test_string_copy_to_utf8_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf8_string,
+	          expected_utf8_string1,
 	          utf8_string,
 	          sizeof( uint8_t ) * 5 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	string->data      = scsu_stream;
+	string->data_size = 9;
+	string->codepage  = LIBFVALUE_CODEPAGE_SCSU;
+
+	string_index = 0;
+
+	result = libfvalue_string_copy_to_utf8_string_with_index(
+	          string,
+	          utf8_string,
+	          32,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 12 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf8_string2,
+	          utf8_string,
+	          sizeof( uint8_t ) * 12 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
@@ -3594,6 +3597,7 @@ on_error:
 int fvalue_test_string_get_utf16_string_size(
      void )
 {
+	uint8_t scsu_stream[ 9 ]     = { 0xd6, 0x6c, 0x20, 0x66, 0x6c, 0x69, 0x65, 0xdf, 0x74 };
 	uint8_t utf16be_stream[ 10 ] = { 0, 't', 0, 'e', 0, 's', 0, 't', 0, 0 };
 	uint8_t utf16le_stream[ 10 ] = { 't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
 	uint8_t utf32be_stream[ 20 ] = { 0, 0, 0, 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0 };
@@ -3683,9 +3687,9 @@ int fvalue_test_string_get_utf16_string_size(
 
 	/* Test with data without end-of-string character
 	 */
-	string->data      = utf16le_stream;
+	string->data      = utf16be_stream;
 	string->data_size = 8;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
 
 	string_size = 0;
 
@@ -3711,34 +3715,6 @@ int fvalue_test_string_get_utf16_string_size(
 
 	/* Test with data with end-of-string character
 	 */
-	string->data      = utf16le_stream;
-	string->data_size = 10;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
-
-	string_size = 0;
-
-	result = libfvalue_string_get_utf16_string_size(
-	          string,
-	          &string_size,
-	          0,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	FVALUE_TEST_ASSERT_EQUAL_SIZE(
-	 "string_size",
-	 string_size,
-	 (size_t) 5 );
-
-	FVALUE_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
-/* TODO add tests */
-
 	string->data      = utf16be_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
@@ -3765,6 +3741,8 @@ int fvalue_test_string_get_utf16_string_size(
 	 "error",
 	 error );
 
+	/* Tests with data different codepages
+	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN;
@@ -3921,6 +3899,32 @@ int fvalue_test_string_get_utf16_string_size(
 	 "error",
 	 error );
 
+	string->data      = scsu_stream;
+	string->data_size = 9;
+	string->codepage  = LIBFVALUE_CODEPAGE_SCSU;
+
+	string_size = 0;
+
+	result = libfvalue_string_get_utf16_string_size(
+	          string,
+	          &string_size,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 10 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
 	/* Test error cases
 	 */
 	string_size = 0;
@@ -3965,9 +3969,9 @@ int fvalue_test_string_get_utf16_string_size(
 	libcerror_error_free(
 	 &error );
 
-	string->data      = utf16le_stream;
-	string->data_size = 10;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+	string->data      = scsu_stream;
+	string->data_size = 9;
+	string->codepage  = LIBFVALUE_CODEPAGE_SCSU;
 
 	result = libfvalue_string_get_utf16_string_size(
 	          string,
@@ -4163,16 +4167,18 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 {
 	uint16_t utf16_string[ 32 ];
 
-	uint16_t expected_utf16_string[ 5 ] = { 't', 'e', 's', 't', 0 };
-	uint8_t utf16be_stream[ 10 ]        = { 0, 't', 0, 'e', 0, 's', 0, 't', 0, 0 };
-	uint8_t utf16le_stream[ 10 ]        = { 't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
-	uint8_t utf32be_stream[ 20 ]        = { 0, 0, 0, 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0 };
-	uint8_t utf32le_stream[ 20 ]        = { 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0, 0, 0, 0 };
-	uint8_t utf8_stream[ 5 ]            = { 't', 'e', 's', 't', 0 };
-	libcerror_error_t *error            = NULL;
-	libfvalue_string_t *string          = NULL;
-	size_t string_index                 = 0;
-	int result                          = 0;
+	uint16_t expected_utf16_string1[ 5 ]  = { 't', 'e', 's', 't', 0 };
+	uint16_t expected_utf16_string2[ 10 ] = { 0x00d6, 0x006c, 0x0020, 0x0066, 0x006c, 0x0069, 0x0065, 0x00df, 0x0074, 0 };
+	uint8_t scsu_stream[ 9 ]              = { 0xd6, 0x6c, 0x20, 0x66, 0x6c, 0x69, 0x65, 0xdf, 0x74 };
+	uint8_t utf16be_stream[ 10 ]          = { 0, 't', 0, 'e', 0, 's', 0, 't', 0, 0 };
+	uint8_t utf16le_stream[ 10 ]          = { 't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
+	uint8_t utf32be_stream[ 20 ]          = { 0, 0, 0, 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0 };
+	uint8_t utf32le_stream[ 20 ]          = { 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0, 0, 0, 0 };
+	uint8_t utf8_stream[ 5 ]              = { 't', 'e', 's', 't', 0 };
+	libcerror_error_t *error              = NULL;
+	libfvalue_string_t *string            = NULL;
+	size_t string_index                   = 0;
+	int result                            = 0;
 
 	/* Initialize test
 	 */
@@ -4257,9 +4263,9 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 
 	/* Test with data without end-of-string character
 	 */
-	string->data      = utf16le_stream;
+	string->data      = utf16be_stream;
 	string->data_size = 8;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
 
 	string_index = 0;
 
@@ -4286,7 +4292,7 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string1,
 	          utf16_string,
 	          sizeof( uint16_t ) * 5 );
 
@@ -4297,46 +4303,6 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 
 	/* Test with data with end-of-string character
 	 */
-	string->data      = utf16le_stream;
-	string->data_size = 10;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
-
-	string_index = 0;
-
-	result = libfvalue_string_copy_to_utf16_string_with_index(
-	          string,
-	          utf16_string,
-	          32,
-	          &string_index,
-	          0,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	FVALUE_TEST_ASSERT_EQUAL_SIZE(
-	 "string_index",
-	 string_index,
-	 (size_t) 5 );
-
-	FVALUE_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
-	result = memory_compare(
-	          expected_utf16_string,
-	          utf16_string,
-	          sizeof( uint16_t ) * 5 );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 0 );
-
-/* TODO add tests */
-
 	string->data      = utf16be_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
@@ -4366,7 +4332,7 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string1,
 	          utf16_string,
 	          sizeof( uint16_t ) * 5 );
 
@@ -4375,6 +4341,8 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 	 result,
 	 0 );
 
+	/* Tests with data different codepages
+	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN;
@@ -4404,7 +4372,7 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string1,
 	          utf16_string,
 	          sizeof( uint16_t ) * 5 );
 
@@ -4442,7 +4410,7 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string1,
 	          utf16_string,
 	          sizeof( uint16_t ) * 5 );
 
@@ -4480,7 +4448,7 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string1,
 	          utf16_string,
 	          sizeof( uint16_t ) * 5 );
 
@@ -4518,7 +4486,7 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string1,
 	          utf16_string,
 	          sizeof( uint16_t ) * 5 );
 
@@ -4556,7 +4524,7 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string1,
 	          utf16_string,
 	          sizeof( uint16_t ) * 5 );
 
@@ -4594,7 +4562,7 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string1,
 	          utf16_string,
 	          sizeof( uint16_t ) * 5 );
 
@@ -4632,9 +4600,47 @@ int fvalue_test_string_copy_to_utf16_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf16_string,
+	          expected_utf16_string1,
 	          utf16_string,
 	          sizeof( uint16_t ) * 5 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	string->data      = scsu_stream;
+	string->data_size = 9;
+	string->codepage  = LIBFVALUE_CODEPAGE_SCSU;
+
+	string_index = 0;
+
+	result = libfvalue_string_copy_to_utf16_string_with_index(
+	          string,
+	          utf16_string,
+	          32,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 10 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf16_string2,
+	          utf16_string,
+	          sizeof( uint16_t ) * 10 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",
@@ -5659,6 +5665,7 @@ on_error:
 int fvalue_test_string_get_utf32_string_size(
      void )
 {
+	uint8_t scsu_stream[ 9 ]     = { 0xd6, 0x6c, 0x20, 0x66, 0x6c, 0x69, 0x65, 0xdf, 0x74 };
 	uint8_t utf16be_stream[ 10 ] = { 0, 't', 0, 'e', 0, 's', 0, 't', 0, 0 };
 	uint8_t utf16le_stream[ 10 ] = { 't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
 	uint8_t utf32be_stream[ 20 ] = { 0, 0, 0, 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0 };
@@ -5748,9 +5755,9 @@ int fvalue_test_string_get_utf32_string_size(
 
 	/* Test with data without end-of-string character
 	 */
-	string->data      = utf16le_stream;
+	string->data      = utf16be_stream;
 	string->data_size = 8;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
 
 	string_size = 0;
 
@@ -5776,34 +5783,6 @@ int fvalue_test_string_get_utf32_string_size(
 
 	/* Test with data with end-of-string character
 	 */
-	string->data      = utf16le_stream;
-	string->data_size = 10;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
-
-	string_size = 0;
-
-	result = libfvalue_string_get_utf32_string_size(
-	          string,
-	          &string_size,
-	          0,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	FVALUE_TEST_ASSERT_EQUAL_SIZE(
-	 "string_size",
-	 string_size,
-	 (size_t) 5 );
-
-	FVALUE_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
-/* TODO add tests */
-
 	string->data      = utf16be_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
@@ -5830,6 +5809,8 @@ int fvalue_test_string_get_utf32_string_size(
 	 "error",
 	 error );
 
+	/* Tests with data different codepages
+	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN;
@@ -5986,6 +5967,32 @@ int fvalue_test_string_get_utf32_string_size(
 	 "error",
 	 error );
 
+	string->data      = scsu_stream;
+	string->data_size = 9;
+	string->codepage  = LIBFVALUE_CODEPAGE_SCSU;
+
+	string_size = 0;
+
+	result = libfvalue_string_get_utf32_string_size(
+	          string,
+	          &string_size,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_size",
+	 string_size,
+	 (size_t) 10 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
 	/* Test error cases
 	 */
 	string_size = 0;
@@ -6030,9 +6037,9 @@ int fvalue_test_string_get_utf32_string_size(
 	libcerror_error_free(
 	 &error );
 
-	string->data      = utf16le_stream;
-	string->data_size = 10;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+	string->data      = scsu_stream;
+	string->data_size = 9;
+	string->codepage  = LIBFVALUE_CODEPAGE_SCSU;
 
 	result = libfvalue_string_get_utf32_string_size(
 	          string,
@@ -6228,16 +6235,18 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 {
 	uint32_t utf32_string[ 32 ];
 
-	uint32_t expected_utf32_string[ 5 ] = { 't', 'e', 's', 't', 0 };
-	uint8_t utf16be_stream[ 10 ]        = { 0, 't', 0, 'e', 0, 's', 0, 't', 0, 0 };
-	uint8_t utf16le_stream[ 10 ]        = { 't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
-	uint8_t utf32be_stream[ 20 ]        = { 0, 0, 0, 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0 };
-	uint8_t utf32le_stream[ 20 ]        = { 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0, 0, 0, 0 };
-	uint8_t utf8_stream[ 5 ]            = { 't', 'e', 's', 't', 0 };
-	libcerror_error_t *error            = NULL;
-	libfvalue_string_t *string          = NULL;
-	size_t string_index                 = 0;
-	int result                          = 0;
+	uint32_t expected_utf32_string1[ 5 ]  = { 't', 'e', 's', 't', 0 };
+	uint32_t expected_utf32_string2[ 10 ] = { 0x00d6, 0x006c, 0x0020, 0x0066, 0x006c, 0x0069, 0x0065, 0x00df, 0x0074, 0 };
+	uint8_t scsu_stream[ 9 ]              = { 0xd6, 0x6c, 0x20, 0x66, 0x6c, 0x69, 0x65, 0xdf, 0x74 };
+	uint8_t utf16be_stream[ 10 ]          = { 0, 't', 0, 'e', 0, 's', 0, 't', 0, 0 };
+	uint8_t utf16le_stream[ 10 ]          = { 't', 0, 'e', 0, 's', 0, 't', 0, 0, 0 };
+	uint8_t utf32be_stream[ 20 ]          = { 0, 0, 0, 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0 };
+	uint8_t utf32le_stream[ 20 ]          = { 't', 0, 0, 0, 'e', 0, 0, 0, 's', 0, 0, 0, 't', 0, 0, 0, 0, 0, 0, 0 };
+	uint8_t utf8_stream[ 5 ]              = { 't', 'e', 's', 't', 0 };
+	libcerror_error_t *error              = NULL;
+	libfvalue_string_t *string            = NULL;
+	size_t string_index                   = 0;
+	int result                            = 0;
 
 	/* Initialize test
 	 */
@@ -6322,9 +6331,9 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 
 	/* Test with data without end-of-string character
 	 */
-	string->data      = utf16le_stream;
+	string->data      = utf16be_stream;
 	string->data_size = 8;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
+	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
 
 	string_index = 0;
 
@@ -6351,7 +6360,7 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string1,
 	          utf32_string,
 	          sizeof( uint32_t ) * 5 );
 
@@ -6362,46 +6371,6 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 
 	/* Test with data with end-of-string character
 	 */
-	string->data      = utf16le_stream;
-	string->data_size = 10;
-	string->codepage  = LIBFVALUE_CODEPAGE_1200_MIXED;
-
-	string_index = 0;
-
-	result = libfvalue_string_copy_to_utf32_string_with_index(
-	          string,
-	          utf32_string,
-	          32,
-	          &string_index,
-	          0,
-	          &error );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	FVALUE_TEST_ASSERT_EQUAL_SIZE(
-	 "string_index",
-	 string_index,
-	 (size_t) 5 );
-
-	FVALUE_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
-	result = memory_compare(
-	          expected_utf32_string,
-	          utf32_string,
-	          sizeof( uint32_t ) * 5 );
-
-	FVALUE_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 0 );
-
-/* TODO add tests */
-
 	string->data      = utf16be_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
@@ -6431,7 +6400,7 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string1,
 	          utf32_string,
 	          sizeof( uint32_t ) * 5 );
 
@@ -6440,6 +6409,8 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 	 result,
 	 0 );
 
+	/* Tests with data different codepages
+	 */
 	string->data      = utf16le_stream;
 	string->data_size = 10;
 	string->codepage  = LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN;
@@ -6469,7 +6440,7 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string1,
 	          utf32_string,
 	          sizeof( uint32_t ) * 5 );
 
@@ -6507,7 +6478,7 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string1,
 	          utf32_string,
 	          sizeof( uint32_t ) * 5 );
 
@@ -6545,7 +6516,7 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string1,
 	          utf32_string,
 	          sizeof( uint32_t ) * 5 );
 
@@ -6583,7 +6554,7 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string1,
 	          utf32_string,
 	          sizeof( uint32_t ) * 5 );
 
@@ -6621,7 +6592,7 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string1,
 	          utf32_string,
 	          sizeof( uint32_t ) * 5 );
 
@@ -6659,7 +6630,7 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string1,
 	          utf32_string,
 	          sizeof( uint32_t ) * 5 );
 
@@ -6697,9 +6668,47 @@ int fvalue_test_string_copy_to_utf32_string_with_index(
 	 error );
 
 	result = memory_compare(
-	          expected_utf32_string,
+	          expected_utf32_string1,
 	          utf32_string,
 	          sizeof( uint32_t ) * 5 );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	string->data      = scsu_stream;
+	string->data_size = 9;
+	string->codepage  = LIBFVALUE_CODEPAGE_SCSU;
+
+	string_index = 0;
+
+	result = libfvalue_string_copy_to_utf32_string_with_index(
+	          string,
+	          utf32_string,
+	          32,
+	          &string_index,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_EQUAL_SIZE(
+	 "string_index",
+	 string_index,
+	 (size_t) 10 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = memory_compare(
+	          expected_utf32_string2,
+	          utf32_string,
+	          sizeof( uint32_t ) * 10 );
 
 	FVALUE_TEST_ASSERT_EQUAL_INT(
 	 "result",

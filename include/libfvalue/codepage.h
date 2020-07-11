@@ -59,6 +59,7 @@ enum LIBFVALUE_CODEPAGES
 	LIBFVALUE_CODEPAGE_UTF32_BIG_ENDIAN		= 12001,
 	LIBFVALUE_CODEPAGE_UTF7				= 65000,
 	LIBFVALUE_CODEPAGE_UTF8				= 65001,
+	LIBFVALUE_CODEPAGE_SCSU				= 65002,
 
 	LIBFVALUE_CODEPAGE_WINDOWS_874			= 874,
 	LIBFVALUE_CODEPAGE_WINDOWS_932			= 932,
@@ -76,9 +77,9 @@ enum LIBFVALUE_CODEPAGES
 	LIBFVALUE_CODEPAGE_WINDOWS_1258			= 1258,
 
 	/* A special codepage to indicate codepage 1200 that uses ASCII strings as well.
-	 * This has primarily been seen in the ESE database format and could be SCSU.
+	 * This has primarily been seen in the ESE database format.
 	 */
-	LIBFVALUE_CODEPAGE_1200_MIXED			= (int) 0x800004b0
+	LIBFVALUE_CODEPAGE_1200_MIXED			= (int) 0x800004b0,
 };
 
 #define LIBFVALUE_CODEPAGE_US_ASCII			LIBFVALUE_CODEPAGE_ASCII

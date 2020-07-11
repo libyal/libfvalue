@@ -347,6 +347,7 @@ int libfvalue_string_copy_from_byte_stream(
 	 && ( encoding != LIBFVALUE_CODEPAGE_UTF32_LITTLE_ENDIAN )
 	 && ( encoding != LIBFVALUE_CODEPAGE_UTF7 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_UTF8 )
+	 && ( encoding != LIBFVALUE_CODEPAGE_SCSU )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_874 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_932 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_936 )
@@ -510,6 +511,7 @@ int libfvalue_string_copy_from_utf8_string_with_index(
 	switch( string->codepage )
 	{
 		case LIBFVALUE_CODEPAGE_1200_MIXED:
+		case LIBFVALUE_CODEPAGE_SCSU:
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
@@ -887,6 +889,24 @@ int libfvalue_string_get_utf8_string_size(
 			}
 			break;
 
+		case LIBFVALUE_CODEPAGE_SCSU:
+			if( libuna_utf8_string_size_from_scsu_stream(
+			     string->data,
+			     string->data_size,
+			     utf8_string_size,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to determine UTF-8 string size of SCSU stream.",
+				 function );
+
+				return( -1 );
+			}
+			break;
+
 		case LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN:
 		case LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN:
 			if( string->codepage == LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN )
@@ -1148,6 +1168,26 @@ int libfvalue_string_copy_to_utf8_string_with_index(
 			}
 			break;
 
+		case LIBFVALUE_CODEPAGE_SCSU:
+			if( libuna_utf8_string_with_index_copy_from_scsu_stream(
+			     utf8_string,
+			     utf8_string_size,
+			     utf8_string_index,
+			     string->data,
+			     string->data_size,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+				 "%s: unable to copy SCSU stream to UTF-8 string.",
+				 function );
+
+				return( -1 );
+			}
+			break;
+
 		case LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN:
 		case LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN:
 			if( string->codepage == LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN )
@@ -1349,6 +1389,7 @@ int libfvalue_string_copy_from_utf16_string_with_index(
 	switch( string->codepage )
 	{
 		case LIBFVALUE_CODEPAGE_1200_MIXED:
+		case LIBFVALUE_CODEPAGE_SCSU:
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
@@ -1726,6 +1767,24 @@ int libfvalue_string_get_utf16_string_size(
 			}
 			break;
 
+		case LIBFVALUE_CODEPAGE_SCSU:
+			if( libuna_utf16_string_size_from_scsu_stream(
+			     string->data,
+			     string->data_size,
+			     utf16_string_size,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to determine UTF-16 string size of SCSU stream.",
+				 function );
+
+				return( -1 );
+			}
+			break;
+
 		case LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN:
 		case LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN:
 			if( string->codepage == LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN )
@@ -1987,6 +2046,26 @@ int libfvalue_string_copy_to_utf16_string_with_index(
 			}
 			break;
 
+		case LIBFVALUE_CODEPAGE_SCSU:
+			if( libuna_utf16_string_with_index_copy_from_scsu_stream(
+			     utf16_string,
+			     utf16_string_size,
+			     utf16_string_index,
+			     string->data,
+			     string->data_size,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+				 "%s: unable to copy SCSU stream to UTF-16 string.",
+				 function );
+
+				return( -1 );
+			}
+			break;
+
 		case LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN:
 		case LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN:
 			if( string->codepage == LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN )
@@ -2188,6 +2267,7 @@ int libfvalue_string_copy_from_utf32_string_with_index(
 	switch( string->codepage )
 	{
 		case LIBFVALUE_CODEPAGE_1200_MIXED:
+		case LIBFVALUE_CODEPAGE_SCSU:
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
@@ -2565,6 +2645,24 @@ int libfvalue_string_get_utf32_string_size(
 			}
 			break;
 
+		case LIBFVALUE_CODEPAGE_SCSU:
+			if( libuna_utf32_string_size_from_scsu_stream(
+			     string->data,
+			     string->data_size,
+			     utf32_string_size,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to determine UTF-32 string size of SCSU stream.",
+				 function );
+
+				return( -1 );
+			}
+			break;
+
 		case LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN:
 		case LIBFVALUE_CODEPAGE_UTF16_LITTLE_ENDIAN:
 			if( string->codepage == LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN )
@@ -2823,6 +2921,26 @@ int libfvalue_string_copy_to_utf32_string_with_index(
 
 					return( -1 );
 				}
+			}
+			break;
+
+		case LIBFVALUE_CODEPAGE_SCSU:
+			if( libuna_utf32_string_with_index_copy_from_scsu_stream(
+			     utf32_string,
+			     utf32_string_size,
+			     utf32_string_index,
+			     string->data,
+			     string->data_size,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+				 "%s: unable to copy SCSU stream to UTF-32 string.",
+				 function );
+
+				return( -1 );
 			}
 			break;
 
