@@ -856,7 +856,7 @@ ssize_t libfvalue_value_type_get_string_size(
 			 data_index,
 			 0 );
 		}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
 	}
 	return( (ssize_t) data_index );
 }
@@ -1035,6 +1035,10 @@ ssize_t libfvalue_value_type_set_data_strings_array(
 			 function );
 
 			return( -1 );
+		}
+		if( data_index == 0 )
+		{
+			break;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libcnotify_verbose != 0 )
