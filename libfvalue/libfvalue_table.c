@@ -1017,6 +1017,10 @@ int libfvalue_table_copy_from_utf8_xml_string(
 		{
 			continue;
 		}
+		if( string_index >= utf8_string_size )
+		{
+			break;
+		}
 		/* Determine if the XML tag is an open or close tag: '/'
 		 */
 		if( utf8_string[ string_index ] != 0x2f )
@@ -1028,6 +1032,11 @@ int libfvalue_table_copy_from_utf8_xml_string(
 			xml_tag_type = LIBFVALUE_XML_TAG_TYPE_CLOSE;
 
 			string_index++;
+
+			if( string_index >= utf8_string_size )
+			{
+				break;
+			}
 		}
 		xml_tag_name        = &( utf8_string[ string_index ] );
 		xml_tag_name_length = 0;
@@ -1051,6 +1060,11 @@ int libfvalue_table_copy_from_utf8_xml_string(
 				break;
 			}
 			string_index++;
+
+			if( string_index >= utf8_string_size )
+			{
+				break;
+			}
 		}
 		/* TODO add support for XML tag attributes but ignore them for now
 		 */
@@ -1063,12 +1077,21 @@ int libfvalue_table_copy_from_utf8_xml_string(
 				break;
 			}
 			string_index++;
+
+			if( string_index >= utf8_string_size )
+			{
+				break;
+			}
 		}
 		/* Look for the end of the XML tag: '>'
 		 */
 		if( utf8_string[ string_index++ ] != 0x3e )
 		{
 			continue;
+		}
+		if( string_index >= utf8_string_size )
+		{
+			break;
 		}
 		if( ( xml_tag_name == NULL )
 		 || ( xml_tag_name_length == 0 ) )
