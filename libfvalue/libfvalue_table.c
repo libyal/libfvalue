@@ -955,7 +955,8 @@ int libfvalue_table_copy_from_utf8_xml_string(
 
 		return( -1 );
 	}
-	if( utf8_string_size > (size_t) SSIZE_MAX )
+	if( ( utf8_string_size == 0 )
+	 || ( utf8_string_size > (size_t) SSIZE_MAX ) )
 	{
 		libcerror_error_set(
 		 error,
@@ -1060,11 +1061,10 @@ int libfvalue_table_copy_from_utf8_xml_string(
 				break;
 			}
 			string_index++;
-
-			if( string_index >= utf8_string_size )
-			{
-				break;
-			}
+		}
+		if( string_index >= utf8_string_size )
+		{
+			break;
 		}
 		/* TODO add support for XML tag attributes but ignore them for now
 		 */
@@ -1077,11 +1077,10 @@ int libfvalue_table_copy_from_utf8_xml_string(
 				break;
 			}
 			string_index++;
-
-			if( string_index >= utf8_string_size )
-			{
-				break;
-			}
+		}
+		if( string_index >= utf8_string_size )
+		{
+			break;
 		}
 		/* Look for the end of the XML tag: '>'
 		 */
