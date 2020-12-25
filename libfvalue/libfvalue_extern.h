@@ -30,7 +30,7 @@
 
 #include <libfvalue/extern.h>
 
-#if defined( __CYGWIN__ )
+#if defined( __CYGWIN__ ) || defined( __MINGW32__ )
 #define LIBFVALUE_EXTERN_VARIABLE	extern
 #else
 #define LIBFVALUE_EXTERN_VARIABLE	LIBFVALUE_EXTERN
