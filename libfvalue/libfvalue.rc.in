@@ -24,7 +24,7 @@ BEGIN
       VALUE "FileDescription",		"Library to support various format value types\0"
       VALUE "FileVersion",		"@VERSION@" "\0"
       VALUE "InternalName",		"libfvalue.dll\0"
-      VALUE "LegalCopyright",		"(C) 2010-2020, Joachim Metz <joachim.metz@gmail.com>\0"
+      VALUE "LegalCopyright",		"(C) 2010-2021, Joachim Metz <joachim.metz@gmail.com>\0"
       VALUE "OriginalFilename",		"libfvalue.dll\0"
       VALUE "ProductName",		"libfvalue\0"
       VALUE "ProductVersion",		"@VERSION@" "\0"
