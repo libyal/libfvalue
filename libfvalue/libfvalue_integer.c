@@ -1,7 +1,7 @@
 /*
  * Integer value functions
  *
- * Copyright (C) 2010-2022, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (C) 2010-2023, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -1892,8 +1892,8 @@ int libfvalue_utf16_string_with_index_copy_to_integer(
 	uint64_t value_64bit           = 0;
 	uint32_t string_format_type    = 0;
 	uint32_t supported_flags       = 0;
+	uint16_t character_value       = 0;
 	uint8_t byte_value             = 0;
-	uint8_t character_value        = 0;
 	int8_t bit_shift               = 0;
 	int8_t sign                    = 1;
 
@@ -2555,10 +2555,10 @@ int libfvalue_utf32_string_with_index_copy_to_integer(
 	size_t safe_utf32_string_index = 0;
 	uint64_t divider               = 0;
 	uint64_t value_64bit           = 0;
+	uint32_t character_value       = 0;
 	uint32_t string_format_type    = 0;
 	uint32_t supported_flags       = 0;
 	uint8_t byte_value             = 0;
-	uint8_t character_value        = 0;
 	int8_t bit_shift               = 0;
 	int8_t sign                    = 1;
 

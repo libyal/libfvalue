@@ -1,7 +1,7 @@
 /*
  * Library filetime type test program
  *
- * Copyright (C) 2010-2022, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (C) 2010-2023, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -382,7 +382,15 @@ int main(
 
 	return( EXIT_SUCCESS );
 
+#if defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME )
+
+#if defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT )
+
 on_error:
 	return( EXIT_FAILURE );
+
+#endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
+
+#endif /* defined( HAVE_LIBFDATETIME_H ) || defined( HAVE_LOCAL_LIBFDATETIME ) */
 }
 

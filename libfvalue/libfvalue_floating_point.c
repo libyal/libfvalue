@@ -1,7 +1,7 @@
 /*
  * Floating point value (IEEE 754) functions
  *
- * Copyright (C) 2010-2022, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (C) 2010-2023, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -1980,12 +1980,12 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 	}
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		number_of_characters = (uint16_t) ( floating_point_value_size >> 2 ) + 3;
+		number_of_characters = (uint8_t) ( floating_point_value_size >> 2 ) + 3;
 	}
 	else
 	{
-		bit_shift = (uint16_t) ( floating_point_value_size - 1 );
-		is_signed = (uint16_t) ( floating_point_value >> bit_shift );
+		bit_shift = (int8_t) ( floating_point_value_size - 1 );
+		is_signed = (uint8_t) ( floating_point_value >> bit_shift );
 
 		if( is_signed != 0 )
 		{
@@ -2118,7 +2118,7 @@ int libfvalue_utf16_string_with_index_copy_from_floating_point(
 		utf16_string[ safe_utf16_string_index++ ] = (uint16_t) '0';
 		utf16_string[ safe_utf16_string_index++ ] = (uint16_t) 'x';
 
-		bit_shift = (uint16_t) ( floating_point_value_size - 4 );
+		bit_shift = (int8_t) ( floating_point_value_size - 4 );
 
 		do
 		{
@@ -2290,8 +2290,8 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 	uint64_t value_64bit           = 0;
 	uint32_t string_format_type    = 0;
 	uint32_t supported_flags       = 0;
+	uint16_t character_value       = 0;
 	uint8_t byte_value             = 0;
-	uint8_t character_value        = 0;
 	int8_t bit_shift               = 0;
 	int8_t sign                    = 1;
 	double value_fraction          = 0.0;
@@ -2435,7 +2435,7 @@ int libfvalue_utf16_string_with_index_copy_to_floating_point(
 	{
 		character_value = utf16_string[ safe_utf16_string_index++ ];
 
-		if(character_value != (uint16_t) '0' )
+		if( character_value != (uint16_t) '0' )
 		{
 			libcerror_error_set(
 			 error,
@@ -2797,12 +2797,12 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 	}
 	if( string_format_type == LIBFVALUE_FLOATING_POINT_FORMAT_TYPE_HEXADECIMAL )
 	{
-		number_of_characters = (uint32_t) ( floating_point_value_size >> 2 ) + 3;
+		number_of_characters = (uint8_t) ( floating_point_value_size >> 2 ) + 3;
 	}
 	else
 	{
-		bit_shift = (uint32_t) ( floating_point_value_size - 1 );
-		is_signed = (uint32_t) ( floating_point_value >> bit_shift );
+		bit_shift = (int8_t) ( floating_point_value_size - 1 );
+		is_signed = (uint8_t) ( floating_point_value >> bit_shift );
 
 		if( is_signed != 0 )
 		{
@@ -2935,7 +2935,7 @@ int libfvalue_utf32_string_with_index_copy_from_floating_point(
 		utf32_string[ safe_utf32_string_index++ ] = (uint32_t) '0';
 		utf32_string[ safe_utf32_string_index++ ] = (uint32_t) 'x';
 
-		bit_shift = (uint32_t) ( floating_point_value_size - 4 );
+		bit_shift = (int8_t) ( floating_point_value_size - 4 );
 
 		do
 		{
@@ -3105,10 +3105,10 @@ int libfvalue_utf32_string_with_index_copy_to_floating_point(
 	size_t safe_utf32_string_index = 0;
 	uint64_t divider               = 0;
 	uint64_t value_64bit           = 0;
+	uint32_t character_value       = 0;
 	uint32_t string_format_type    = 0;
 	uint32_t supported_flags       = 0;
 	uint8_t byte_value             = 0;
-	uint8_t character_value        = 0;
 	int8_t bit_shift               = 0;
 	int8_t sign                    = 1;
 	double value_fraction          = 0.0;
