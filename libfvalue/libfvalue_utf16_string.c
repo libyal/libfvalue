@@ -36,14 +36,14 @@ int libfvalue_utf16_string_split(
      libfvalue_split_utf16_string_t **split_string,
      libcerror_error_t **error )
 {
-	uint16_t *segment_start = NULL;
-	uint16_t *segment_end   = NULL;
-	uint16_t *string_end    = NULL;
-	static char *function   = "libfvalue_utf16_string_split";
-	size_t string_size      = 0;
-	ssize_t segment_length  = 0;
-	int number_of_segments  = 0;
-	int segment_index       = 0;
+	uint16_t *segment_end      = NULL;
+	uint16_t *segment_start    = NULL;
+	const uint16_t *string_end = NULL;
+	static char *function      = "libfvalue_utf16_string_split";
+	size_t string_size         = 0;
+	ssize_t segment_length     = 0;
+	int number_of_segments     = 0;
+	int segment_index          = 0;
 
 	if( utf16_string == NULL )
 	{
@@ -96,10 +96,14 @@ int libfvalue_utf16_string_split(
 	{
 		return( 1 );
 	}
+	if( utf16_string[ utf16_string_size - 1 ] == 0 )
+	{
+		utf16_string_size--;
+	}
 	/* Determine the number of segments
 	 */
 	segment_start = (uint16_t *) utf16_string;
-	string_end    = (uint16_t *) &( utf16_string[ utf16_string_size - 1 ] );
+	string_end    = utf16_string + utf16_string_size;
 
 	do
 	{
@@ -146,7 +150,7 @@ int libfvalue_utf16_string_split(
 	if( libfvalue_split_utf16_string_initialize(
 	     split_string,
 	     utf16_string,
-	     utf16_string_size,
+	     utf16_string_size + 1,
 	     number_of_segments,
 	     error ) != 1 )
 	{
@@ -216,7 +220,7 @@ int libfvalue_utf16_string_split(
 
 		goto on_error;
 	}
-	string_end = &( segment_start[ string_size - 1 ] );
+	string_end = segment_start + utf16_string_size;
 
 	for( segment_index = 0;
 	     segment_index < number_of_segments;
