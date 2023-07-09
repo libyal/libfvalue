@@ -6,7 +6,7 @@ $ExitSuccess = 0
 $ExitFailure = 1
 $ExitIgnore = 77
 
-$LibraryTests = "binary_data data_handle error filetime floating_point integer split_utf16_string split_utf8_string string support table value value_entry value_type"
+$LibraryTests = "binary_data data_handle error filetime floating_point integer split_utf16_string split_utf8_string string support table utf8_string utf16_string value value_entry value_type"
 $LibraryTestsWithInput = ""
 $OptionSets = ""
 

@@ -10,6 +10,8 @@ MSVSCPP_FILES = \
 	fvalue_test_string/fvalue_test_string.vcproj \
 	fvalue_test_support/fvalue_test_support.vcproj \
 	fvalue_test_table/fvalue_test_table.vcproj \
+	fvalue_test_utf16_string/fvalue_test_utf16_string.vcproj \
+	fvalue_test_utf8_string/fvalue_test_utf8_string.vcproj \
 	fvalue_test_value/fvalue_test_value.vcproj \
 	fvalue_test_value_entry/fvalue_test_value_entry.vcproj \
 	fvalue_test_value_type/fvalue_test_value_type.vcproj \

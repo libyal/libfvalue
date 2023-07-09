@@ -136,6 +136,8 @@ stamp-h[1-9]
 /tests/fvalue_test_string
 /tests/fvalue_test_support
 /tests/fvalue_test_table
+/tests/fvalue_test_utf8_string
+/tests/fvalue_test_utf16_string
 /tests/fvalue_test_value
 /tests/fvalue_test_value_entry
 /tests/fvalue_test_value_type

@@ -35,6 +35,8 @@ check_PROGRAMS = \
 	fvalue_test_string \
 	fvalue_test_support \
 	fvalue_test_table \
+	fvalue_test_utf8_string \
+	fvalue_test_utf16_string \
 	fvalue_test_value \
 	fvalue_test_value_entry \
 	fvalue_test_value_type
@@ -162,6 +164,30 @@ fvalue_test_table_SOURCES = \
 	fvalue_test_unused.h
 
 fvalue_test_table_LDADD = \
+	../libfvalue/libfvalue.la \
+	@LIBCERROR_LIBADD@
+
+fvalue_test_utf8_string_SOURCES = \
+	fvalue_test_libcerror.h \
+	fvalue_test_libfvalue.h \
+	fvalue_test_macros.h \
+	fvalue_test_memory.c fvalue_test_memory.h \
+	fvalue_test_unused.h \
+	fvalue_test_utf8_string.c
+
+fvalue_test_utf8_string_LDADD = \
+	../libfvalue/libfvalue.la \
+	@LIBCERROR_LIBADD@
+
+fvalue_test_utf16_string_SOURCES = \
+	fvalue_test_libcerror.h \
+	fvalue_test_libfvalue.h \
+	fvalue_test_macros.h \
+	fvalue_test_memory.c fvalue_test_memory.h \
+	fvalue_test_unused.h \
+	fvalue_test_utf16_string.c
+
+fvalue_test_utf16_string_LDADD = \
 	../libfvalue/libfvalue.la \
 	@LIBCERROR_LIBADD@
 

@@ -3355,9 +3355,6 @@ int fvalue_test_string_copy_from_utf16_string_with_index(
 	libcerror_error_free(
 	 &error );
 
-#ifdef TODO
-/* TODO fix tests */
-
 	/* Test libfvalue_string_copy_from_utf16_string_with_index with libuna_utf16_stream_size_from_utf16 failing
 	 */
 	string->codepage = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
@@ -3502,8 +3499,6 @@ int fvalue_test_string_copy_from_utf16_string_with_index(
 
 	libcerror_error_free(
 	 &error );
-
-#endif /* TODO */
 
 #if defined( HAVE_FVALUE_TEST_MEMORY )
 
@@ -5423,9 +5418,6 @@ int fvalue_test_string_copy_from_utf32_string_with_index(
 	libcerror_error_free(
 	 &error );
 
-#ifdef TODO
-/* TODO fix tests */
-
 	/* Test libfvalue_string_copy_from_utf32_string_with_index with libuna_utf16_stream_size_from_utf32 failing
 	 */
 	string->codepage = LIBFVALUE_CODEPAGE_UTF16_BIG_ENDIAN;
@@ -5570,8 +5562,6 @@ int fvalue_test_string_copy_from_utf32_string_with_index(
 
 	libcerror_error_free(
 	 &error );
-
-#endif /* TODO */
 
 #if defined( HAVE_FVALUE_TEST_MEMORY )
 
@@ -7163,10 +7153,6 @@ int main(
 	 fvalue_test_string_copy_to_utf32_string_with_index );
 
 #endif /* defined( __GNUC__ ) && !defined( LIBFVALUE_DLL_IMPORT ) */
-
-	/* TODO: add tests for libfvalue_utf8_string_split */
-
-	/* TODO: add tests for libfvalue_utf16_string_split */
 
 	return( EXIT_SUCCESS );
 
