@@ -1,6 +1,6 @@
 # Files to ignore by git
 #
-# Version: 20230926
+# Version: 20231119
 
 # Generic auto-generated build files
 *~
@@ -134,8 +134,8 @@ stamp-h[1-9]
 /tests/fvalue_test_filetime
 /tests/fvalue_test_floating_point
 /tests/fvalue_test_integer
-/tests/fvalue_test_split_utf16_string
 /tests/fvalue_test_split_utf8_string
+/tests/fvalue_test_split_utf16_string
 /tests/fvalue_test_string
 /tests/fvalue_test_support
 /tests/fvalue_test_table
