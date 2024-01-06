@@ -30,8 +30,8 @@ check_PROGRAMS = \
 	fvalue_test_filetime \
 	fvalue_test_floating_point \
 	fvalue_test_integer \
-	fvalue_test_split_utf16_string \
 	fvalue_test_split_utf8_string \
+	fvalue_test_split_utf16_string \
 	fvalue_test_string \
 	fvalue_test_support \
 	fvalue_test_table \
@@ -110,18 +110,6 @@ fvalue_test_integer_LDADD = \
 	../libfvalue/libfvalue.la \
 	@LIBCERROR_LIBADD@
 
-fvalue_test_split_utf16_string_SOURCES = \
-	fvalue_test_libcerror.h \
-	fvalue_test_libfvalue.h \
-	fvalue_test_macros.h \
-	fvalue_test_memory.c fvalue_test_memory.h \
-	fvalue_test_split_utf16_string.c \
-	fvalue_test_unused.h
-
-fvalue_test_split_utf16_string_LDADD = \
-	../libfvalue/libfvalue.la \
-	@LIBCERROR_LIBADD@
-
 fvalue_test_split_utf8_string_SOURCES = \
 	fvalue_test_libcerror.h \
 	fvalue_test_libfvalue.h \
@@ -131,6 +119,18 @@ fvalue_test_split_utf8_string_SOURCES = \
 	fvalue_test_unused.h
 
 fvalue_test_split_utf8_string_LDADD = \
+	../libfvalue/libfvalue.la \
+	@LIBCERROR_LIBADD@
+
+fvalue_test_split_utf16_string_SOURCES = \
+	fvalue_test_libcerror.h \
+	fvalue_test_libfvalue.h \
+	fvalue_test_macros.h \
+	fvalue_test_memory.c fvalue_test_memory.h \
+	fvalue_test_split_utf16_string.c \
+	fvalue_test_unused.h
+
+fvalue_test_split_utf16_string_LDADD = \
 	../libfvalue/libfvalue.la \
 	@LIBCERROR_LIBADD@
 

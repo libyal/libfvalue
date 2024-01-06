@@ -7,7 +7,7 @@ EXIT_SUCCESS=0;
 EXIT_FAILURE=1;
 EXIT_IGNORE=77;
 
-LIBRARY_TESTS="binary_data data_handle error filetime floating_point integer split_utf16_string split_utf8_string string support table utf8_string utf16_string value value_entry value_type";
+LIBRARY_TESTS="binary_data data_handle error filetime floating_point integer split_utf8_string split_utf16_string string support table utf8_string utf16_string value value_entry value_type";
 LIBRARY_TESTS_WITH_INPUT="";
 OPTION_SETS=();
 
