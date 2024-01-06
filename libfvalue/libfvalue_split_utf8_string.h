@@ -29,6 +29,13 @@
 #include "libfvalue_libcerror.h"
 #include "libfvalue_types.h"
 
+#if defined( __CYGWIN__ ) || defined( __MINGW32__ )
+
+/* This inclusion is needed otherwise some linkers mess up exporting the UTF-8 string functions.
+ */
+#include "libfvalue_utf8_string.h"
+#endif
+
 #if defined( __cplusplus )
 extern "C" {
 #endif
