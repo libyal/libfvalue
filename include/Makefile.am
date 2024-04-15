@@ -15,13 +15,11 @@ EXTRA_DIST = \
 	libfvalue/features.h.in \
 	libfvalue/types.h.in
 
-MAINTAINERCLEANFILES = \
+DISTCLEANFILES = \
+	libfvalue.h \
+	libfvalue/definitions.h \
+	libfvalue/features.h \
+	libfvalue/types.h \
+	Makefile \
 	Makefile.in
-
-distclean: clean
-	-rm -f libfvalue.h
-	-rm -f libfvalue/definitions.h
-	-rm -f libfvalue/features.h
-	-rm -f libfvalue/types.h
-	-rm -f Makefile
 
