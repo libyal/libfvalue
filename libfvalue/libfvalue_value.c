@@ -2156,7 +2156,7 @@ int libfvalue_value_append_entry(
 	return( 1 );
 }
 
-/* Retrieves the entry data
+/* Retrieves entry data
  * Returns 1 if successful, 0 if the value has no data or -1 on error
  */
 int libfvalue_value_get_entry_data(
@@ -2266,7 +2266,7 @@ int libfvalue_value_get_entry_data(
 	return( result );
 }
 
-/* Sets the entry data
+/* Sets entry data
  * Returns 1 if successful or -1 on error
  */
 int libfvalue_value_set_entry_data(
@@ -2375,7 +2375,7 @@ int libfvalue_value_set_entry_data(
 	return( 1 );
 }
 
-/* Appends the entry data
+/* Appends entry data
  * Returns 1 if successful or -1 on error
  */
 int libfvalue_value_append_entry_data(
@@ -2533,7 +2533,7 @@ int libfvalue_value_append_entry_data(
 	return( 1 );
 }
 
-/* Copies the entry data
+/* Copies entry data
  * Returns 1 if successful, 0 if the value has no data or -1 on error
  */
 int libfvalue_value_copy_entry_data(
@@ -2731,7 +2731,7 @@ int libfvalue_value_copy_from_boolean(
 }
 
 /* Copies the value data to a boolean value
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_boolean(
      libfvalue_value_t *value,
@@ -2891,7 +2891,7 @@ int libfvalue_value_copy_from_8bit(
 }
 
 /* Copies the value data to an 8-bit value
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_8bit(
      libfvalue_value_t *value,
@@ -3053,7 +3053,7 @@ int libfvalue_value_copy_from_16bit(
 }
 
 /* Copies the value data to a 16-bit value
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_16bit(
      libfvalue_value_t *value,
@@ -3215,7 +3215,7 @@ int libfvalue_value_copy_from_32bit(
 }
 
 /* Copies the value data to a 32-bit value
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_32bit(
      libfvalue_value_t *value,
@@ -3377,7 +3377,7 @@ int libfvalue_value_copy_from_64bit(
 }
 
 /* Copies the value data to a 64-bit value
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_64bit(
      libfvalue_value_t *value,
@@ -3531,7 +3531,7 @@ int libfvalue_value_copy_from_float(
 }
 
 /* Copies the value data to a float value
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_float(
      libfvalue_value_t *value,
@@ -3682,7 +3682,7 @@ int libfvalue_value_copy_from_double(
 }
 
 /* Copies the value data to a double value
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_double(
      libfvalue_value_t *value,
@@ -3895,7 +3895,7 @@ int libfvalue_value_copy_from_utf8_string(
 }
 
 /* Retrieves the size of an UTF-8 encoded string of the value data
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_get_utf8_string_size(
      libfvalue_value_t *value,
@@ -3963,7 +3963,7 @@ int libfvalue_value_get_utf8_string_size(
 }
 
 /* Copies the value data to an UTF-8 encoded string
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_utf8_string(
      libfvalue_value_t *value,
@@ -4000,7 +4000,7 @@ int libfvalue_value_copy_to_utf8_string(
 }
 
 /* Copies the value data to an UTF-8 encoded string
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_utf8_string_with_index(
      libfvalue_value_t *value,
@@ -4199,7 +4199,7 @@ int libfvalue_value_copy_from_utf16_string(
 }
 
 /* Retrieves the size of an UTF-16 encoded string of the value data
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_get_utf16_string_size(
      libfvalue_value_t *value,
@@ -4267,7 +4267,7 @@ int libfvalue_value_get_utf16_string_size(
 }
 
 /* Copies the value data to an UTF-16 encoded string
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_utf16_string(
      libfvalue_value_t *value,
@@ -4304,7 +4304,7 @@ int libfvalue_value_copy_to_utf16_string(
 }
 
 /* Copies the value data to an UTF-16 encoded string
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_utf16_string_with_index(
      libfvalue_value_t *value,
@@ -4505,7 +4505,7 @@ int libfvalue_value_copy_from_utf32_string(
 }
 
 /* Retrieves the size of an UTF-32 encoded string of the value data
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_get_utf32_string_size(
      libfvalue_value_t *value,
@@ -4573,7 +4573,7 @@ int libfvalue_value_get_utf32_string_size(
 }
 
 /* Copies the value data to an UTF-32 encoded string
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_utf32_string(
      libfvalue_value_t *value,
@@ -4610,7 +4610,7 @@ int libfvalue_value_copy_to_utf32_string(
 }
 
 /* Copies the value data to an UTF-32 encoded string
- * Returns 1 if successful, 0 if value could not be set or -1 on error
+ * Returns 1 if successful, 0 if size value not be retrieved or -1 on error
  */
 int libfvalue_value_copy_to_utf32_string_with_index(
      libfvalue_value_t *value,
