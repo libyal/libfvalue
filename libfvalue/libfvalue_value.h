@@ -462,25 +462,9 @@ int libfvalue_value_get_number_of_value_entries(
      libcerror_error_t **error );
 
 LIBFVALUE_EXTERN \
-int libfvalue_value_get_entry(
-     libfvalue_value_t *value,
-     int value_entry_index,
-     size_t *entry_data_offset,
-     size_t *entry_data_size,
-     libcerror_error_t **error );
-
-LIBFVALUE_EXTERN \
 int libfvalue_value_set_entry(
      libfvalue_value_t *value,
      int value_entry_index,
-     size_t entry_data_offset,
-     size_t entry_data_size,
-     libcerror_error_t **error );
-
-LIBFVALUE_EXTERN \
-int libfvalue_value_append_entry(
-     libfvalue_value_t *value,
-     int *value_entry_index,
      size_t entry_data_offset,
      size_t entry_data_size,
      libcerror_error_t **error );
@@ -510,15 +494,6 @@ int libfvalue_value_append_entry_data(
      const uint8_t *entry_data,
      size_t entry_data_size,
      int encoding,
-     libcerror_error_t **error );
-
-LIBFVALUE_EXTERN \
-int libfvalue_value_copy_entry_data(
-     libfvalue_value_t *value,
-     int value_entry_index,
-     uint8_t *entry_data,
-     size_t entry_data_size,
-     int *encoding,
      libcerror_error_t **error );
 
 /* Boolean value functions

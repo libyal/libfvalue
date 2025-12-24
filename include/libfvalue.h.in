@@ -210,18 +210,6 @@ int libfvalue_data_handle_set_value_entry_data(
      int encoding,
      libfvalue_error_t **error );
 
-/* Appends a value entry
- * Returns if successful or -1 on error
- */
-LIBFVALUE_EXTERN \
-int libfvalue_data_handle_append_value_entry_data(
-     libfvalue_data_handle_t *data_handle,
-     int *value_entry_index,
-     const uint8_t *value_entry_data,
-     size_t value_entry_data_size,
-     int encoding,
-     libfvalue_error_t **error );
-
 /* -------------------------------------------------------------------------
  * Integer functions
  * ------------------------------------------------------------------------- */
@@ -943,6 +931,14 @@ int libfvalue_value_get_number_of_value_entries(
      int *number_of_value_entries,
      libfvalue_error_t **error );
 
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_entry(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     size_t *entry_data_offset,
+     size_t *entry_data_size,
+     libcerror_error_t **error );
+
 /* Retrieves entry data
  * Returns 1 if successful, 0 if the value has no data or -1 on error
  */
@@ -967,6 +963,14 @@ int libfvalue_value_set_entry_data(
      int encoding,
      libfvalue_error_t **error );
 
+LIBFVALUE_EXTERN \
+int libfvalue_value_append_entry(
+     libfvalue_value_t *value,
+     int *value_entry_index,
+     size_t entry_data_offset,
+     size_t entry_data_size,
+     libcerror_error_t **error );
+
 /* Appends entry data
  * Returns 1 if successful or -1 on error
  */
@@ -978,6 +982,15 @@ int libfvalue_value_append_entry_data(
      size_t entry_data_size,
      int encoding,
      libfvalue_error_t **error );
+
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_entry_data(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint8_t *entry_data,
+     size_t entry_data_size,
+     int *encoding,
+     libcerror_error_t **error );
 
 /* Copies the value data from a boolean value
  * Returns 1 if successful, 0 if value could not be set or -1 on error

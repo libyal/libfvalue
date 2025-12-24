@@ -160,6 +160,18 @@ int libfvalue_data_handle_append_value_entry(
      size_t value_entry_size,
      libcerror_error_t **error );
 
+/* Appends a value entry
+ * Returns if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_append_value_entry_data(
+     libfvalue_data_handle_t *data_handle,
+     int *value_entry_index,
+     const uint8_t *value_entry_data,
+     size_t value_entry_data_size,
+     int encoding,
+     libfvalue_error_t **error );
+
 LIBFVALUE_EXTERN \
 int libfvalue_data_handle_get_value_entry_data(
      libfvalue_data_handle_t *data_handle,
