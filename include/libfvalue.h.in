@@ -943,6 +943,28 @@ int libfvalue_value_get_number_of_value_entries(
      int *number_of_value_entries,
      libfvalue_error_t **error );
 
+/* Retrieves the entry
+ * Returns 1 if successful, 0 if the value has no data or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_get_entry(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     size_t *entry_data_offset,
+     size_t *entry_data_size,
+     libfvalue_error_t **error );
+
+/* Appends the entry
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_append_entry(
+     libfvalue_value_t *value,
+     int *value_entry_index,
+     size_t entry_data_offset,
+     size_t entry_data_size,
+     libfvalue_error_t **error );
+
 /* Retrieves entry data
  * Returns 1 if successful, 0 if the value has no data or -1 on error
  */
@@ -977,6 +999,18 @@ int libfvalue_value_append_entry_data(
      const uint8_t *entry_data,
      size_t entry_data_size,
      int encoding,
+     libfvalue_error_t **error );
+
+/* Copies entry data
+ * Returns 1 if successful, 0 if the value has no data or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_copy_entry_data(
+     libfvalue_value_t *value,
+     int value_entry_index,
+     uint8_t *entry_data,
+     size_t entry_data_size,
+     int *encoding,
      libfvalue_error_t **error );
 
 /* Copies the value data from a boolean value

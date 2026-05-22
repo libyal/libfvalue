@@ -1,4 +1,4 @@
-.Dd April  4, 2019
+.Dd May 22, 2026
 .Dt libfvalue 3
 .Os libfvalue
 .Sh NAME
@@ -173,11 +173,17 @@ Value functions
 .Ft int
 .Fn libfvalue_value_get_number_of_value_entries "libfvalue_value_t *value" "int *number_of_value_entries" "libfvalue_error_t **error"
 .Ft int
+.Fn libfvalue_value_get_entry "libfvalue_value_t *value" "int value_entry_index" "size_t *entry_data_offset" "size_t *entry_data_size" "libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_value_append_entry "libfvalue_value_t *value" "int *value_entry_index" "size_t entry_data_offset" "size_t entry_data_size" "libfvalue_error_t **error"
+.Ft int
 .Fn libfvalue_value_get_entry_data "libfvalue_value_t *value" "int value_entry_index" "uint8_t **entry_data" "size_t *entry_data_size" "int *encoding" "libfvalue_error_t **error"
 .Ft int
 .Fn libfvalue_value_set_entry_data "libfvalue_value_t *value" "int value_entry_index" "const uint8_t *entry_data" "size_t entry_data_size" "int encoding" "libfvalue_error_t **error"
 .Ft int
 .Fn libfvalue_value_append_entry_data "libfvalue_value_t *value" "int *value_entry_index" "const uint8_t *entry_data" "size_t entry_data_size" "int encoding" "libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_value_copy_entry_data "libfvalue_value_t *value" "int value_entry_index" "uint8_t *entry_data" "size_t entry_data_size" "int *encoding" "libfvalue_error_t **error"
 .Ft int
 .Fn libfvalue_value_copy_from_boolean "libfvalue_value_t *value" "int value_entry_index" "uint8_t value_boolean" "libfvalue_error_t **error"
 .Ft int
