@@ -186,6 +186,17 @@ int libfvalue_data_handle_get_number_of_value_entries(
      int *number_of_value_entries,
      libfvalue_error_t **error );
 
+/* Appends a value entry
+ * Returns if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_append_value_entry(
+     libfvalue_data_handle_t *data_handle,
+     int *value_entry_index,
+     size_t value_entry_offset,
+     size_t value_entry_size,
+     libfvalue_error_t **error );
+
 /* Retrieves a specific value entry
  * Returns if successful or -1 on error
  */

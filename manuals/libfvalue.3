@@ -1,4 +1,4 @@
-.Dd May 22, 2026
+.Dd May 31, 2026
 .Dt libfvalue 3
 .Os libfvalue
 .Sh NAME
@@ -42,6 +42,8 @@ Data handle functions
 .Fn libfvalue_data_handle_set_data_flags "libfvalue_data_handle_t *data_handle" "uint32_t data_flags" "libfvalue_error_t **error"
 .Ft int
 .Fn libfvalue_data_handle_get_number_of_value_entries "libfvalue_data_handle_t *data_handle" "int *number_of_value_entries" "libfvalue_error_t **error"
+.Ft int
+.Fn libfvalue_data_handle_append_value_entry "libfvalue_data_handle_t *data_handle" "int value_entry_index" "size_t value_entry_offset" "size_t value_entry_data_size" "libfvalue_error_t **error"
 .Ft int
 .Fn libfvalue_data_handle_get_value_entry_data "libfvalue_data_handle_t *data_handle" "int value_entry_index" "uint8_t **value_entry_data" "size_t *value_entry_data_size" "int *encoding" "libfvalue_error_t **error"
 .Ft int

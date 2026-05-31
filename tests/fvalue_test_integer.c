@@ -626,20 +626,20 @@ int fvalue_test_integer_copy_from_byte_stream(
 	 result,
 	 1 );
 
-	if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-	{
-		FVALUE_TEST_ASSERT_EQUAL_UINT64(
-		 "integer->value",
-		 integer->value,
-		 (uint64_t) 0x3412UL );
-	}
-	else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-	{
-		FVALUE_TEST_ASSERT_EQUAL_UINT64(
-		 "integer->value",
-		 integer->value,
-		 (uint64_t) 0x1234UL );
-	}
+/* TODO add support for middle endian */
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x3412UL );
+
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x1234UL );
+#endif
+
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
@@ -698,20 +698,20 @@ int fvalue_test_integer_copy_from_byte_stream(
 	 result,
 	 1 );
 
-	if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-	{
-		FVALUE_TEST_ASSERT_EQUAL_UINT64(
-		 "integer->value",
-		 integer->value,
-		 (uint64_t) 0x78563412UL );
-	}
-	else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-	{
-		FVALUE_TEST_ASSERT_EQUAL_UINT64(
-		 "integer->value",
-		 integer->value,
-		 (uint64_t) 0x12345678UL );
-	}
+/* TODO add support for middle endian */
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x78563412UL );
+
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x12345678UL );
+#endif
+
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
@@ -770,20 +770,20 @@ int fvalue_test_integer_copy_from_byte_stream(
 	 result,
 	 1 );
 
-	if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-	{
-		FVALUE_TEST_ASSERT_EQUAL_UINT64(
-		 "integer->value",
-		 integer->value,
-		 (uint64_t) 0xefcdab9078563412UL );
-	}
-	else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-	{
-		FVALUE_TEST_ASSERT_EQUAL_UINT64(
-		 "integer->value",
-		 integer->value,
-		 (uint64_t) 0x1234567890abcdefUL );
-	}
+/* TODO add support for middle endian */
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0xefcdab9078563412UL );
+
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "integer->value",
+	 integer->value,
+	 (uint64_t) 0x1234567890abcdefUL );
+#endif
+
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );

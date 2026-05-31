@@ -605,20 +605,20 @@ int fvalue_test_floating_point_copy_from_byte_stream(
 	 result,
 	 1 );
 
-	if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-	{
-		FVALUE_TEST_ASSERT_EQUAL_UINT64(
-		 "floating_point->value",
-		 floating_point->value,
-		 (uint64_t) 0xa4704541UL );
-	}
-	else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-	{
-		FVALUE_TEST_ASSERT_EQUAL_UINT64(
-		 "floating_point->value",
-		 floating_point->value,
-		 (uint64_t) 0x414570a4UL );
-	}
+/* TODO add support for middle endian */
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point->value",
+	 floating_point->value,
+	 (uint64_t) 0xa4704541UL );
+
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point->value",
+	 floating_point->value,
+	 (uint64_t) 0x414570a4UL );
+#endif
+
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
@@ -677,20 +677,20 @@ int fvalue_test_floating_point_copy_from_byte_stream(
 	 result,
 	 1 );
 
-	if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-	{
-		FVALUE_TEST_ASSERT_EQUAL_UINT64(
-		 "floating_point->value",
-		 floating_point->value,
-		 (uint64_t) 0xec51b81e451ab340UL );
-	}
-	else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-	{
-		FVALUE_TEST_ASSERT_EQUAL_UINT64(
-		 "floating_point->value",
-		 floating_point->value,
-		 (uint64_t) 0x40b31a451eb851ecUL );
-	}
+/* TODO add support for middle endian */
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point->value",
+	 floating_point->value,
+	 (uint64_t) 0xec51b81e451ab340UL );
+
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+	FVALUE_TEST_ASSERT_EQUAL_UINT64(
+	 "floating_point->value",
+	 floating_point->value,
+	 (uint64_t) 0x40b31a451eb851ecUL );
+#endif
+
 	FVALUE_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );

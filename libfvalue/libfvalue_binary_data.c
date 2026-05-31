@@ -696,25 +696,11 @@ int libfvalue_binary_data_get_utf16_string_size(
 				format_flags = LIBUNA_BASE16_VARIANT_CASE_UPPER
 					     | LIBUNA_BASE16_VARIANT_CHARACTER_LIMIT_NONE;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
+#else
+				format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
+#endif
 				if( libuna_base16_stream_size_from_byte_stream(
 				     binary_data->data,
 				     binary_data->data_size,
@@ -738,25 +724,11 @@ int libfvalue_binary_data_get_utf16_string_size(
 					     | LIBUNA_BASE32_VARIANT_CHARACTER_LIMIT_NONE
 					     | LIBUNA_BASE32_VARIANT_PADDING_REQUIRED;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
+#else
+				format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
+#endif
 				if( libuna_base32_stream_size_from_byte_stream(
 				     binary_data->data,
 				     binary_data->data_size,
@@ -780,25 +752,11 @@ int libfvalue_binary_data_get_utf16_string_size(
 					     | LIBUNA_BASE64_VARIANT_CHARACTER_LIMIT_NONE
 					     | LIBUNA_BASE64_VARIANT_PADDING_REQUIRED;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
+#else
+				format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
+#endif
 				if( libuna_base64_stream_size_from_byte_stream(
 				     binary_data->data,
 				     binary_data->data_size,
@@ -945,25 +903,11 @@ int libfvalue_binary_data_copy_to_utf16_string_with_index(
 				format_flags = LIBUNA_BASE16_VARIANT_CASE_UPPER
 					     | LIBUNA_BASE16_VARIANT_CHARACTER_LIMIT_NONE;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
+#else
+				format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
+#endif
 				if( libuna_base16_stream_with_index_copy_from_byte_stream(
 				     (uint8_t *) utf16_string,
 				     string_size,
@@ -989,25 +933,11 @@ int libfvalue_binary_data_copy_to_utf16_string_with_index(
 					     | LIBUNA_BASE32_VARIANT_CHARACTER_LIMIT_NONE
 					     | LIBUNA_BASE32_VARIANT_PADDING_REQUIRED;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
+#else
+				format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
+#endif
 				if( libuna_base32_stream_with_index_copy_from_byte_stream(
 				     (uint8_t *) utf16_string,
 				     string_size,
@@ -1033,25 +963,11 @@ int libfvalue_binary_data_copy_to_utf16_string_with_index(
 					     | LIBUNA_BASE64_VARIANT_CHARACTER_LIMIT_NONE
 					     | LIBUNA_BASE64_VARIANT_PADDING_REQUIRED;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
+#else
+				format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
+#endif
 				if( libuna_base64_stream_with_index_copy_from_byte_stream(
 				     (uint8_t *) utf16_string,
 				     string_size,
@@ -1159,25 +1075,13 @@ int libfvalue_binary_data_get_utf32_string_size(
 				format_flags = LIBUNA_BASE16_VARIANT_CASE_UPPER
 					     | LIBUNA_BASE16_VARIANT_CHARACTER_LIMIT_NONE;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+				format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
+#else
+#error "Unsupported middle-endian host byte-order"
+#endif
 				if( libuna_base16_stream_size_from_byte_stream(
 				     binary_data->data,
 				     binary_data->data_size,
@@ -1201,25 +1105,13 @@ int libfvalue_binary_data_get_utf32_string_size(
 					     | LIBUNA_BASE32_VARIANT_CHARACTER_LIMIT_NONE
 					     | LIBUNA_BASE32_VARIANT_PADDING_REQUIRED;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+				format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
+#else
+#error "Unsupported middle-endian host byte-order"
+#endif
 				if( libuna_base32_stream_size_from_byte_stream(
 				     binary_data->data,
 				     binary_data->data_size,
@@ -1243,25 +1135,13 @@ int libfvalue_binary_data_get_utf32_string_size(
 					     | LIBUNA_BASE64_VARIANT_CHARACTER_LIMIT_NONE
 					     | LIBUNA_BASE64_VARIANT_PADDING_REQUIRED;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+				format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
+#else
+#error "Unsupported middle-endian host byte-order"
+#endif
 				if( libuna_base64_stream_size_from_byte_stream(
 				     binary_data->data,
 				     binary_data->data_size,
@@ -1408,25 +1288,13 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 				format_flags = LIBUNA_BASE16_VARIANT_CASE_UPPER
 					     | LIBUNA_BASE16_VARIANT_CHARACTER_LIMIT_NONE;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+				format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
+#else
+#error "Unsupported middle-endian host byte-order"
+#endif
 				if( libuna_base16_stream_with_index_copy_from_byte_stream(
 				     (uint8_t *) utf32_string,
 				     string_size,
@@ -1452,25 +1320,13 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 					     | LIBUNA_BASE32_VARIANT_CHARACTER_LIMIT_NONE
 					     | LIBUNA_BASE32_VARIANT_PADDING_REQUIRED;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+				format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
+#else
+#error "Unsupported middle-endian host byte-order"
+#endif
 				if( libuna_base32_stream_with_index_copy_from_byte_stream(
 				     (uint8_t *) utf32_string,
 				     string_size,
@@ -1496,25 +1352,13 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 					     | LIBUNA_BASE64_VARIANT_CHARACTER_LIMIT_NONE
 					     | LIBUNA_BASE64_VARIANT_PADDING_REQUIRED;
 
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+				format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF32_BIG_ENDIAN;
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+				format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF32_LITTLE_ENDIAN;
+#else
+#error "Unsupported middle-endian host byte-order"
+#endif
 				if( libuna_base64_stream_with_index_copy_from_byte_stream(
 				     (uint8_t *) utf32_string,
 				     string_size,

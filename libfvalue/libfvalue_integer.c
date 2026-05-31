@@ -28,6 +28,22 @@
 #include "libfvalue_integer.h"
 #include "libfvalue_libcerror.h"
 
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+#define byte_stream_copy_to_uint16_native_endian byte_stream_copy_to_uint16_big_endian
+#define byte_stream_copy_to_uint32_native_endian byte_stream_copy_to_uint32_big_endian
+#define byte_stream_copy_to_uint64_native_endian byte_stream_copy_to_uint64_big_endian
+
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+#define byte_stream_copy_to_uint16_native_endian byte_stream_copy_to_uint16_little_endian
+#define byte_stream_copy_to_uint32_native_endian byte_stream_copy_to_uint32_little_endian
+#define byte_stream_copy_to_uint64_native_endian byte_stream_copy_to_uint64_little_endian
+
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_MIDDLE
+#define byte_stream_copy_to_uint16_native_endian byte_stream_copy_to_uint16_little_endian
+
+#error "Unsupported middle-endian host byte-order"
+#endif
+
 /* Creates an integer
  * Make sure the value integer is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
@@ -290,7 +306,9 @@ int libfvalue_integer_copy_from_byte_stream(
 			}
 			else
 			{
-				integer->value = (uint64_t) *( (uint16_t *) byte_stream );
+				byte_stream_copy_to_uint16_native_endian(
+				 byte_stream,
+				 integer->value );
 			}
 			break;
 
@@ -309,7 +327,9 @@ int libfvalue_integer_copy_from_byte_stream(
 			}
 			else
 			{
-				integer->value = (uint64_t) *( (uint32_t *) byte_stream );
+				byte_stream_copy_to_uint32_native_endian(
+				 byte_stream,
+				 integer->value );
 			}
 			break;
 
@@ -328,7 +348,9 @@ int libfvalue_integer_copy_from_byte_stream(
 			}
 			else
 			{
-				integer->value = (uint64_t) *( (uint64_t *) byte_stream );
+				byte_stream_copy_to_uint64_native_endian(
+				 byte_stream,
+				 integer->value );
 			}
 			break;
 

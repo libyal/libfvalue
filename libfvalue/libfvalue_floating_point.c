@@ -29,6 +29,18 @@
 #include "libfvalue_floating_point.h"
 #include "libfvalue_libcerror.h"
 
+#if _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_BIG
+#define byte_stream_copy_to_uint32_native_endian byte_stream_copy_to_uint32_big_endian
+#define byte_stream_copy_to_uint64_native_endian byte_stream_copy_to_uint64_big_endian
+
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_LITTLE
+#define byte_stream_copy_to_uint32_native_endian byte_stream_copy_to_uint32_little_endian
+#define byte_stream_copy_to_uint64_native_endian byte_stream_copy_to_uint64_little_endian
+
+#elif _BYTE_STREAM_HOST_BYTE_ORDER == _BYTE_STREAM_ENDIAN_MIDDLE
+#error "Unsupported middle-endian host byte-order"
+#endif
+
 /* Creates a floating point
  * Make sure the value floating_point is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
@@ -286,7 +298,9 @@ int libfvalue_floating_point_copy_from_byte_stream(
 			}
 			else
 			{
-				floating_point->value = (uint64_t) *( (uint32_t *) byte_stream );
+				byte_stream_copy_to_uint32_native_endian(
+				 byte_stream,
+				 floating_point->value );
 			}
 			break;
 
@@ -305,7 +319,9 @@ int libfvalue_floating_point_copy_from_byte_stream(
 			}
 			else
 			{
-				floating_point->value = (uint64_t) *( (uint64_t *) byte_stream );
+				byte_stream_copy_to_uint64_native_endian(
+				 byte_stream,
+				 floating_point->value );
 			}
 			break;
 

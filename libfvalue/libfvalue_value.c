@@ -1159,6 +1159,9 @@ int libfvalue_value_initialize_data(
 
 		goto on_error;
 	}
+#if defined( __clang_analyzer__ )
+	__builtin_assume( ( (libfvalue_internal_data_handle_t *) internal_value->data_handle )->data == data );
+#endif
 	return( 1 );
 
 on_error:
