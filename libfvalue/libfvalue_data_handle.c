@@ -211,7 +211,7 @@ int libfvalue_data_handle_clone(
 		return( 1 );
 	}
 	internal_source_data_handle = (libfvalue_internal_data_handle_t *) source_data_handle;
-	
+
 	if( libfvalue_data_handle_initialize(
 	     destination_data_handle,
 	     internal_source_data_handle->read_value_entries,
@@ -239,12 +239,11 @@ int libfvalue_data_handle_clone(
 	}
 	if( internal_source_data_handle->data != NULL )
 	{
-		if( libfvalue_data_handle_set_data(
+		if( libfvalue_data_handle_set_data_as_clone(
 		     *destination_data_handle,
 		     internal_source_data_handle->data,
 		     internal_source_data_handle->data_size,
 		     internal_source_data_handle->encoding,
-		     LIBFVALUE_VALUE_DATA_FLAG_MANAGED,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -369,7 +368,7 @@ int libfvalue_data_handle_get_data(
 		return( -1 );
 	}
 	internal_data_handle = (libfvalue_internal_data_handle_t *) data_handle;
-	
+
 	if( data == NULL )
 	{
 		libcerror_error_set(
@@ -489,7 +488,7 @@ int libfvalue_data_handle_set_data(
 		}
 		internal_data_handle->flags &= ~( LIBFVALUE_VALUE_DATA_FLAG_MANAGED );
 	}
-	/* Make sure empty values have data that refers to NULL
+	/* Make sure empty values have data that refer to NULL
 	 */
 	if( ( data == NULL )
 	 || ( data_size == 0 ) )
@@ -553,6 +552,253 @@ on_error:
 	return( -1 );
 }
 
+/* Sets the data and makes a clone
+ *
+ * Comparable to libfvalue_data_handle_set_data with flags set to:
+ * LIBFVALUE_VALUE_DATA_FLAG_MANAGED
+ *
+ * Returns 1 if successful or -1 on error
+ */
+int libfvalue_data_handle_set_data_as_clone(
+     libfvalue_data_handle_t *data_handle,
+     const uint8_t *data,
+     size_t data_size,
+     int encoding,
+     libcerror_error_t **error )
+{
+	libfvalue_internal_data_handle_t *internal_data_handle = NULL;
+	static char *function                                  = "libfvalue_data_handle_set_data_as_clone";
+
+	if( data_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data handle.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_handle = (libfvalue_internal_data_handle_t *) data_handle;
+
+	if( data == NULL )
+	{
+		if( data_size != 0 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+			 LIBCERROR_ARGUMENT_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: invalid data size value out of bounds.",
+			 function );
+
+			return( -1 );
+		}
+	}
+	else
+	{
+		if( data_size > (size_t) SSIZE_MAX )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+			 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 "%s: invalid data size value exceeds maximum.",
+			 function );
+
+			return( -1 );
+		}
+	}
+	if( ( internal_data_handle->flags & LIBFVALUE_VALUE_DATA_FLAG_MANAGED ) != 0 )
+	{
+		if( internal_data_handle->data != NULL )
+		{
+			memory_free(
+			 internal_data_handle->data );
+
+			internal_data_handle->data      = NULL;
+			internal_data_handle->data_size = 0;
+		}
+		internal_data_handle->flags &= ~( LIBFVALUE_VALUE_DATA_FLAG_MANAGED );
+	}
+	/* Make sure empty values have data that refer to NULL
+	 */
+	if( ( data == NULL )
+	 || ( data_size == 0 ) )
+	{
+		internal_data_handle->data = NULL;
+	}
+	else
+	{
+		internal_data_handle->data = (uint8_t *) memory_allocate(
+		                                          sizeof( uint8_t ) * data_size );
+
+		if( internal_data_handle->data == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create data.",
+			 function );
+
+			goto on_error;
+		}
+		if( memory_copy(
+		     internal_data_handle->data,
+		     data,
+		     data_size ) == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+			 "%s: unable to copy data.",
+			 function );
+
+			goto on_error;
+		}
+		internal_data_handle->flags |= LIBFVALUE_VALUE_DATA_FLAG_MANAGED;
+	}
+	internal_data_handle->data_size = data_size;
+	internal_data_handle->encoding  = encoding;
+
+	return( 1 );
+
+on_error:
+	if( internal_data_handle->data != NULL )
+	{
+		memory_free(
+		 internal_data_handle->data );
+
+		internal_data_handle->data = NULL;
+	}
+	return( -1 );
+}
+
+/* Sets the data and takes over ownership
+ *
+ * Note that this needs to be a static function that returns void
+ *
+ * data is set to NULL to indicate ownership was obtained
+ */
+static void libfvalue_internal_data_handle_set_data_as_owned(
+             libfvalue_internal_data_handle_t *internal_data_handle,
+             uint8_t **data,
+             size_t data_size,
+             int encoding ) LIBFVALUE_HOLDS_OWNERSHIP(2)
+{
+	/* Make sure empty values have data that refer to NULL
+	 */
+	if( ( *data == NULL )
+	 || ( data_size == 0 ) )
+	{
+		internal_data_handle->data = NULL;
+	}
+	else
+	{
+		internal_data_handle->data   = *data;
+		internal_data_handle->flags |= LIBFVALUE_VALUE_DATA_FLAG_MANAGED;
+	}
+	internal_data_handle->data_size = data_size;
+	internal_data_handle->encoding  = encoding;
+
+	*data = NULL;
+}
+
+/* Sets the data and takes over ownership
+ *
+ * Comparable to libfvalue_data_handle_set_data with flags set to:
+ * LIBFVALUE_VALUE_DATA_FLAG_MANAGED | LIBFVALUE_VALUE_DATA_FLAG_CLONE_BY_REFERENCE
+ *
+ * data is set to NULL if ownership was obtained
+ *
+ * Returns 1 if successful or -1 on error
+ */
+int libfvalue_data_handle_set_data_as_owned(
+     libfvalue_data_handle_t *data_handle,
+     uint8_t **data,
+     size_t data_size,
+     int encoding,
+     libcerror_error_t **error )
+{
+	libfvalue_internal_data_handle_t *internal_data_handle = NULL;
+	static char *function                                  = "libfvalue_data_handle_set_data_as_owned";
+
+	if( data_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data handle.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_handle = (libfvalue_internal_data_handle_t *) data_handle;
+
+	if( data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data.",
+		 function );
+
+		return( -1 );
+	}
+	if( *data == NULL )
+	{
+		if( data_size != 0 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+			 LIBCERROR_ARGUMENT_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: invalid data size value out of bounds.",
+			 function );
+
+			return( -1 );
+		}
+	}
+	else
+	{
+		if( data_size > (size_t) SSIZE_MAX )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+			 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 "%s: invalid data size value exceeds maximum.",
+			 function );
+
+			return( -1 );
+		}
+	}
+	if( ( internal_data_handle->flags & LIBFVALUE_VALUE_DATA_FLAG_MANAGED ) != 0 )
+	{
+		if( internal_data_handle->data != NULL )
+		{
+			memory_free(
+			 internal_data_handle->data );
+
+			internal_data_handle->data      = NULL;
+			internal_data_handle->data_size = 0;
+		}
+		internal_data_handle->flags &= ~( LIBFVALUE_VALUE_DATA_FLAG_MANAGED );
+	}
+	libfvalue_internal_data_handle_set_data_as_owned(
+	 internal_data_handle,
+	 data,
+	 data_size,
+	 encoding );
+
+	return( 1 );
+}
+
 /* Retrieves the data flags
  * Returns 1 if successful or -1 on error
  */
@@ -576,7 +822,7 @@ int libfvalue_data_handle_get_data_flags(
 		return( -1 );
 	}
 	internal_data_handle = (libfvalue_internal_data_handle_t *) data_handle;
-	
+
 	if( data_flags == NULL )
 	{
 		libcerror_error_set(
@@ -645,7 +891,7 @@ int libfvalue_data_handle_get_number_of_value_entries(
 		return( -1 );
 	}
 	internal_data_handle = (libfvalue_internal_data_handle_t *) data_handle;
-	
+
 	if( number_of_value_entries == NULL )
 	{
 		libcerror_error_set(
@@ -824,7 +1070,7 @@ int libfvalue_data_handle_set_value_entry(
 
 		return( -1 );
 	}
-	if( value_entry_index != 0 )	
+	if( value_entry_index != 0 )
 	{
 		libcerror_error_set(
 		 error,
@@ -1307,7 +1553,7 @@ int libfvalue_data_handle_set_value_entry_data(
 		return( -1 );
 	}
 /* TODO remove limitation */
-	if( value_entry_index != 0 )	
+	if( value_entry_index != 0 )
 	{
 		libcerror_error_set(
 		 error,
@@ -1489,12 +1735,11 @@ int libfvalue_data_handle_append_value_entry_data(
 	}
 	if( internal_data_handle->data == NULL )
 	{
-		if( libfvalue_data_handle_set_data(
+		if( libfvalue_data_handle_set_data_as_clone(
 		     data_handle,
 		     value_entry_data,
 		     value_entry_data_size,
 		     encoding,
-		     LIBFVALUE_VALUE_DATA_FLAG_MANAGED,
 		     error ) != 1 )
 		{
 			libcerror_error_set(

@@ -24,6 +24,19 @@
 
 #include <common.h>
 
+#if !defined( __CYGWIN__ ) && !defined( _WIN32 ) && defined( __has_attribute )
+#if __has_attribute( visibility )
+#define LIBFVALUE_INTERNAL	__attribute__((visibility("hidden"))) extern
+
+#else
+#define LIBFVALUE_INTERNAL	extern
+
+#endif /* __has_attribute( visibility ) */
+#else
+#define LIBFVALUE_INTERNAL	extern
+
+#endif /* !defined( __CYGWIN__ ) && !defined( _WIN32 ) && defined( __has_attribute ) */
+
 /* Define HAVE_LOCAL_LIBFVALUE for local use of libfvalue
  */
 #if !defined( HAVE_LOCAL_LIBFVALUE )
@@ -32,9 +45,22 @@
 
 #else
 #define LIBFVALUE_EXTERN		/* extern */
-#define LIBFVALUE_EXTERN_VARIABLE	extern
+#define LIBFVALUE_EXTERN_VARIABLE	LIBFVALUE_INTERNAL
 
 #endif /* !defined( HAVE_LOCAL_LIBFVALUE ) */
+
+#if defined( __clang__ ) && defined( __has_attribute )
+#if __has_attribute( ownership_holds )
+#define LIBFVALUE_HOLDS_OWNERSHIP(index) __attribute__((ownership_holds(malloc, index)))
+
+#else
+#define LIBFVALUE_HOLDS_OWNERSHIP(index)
+
+#endif /* __has_attribute( ownership_holds ) */
+#else
+#define LIBFVALUE_HOLDS_OWNERSHIP(index)
+
+#endif /* defined( __clang__ ) && defined( __has_attribute ) */
 
 #endif /* !defined( _LIBFVALUE_INTERNAL_EXTERN_H ) */
 

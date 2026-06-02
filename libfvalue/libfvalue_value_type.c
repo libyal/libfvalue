@@ -48,7 +48,7 @@
 #include "libfvalue_libfwnt.h"
 #endif
 
-const char *libfvalue_value_type_strings[ 28 ] = {
+static const char *libfvalue_value_type_strings[ 28 ] = {
 	NULL,
 
 	"binary-data",
@@ -89,7 +89,7 @@ const char *libfvalue_value_type_strings[ 28 ] = {
 	"nt-sid",
 };
 
-const char *libfvalue_value_type_descriptions[ 28 ] = {
+static const char *libfvalue_value_type_descriptions[ 28 ] = {
 	NULL,
 
 	"Binary data",
@@ -1046,7 +1046,7 @@ ssize_t libfvalue_value_type_set_data_strings_array(
 			libcnotify_printf(
 			 "%s: strings array value entry: %d data offset: 0x%08" PRIzx "\n",
 			 function,
-			 value_entry_index, 
+			 value_entry_index,
 			 last_data_index );
 
 			libcnotify_printf(

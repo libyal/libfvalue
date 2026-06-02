@@ -1305,12 +1305,11 @@ int libfvalue_table_copy_from_utf8_xml_string(
 				}
 				value_data[ value_data_length ] = 0;
 
-				if( libfvalue_value_set_data(
+				if( libfvalue_value_set_data_as_owned(
 				     value,
-				     (uint8_t *) value_data,
+				     &value_data,
 				     value_data_length + 1,
 				     LIBFVALUE_CODEPAGE_UTF8,
-				     LIBFVALUE_VALUE_DATA_FLAG_MANAGED | LIBFVALUE_VALUE_DATA_FLAG_CLONE_BY_REFERENCE,
 				     error ) != 1 )
 				{
 					libcerror_error_set(
@@ -1329,7 +1328,6 @@ int libfvalue_table_copy_from_utf8_xml_string(
 				 value_identifier );
 
 				value_identifier = NULL;
-				value_data       = NULL;
 				value            = NULL;
 			}
 		}

@@ -159,6 +159,38 @@ int libfvalue_data_handle_set_data(
      uint8_t flags,
      libfvalue_error_t **error );
 
+/* Sets the data and makes a clone
+ *
+ * Comparable to libfvalue_data_handle_set_data with flags set to:
+ * LIBFVALUE_VALUE_DATA_FLAG_MANAGED
+ *
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_set_data_as_clone(
+     libfvalue_data_handle_t *data_handle,
+     const uint8_t *data,
+     size_t data_size,
+     int encoding,
+     libfvalue_error_t **error );
+
+/* Sets the data and takes over ownership
+ *
+ * Comparable to libfvalue_data_handle_set_data with flags set to:
+ * LIBFVALUE_VALUE_DATA_FLAG_MANAGED | LIBFVALUE_VALUE_DATA_FLAG_CLONE_BY_REFERENCE
+ *
+ * data is set to NULL if ownership was obtained
+ *
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_set_data_as_owned(
+     libfvalue_data_handle_t *data_handle,
+     uint8_t **data,
+     size_t data_size,
+     int encoding,
+     libfvalue_error_t **error );
+
 /* Retrieves the data flags
  * Returns 1 if successful or -1 on error
  */
@@ -915,6 +947,38 @@ int libfvalue_value_set_data(
      size_t data_size,
      int encoding,
      uint8_t flags,
+     libfvalue_error_t **error );
+
+/* Sets the data and makes a clone
+ *
+ * Comparable to libfvalue_value_set_data with flags set to:
+ * LIBFVALUE_VALUE_DATA_FLAG_MANAGED
+ *
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_set_data_as_clone(
+     libfvalue_value_t *value,
+     const uint8_t *data,
+     size_t data_size,
+     int encoding,
+     libfvalue_error_t **error );
+
+/* Sets the data and takes over ownership
+ *
+ * Comparable to libfvalue_value_set_data with flags set to:
+ * LIBFVALUE_VALUE_DATA_FLAG_MANAGED | LIBFVALUE_VALUE_DATA_FLAG_CLONE_BY_REFERENCE
+ *
+ * data is set to NULL if ownership was obtained
+ *
+ * Returns 1 if successful or -1 on error
+ */
+LIBFVALUE_EXTERN \
+int libfvalue_value_set_data_as_owned(
+     libfvalue_value_t *value,
+     uint8_t **data,
+     size_t data_size,
+     int encoding,
      libfvalue_error_t **error );
 
 /* Copies the data

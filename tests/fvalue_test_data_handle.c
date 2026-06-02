@@ -21,6 +21,7 @@
 
 #include <common.h>
 #include <file_stream.h>
+#include <memory.h>
 #include <types.h>
 
 #if defined( HAVE_STDLIB_H ) || defined( WINAPI )
@@ -1057,6 +1058,437 @@ int fvalue_test_data_handle_set_data(
 	return( 1 );
 
 on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( data_handle != NULL )
+	{
+		libfvalue_data_handle_free(
+		 &data_handle,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_data_handle_set_data_as_clone function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_data_handle_set_data_as_clone(
+     void )
+{
+	uint8_t data[ 32 ];
+
+	libcerror_error_t *error             = NULL;
+	libfvalue_data_handle_t *data_handle = NULL;
+	int result                           = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_data_handle_initialize(
+	          &data_handle,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "data_handle",
+	 data_handle );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = libfvalue_data_handle_set_data_as_clone(
+	          data_handle,
+	          data,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libfvalue_data_handle_set_data_as_clone(
+	          data_handle,
+	          NULL,
+	          0,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_data_handle_set_data_as_clone(
+	          NULL,
+	          data,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_data_handle_set_data_as_clone(
+	          data_handle,
+	          NULL,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_data_handle_set_data_as_clone(
+	          data_handle,
+	          data,
+	          (size_t) SSIZE_MAX + 1,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+#if defined( HAVE_FVALUE_TEST_MEMORY )
+
+	/* Test libfvalue_data_handle_set_data_as_clone with malloc failing
+	 */
+	fvalue_test_malloc_attempts_before_fail = 0;
+
+	result = libfvalue_data_handle_set_data_as_clone(
+	          data_handle,
+	          data,
+	          32,
+	          0,
+	          &error );
+
+	if( fvalue_test_malloc_attempts_before_fail != -1 )
+	{
+		fvalue_test_malloc_attempts_before_fail = -1;
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#if defined( OPTIMIZATION_DISABLED )
+
+	/* Test libfvalue_data_handle_set_data_as_clone with memcpy failing
+	 */
+	fvalue_test_memcpy_attempts_before_fail = 0;
+
+	result = libfvalue_data_handle_set_data_as_clone(
+	          data_handle,
+	          data,
+	          32,
+	          0,
+	          &error );
+
+	if( fvalue_test_memcpy_attempts_before_fail != -1 )
+	{
+		fvalue_test_memcpy_attempts_before_fail = -1;
+	}
+	else
+	{
+		FVALUE_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		FVALUE_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( OPTIMIZATION_DISABLED ) */
+#endif /* defined( HAVE_FVALUE_TEST_MEMORY ) */
+
+	/* Clean up
+	 */
+	result = libfvalue_data_handle_free(
+	          &data_handle,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "data_handle",
+	 data_handle );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( data_handle != NULL )
+	{
+		libfvalue_data_handle_free(
+		 &data_handle,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the libfvalue_data_handle_set_data_as_owned function
+ * Returns 1 if successful or 0 if not
+ */
+int fvalue_test_data_handle_set_data_as_owned(
+     void )
+{
+	uint8_t *data                        = NULL;
+	libcerror_error_t *error             = NULL;
+	libfvalue_data_handle_t *data_handle = NULL;
+	int result                           = 0;
+
+	/* Initialize test
+	 */
+	result = libfvalue_data_handle_initialize(
+	          &data_handle,
+	          NULL,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "data_handle",
+	 data_handle );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	data = (uint8_t *) memory_allocate(
+	                    32 * sizeof( uint8_t ) );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "data",
+	 data );
+
+	result = libfvalue_data_handle_set_data_as_owned(
+	          data_handle,
+	          &data,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	data = NULL;
+
+	result = libfvalue_data_handle_set_data_as_owned(
+	          data_handle,
+	          &data,
+	          0,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = libfvalue_data_handle_set_data_as_owned(
+	          NULL,
+	          &data,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_data_handle_set_data_as_owned(
+	          data_handle,
+	          NULL,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = libfvalue_data_handle_set_data_as_owned(
+	          data_handle,
+	          &data,
+	          32,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	data = (uint8_t *) memory_allocate(
+	                    32 * sizeof( uint8_t ) );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "data",
+	 data );
+
+	result = libfvalue_data_handle_set_data_as_owned(
+	          data_handle,
+	          &data,
+	          (size_t) SSIZE_MAX + 1,
+	          0,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	FVALUE_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	memory_free(
+	 data );
+
+	data = NULL;
+
+	/* Clean up
+	 */
+	result = libfvalue_data_handle_free(
+	          &data_handle,
+	          &error );
+
+	FVALUE_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "data_handle",
+	 data_handle );
+
+	FVALUE_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( data != NULL )
+	{
+		memory_free(
+		 data );
+	}
 	if( error != NULL )
 	{
 		libcerror_error_free(
@@ -3159,6 +3591,14 @@ int main(
 	FVALUE_TEST_RUN(
 	 "libfvalue_data_handle_set_data",
 	 fvalue_test_data_handle_set_data );
+
+	FVALUE_TEST_RUN(
+	 "libfvalue_data_handle_set_data_as_clone",
+	 fvalue_test_data_handle_set_data_as_clone );
+
+	FVALUE_TEST_RUN(
+	 "libfvalue_data_handle_set_data_as_owned",
+	 fvalue_test_data_handle_set_data_as_owned );
 
 	FVALUE_TEST_RUN(
 	 "libfvalue_data_handle_get_data_flags",

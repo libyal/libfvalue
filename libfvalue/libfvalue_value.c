@@ -1142,12 +1142,11 @@ int libfvalue_value_initialize_data(
 
 		goto on_error;
 	}
-	if( libfvalue_data_handle_set_data(
+	if( libfvalue_data_handle_set_data_as_owned(
 	     internal_value->data_handle,
-	     data,
+	     &data,
 	     data_size,
 	     LIBFVALUE_ENDIAN_NATIVE,
-	     LIBFVALUE_VALUE_DATA_FLAG_MANAGED | LIBFVALUE_VALUE_DATA_FLAG_CLONE_BY_REFERENCE,
 	     error ) != 1 )
 	{
 		libcerror_error_set(
@@ -1159,9 +1158,6 @@ int libfvalue_value_initialize_data(
 
 		goto on_error;
 	}
-#if defined( __clang_analyzer__ )
-	__builtin_assume( ( (libfvalue_internal_data_handle_t *) internal_value->data_handle )->data == data );
-#endif
 	return( 1 );
 
 on_error:
@@ -1311,6 +1307,106 @@ int libfvalue_value_set_data(
 	     data_size,
 	     encoding,
 	     flags,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set data in data handle.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Sets the data and makes a clone
+ *
+ * Comparable to libfvalue_value_set_data with flags set to:
+ * LIBFVALUE_VALUE_DATA_FLAG_MANAGED
+ *
+ * Returns 1 if successful or -1 on error
+ */
+int libfvalue_value_set_data_as_clone(
+     libfvalue_value_t *value,
+     const uint8_t *data,
+     size_t data_size,
+     int encoding,
+     libcerror_error_t **error )
+{
+	libfvalue_internal_value_t *internal_value = NULL;
+	static char *function                      = "libfvalue_value_set_data_as_clone";
+
+	if( value == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid value.",
+		 function );
+
+		return( -1 );
+	}
+	internal_value = (libfvalue_internal_value_t *) value;
+
+	if( libfvalue_data_handle_set_data_as_clone(
+	     internal_value->data_handle,
+	     data,
+	     data_size,
+	     encoding,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set data in data handle.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Sets the data and takes over ownership
+ *
+ * Comparable to libfvalue_value_set_data with flags set to:
+ * LIBFVALUE_VALUE_DATA_FLAG_MANAGED | LIBFVALUE_VALUE_DATA_FLAG_CLONE_BY_REFERENCE
+ *
+ * data is set to NULL if ownership was obtained
+ *
+ * Returns 1 if successful or -1 on error
+ */
+int libfvalue_value_set_data_as_owned(
+     libfvalue_value_t *value,
+     uint8_t **data,
+     size_t data_size,
+     int encoding,
+     libcerror_error_t **error )
+{
+	libfvalue_internal_value_t *internal_value = NULL;
+	static char *function                      = "libfvalue_value_set_data_as_owned";
+
+	if( value == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid value.",
+		 function );
+
+		return( -1 );
+	}
+	internal_value = (libfvalue_internal_value_t *) value;
+
+	if( libfvalue_data_handle_set_data_as_owned(
+	     internal_value->data_handle,
+	     data,
+	     data_size,
+	     encoding,
 	     error ) != 1 )
 	{
 		libcerror_error_set(

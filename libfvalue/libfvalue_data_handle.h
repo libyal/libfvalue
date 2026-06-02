@@ -119,6 +119,22 @@ int libfvalue_data_handle_set_data(
      libcerror_error_t **error );
 
 LIBFVALUE_EXTERN \
+int libfvalue_data_handle_set_data_as_clone(
+     libfvalue_data_handle_t *data_handle,
+     const uint8_t *data,
+     size_t data_size,
+     int encoding,
+     libcerror_error_t **error );
+
+LIBFVALUE_EXTERN \
+int libfvalue_data_handle_set_data_as_owned(
+     libfvalue_data_handle_t *data_handle,
+     uint8_t **data,
+     size_t data_size,
+     int encoding,
+     libcerror_error_t **error );
+
+LIBFVALUE_EXTERN \
 int libfvalue_data_handle_get_data_flags(
      libfvalue_data_handle_t *data_handle,
      uint32_t *data_flags,
