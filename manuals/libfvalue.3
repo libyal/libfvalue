@@ -1,6 +1,6 @@
-.Dd June  2, 2026
-.Dt libfvalue 3
-.Os libfvalue
+.Dd June 11, 2026
+.Dt LIBFVALUE 3
+.Os
 .Sh NAME
 .Nm libfvalue.h
 .Nd Library to support various format value types
@@ -8,279 +8,1191 @@
 .In libfvalue.h
 .Pp
 Support functions
+.nf
 .Ft const char *
-.Fn libfvalue_get_version "void"
+.Fo libfvalue_get_version
+.Fa "void"
+.Fc
+.fi
 .Pp
 Error functions
+.nf
 .Ft void
-.Fn libfvalue_error_free "libfvalue_error_t **error"
+.Fo libfvalue_error_free
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_error_fprint "libfvalue_error_t *error" "FILE *stream"
+.Fo libfvalue_error_fprint
+.Fa "libfvalue_error_t *error"
+.Fa "FILE *stream"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_error_sprint "libfvalue_error_t *error" "char *string" "size_t size"
+.Fo libfvalue_error_sprint
+.Fa "libfvalue_error_t *error"
+.Fa "char *string"
+.Fa "size_t size"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_error_backtrace_fprint "libfvalue_error_t *error" "FILE *stream"
+.Fo libfvalue_error_backtrace_fprint
+.Fa "libfvalue_error_t *error"
+.Fa "FILE *stream"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_error_backtrace_sprint "libfvalue_error_t *error" "char *string" "size_t size"
+.Fo libfvalue_error_backtrace_sprint
+.Fa "libfvalue_error_t *error"
+.Fa "char *string"
+.Fa "size_t size"
+.Fc
+.fi
 .Pp
 Data handle functions
+.nf
 .Ft int
-.Fn libfvalue_data_handle_initialize "libfvalue_data_handle_t **data_handle" "int (*read_value_entries)( libfvalue_data_handle_t *data_handle, const uint8_t *data, size_t data_size, int encoding, uint32_t data_flags, libfvalue_error_t **error )" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_initialize
+.Fa "libfvalue_data_handle_t **data_handle"
+.Fa "int (*read_value_entries)( libfvalue_data_handle_t *data_handle, \
+const uint8_t *data, size_t data_size, int encoding, uint32_t data_flags, \
+libfvalue_error_t **error )"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_free "libfvalue_data_handle_t **data_handle" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_free
+.Fa "libfvalue_data_handle_t **data_handle"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_clone "libfvalue_data_handle_t **destination_data_handle" "libfvalue_data_handle_t *source_data_handle" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_clone
+.Fa "libfvalue_data_handle_t **destination_data_handle"
+.Fa "libfvalue_data_handle_t *source_data_handle"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_clear "libfvalue_data_handle_t *data_handle" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_clear
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_get_data "libfvalue_data_handle_t *data_handle" "uint8_t **data" "size_t *data_size" "int *encoding" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_get_data
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "uint8_t **data"
+.Fa "size_t *data_size"
+.Fa "int *encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_set_data "libfvalue_data_handle_t *data_handle" "const uint8_t *data" "size_t data_size" "int encoding" "uint8_t flags" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_set_data
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "const uint8_t *data"
+.Fa "size_t data_size"
+.Fa "int encoding"
+.Fa "uint8_t flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_set_data_as_clone "libfvalue_data_handle_t *data_handle" "const uint8_t *data" "size_t data_size" "int encoding" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_set_data_as_clone
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "const uint8_t *data"
+.Fa "size_t data_size"
+.Fa "int encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_set_data_as_owned "libfvalue_data_handle_t *data_handle" "uint8_t **data" "size_t data_size" "int encoding" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_set_data_as_owned
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "uint8_t **data"
+.Fa "size_t data_size"
+.Fa "int encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_get_data_flags "libfvalue_data_handle_t *data_handle" "uint32_t *data_flags" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_get_data_flags
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "uint32_t *data_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_set_data_flags "libfvalue_data_handle_t *data_handle" "uint32_t data_flags" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_set_data_flags
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "uint32_t data_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_get_number_of_value_entries "libfvalue_data_handle_t *data_handle" "int *number_of_value_entries" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_get_number_of_value_entries
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "int *number_of_value_entries"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_append_value_entry "libfvalue_data_handle_t *data_handle" "int *value_entry_index" "size_t value_entry_offset" "size_t value_entry_size" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_append_value_entry
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "int *value_entry_index"
+.Fa "size_t value_entry_offset"
+.Fa "size_t value_entry_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_get_value_entry_data "libfvalue_data_handle_t *data_handle" "int value_entry_index" "uint8_t **value_entry_data" "size_t *value_entry_data_size" "int *encoding" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_get_value_entry_data
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "int value_entry_index"
+.Fa "uint8_t **value_entry_data"
+.Fa "size_t *value_entry_data_size"
+.Fa "int *encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_set_value_entry_data "libfvalue_data_handle_t *data_handle" "int value_entry_index" "const uint8_t *value_entry_data" "size_t value_entry_data_size" "int encoding" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_set_value_entry_data
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "int value_entry_index"
+.Fa "const uint8_t *value_entry_data"
+.Fa "size_t value_entry_data_size"
+.Fa "int encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_data_handle_append_value_entry_data "libfvalue_data_handle_t *data_handle" "int *value_entry_index" "const uint8_t *value_entry_data" "size_t value_entry_data_size" "int encoding" "libfvalue_error_t **error"
+.Fo libfvalue_data_handle_append_value_entry_data
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "int *value_entry_index"
+.Fa "const uint8_t *value_entry_data"
+.Fa "size_t value_entry_data_size"
+.Fa "int encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
 .Pp
 Integer functions
+.nf
 .Ft int
-.Fn libfvalue_string_size_from_integer "size_t *string_size" "uint64_t integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_string_size_from_integer
+.Fa "size_t *string_size"
+.Fa "uint64_t integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf8_string_copy_from_integer "uint8_t *utf8_string" "size_t utf8_string_size" "uint64_t integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf8_string_copy_from_integer
+.Fa "uint8_t *utf8_string"
+.Fa "size_t utf8_string_size"
+.Fa "uint64_t integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf8_string_with_index_copy_from_integer "uint8_t *utf8_string" "size_t utf8_string_size" "size_t *utf8_string_index" "uint64_t integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf8_string_with_index_copy_from_integer
+.Fa "uint8_t *utf8_string"
+.Fa "size_t utf8_string_size"
+.Fa "size_t *utf8_string_index"
+.Fa "uint64_t integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf8_string_copy_to_integer "const uint8_t *utf8_string" "size_t utf8_string_length" "uint64_t *integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf8_string_copy_to_integer
+.Fa "const uint8_t *utf8_string"
+.Fa "size_t utf8_string_length"
+.Fa "uint64_t *integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf8_string_with_index_copy_to_integer "const uint8_t *utf8_string" "size_t utf8_string_length" "size_t *utf8_string_index" "uint64_t *integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf8_string_with_index_copy_to_integer
+.Fa "const uint8_t *utf8_string"
+.Fa "size_t utf8_string_length"
+.Fa "size_t *utf8_string_index"
+.Fa "uint64_t *integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf16_string_copy_from_integer "uint16_t *utf16_string" "size_t utf16_string_size" "uint64_t integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf16_string_copy_from_integer
+.Fa "uint16_t *utf16_string"
+.Fa "size_t utf16_string_size"
+.Fa "uint64_t integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf16_string_with_index_copy_from_integer "uint16_t *utf16_string" "size_t utf16_string_size" "size_t *utf16_string_index" "uint64_t integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf16_string_with_index_copy_from_integer
+.Fa "uint16_t *utf16_string"
+.Fa "size_t utf16_string_size"
+.Fa "size_t *utf16_string_index"
+.Fa "uint64_t integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf16_string_copy_to_integer "const uint16_t *utf16_string" "size_t utf16_string_length" "uint64_t *integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf16_string_copy_to_integer
+.Fa "const uint16_t *utf16_string"
+.Fa "size_t utf16_string_length"
+.Fa "uint64_t *integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf16_string_with_index_copy_to_integer "const uint16_t *utf16_string" "size_t utf16_string_length" "size_t *utf16_string_index" "uint64_t *integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf16_string_with_index_copy_to_integer
+.Fa "const uint16_t *utf16_string"
+.Fa "size_t utf16_string_length"
+.Fa "size_t *utf16_string_index"
+.Fa "uint64_t *integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf32_string_copy_from_integer "uint32_t *utf32_string" "size_t utf32_string_size" "uint64_t integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf32_string_copy_from_integer
+.Fa "uint32_t *utf32_string"
+.Fa "size_t utf32_string_size"
+.Fa "uint64_t integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf32_string_with_index_copy_from_integer "uint32_t *utf32_string" "size_t utf32_string_size" "size_t *utf32_string_index" "uint64_t integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf32_string_with_index_copy_from_integer
+.Fa "uint32_t *utf32_string"
+.Fa "size_t utf32_string_size"
+.Fa "size_t *utf32_string_index"
+.Fa "uint64_t integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf32_string_copy_to_integer "const uint32_t *utf32_string" "size_t utf32_string_length" "uint64_t *integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf32_string_copy_to_integer
+.Fa "const uint32_t *utf32_string"
+.Fa "size_t utf32_string_length"
+.Fa "uint64_t *integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_utf32_string_with_index_copy_to_integer "const uint32_t *utf32_string" "size_t utf32_string_length" "size_t *utf32_string_index" "uint64_t *integer_value" "size_t integer_value_size" "uint32_t string_format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_utf32_string_with_index_copy_to_integer
+.Fa "const uint32_t *utf32_string"
+.Fa "size_t utf32_string_length"
+.Fa "size_t *utf32_string_index"
+.Fa "uint64_t *integer_value"
+.Fa "size_t integer_value_size"
+.Fa "uint32_t string_format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
 .Pp
 UTF-8 string functions
+.nf
 .Ft int
-.Fn libfvalue_utf8_string_split "const uint8_t *utf8_string" "size_t utf8_string_size" "uint8_t delimiter" "libfvalue_split_utf8_string_t **split_string" "libfvalue_error_t **error"
+.Fo libfvalue_utf8_string_split
+.Fa "const uint8_t *utf8_string"
+.Fa "size_t utf8_string_size"
+.Fa "uint8_t delimiter"
+.Fa "libfvalue_split_utf8_string_t **split_string"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
 .Pp
 Split UTF-8 string functions
+.nf
 .Ft int
-.Fn libfvalue_split_utf8_string_free "libfvalue_split_utf8_string_t **split_string" "libfvalue_error_t **error"
+.Fo libfvalue_split_utf8_string_free
+.Fa "libfvalue_split_utf8_string_t **split_string"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_split_utf8_string_get_string "libfvalue_split_utf8_string_t *split_string" "uint8_t **utf8_string" "size_t *utf8_string_size" "libfvalue_error_t **error"
+.Fo libfvalue_split_utf8_string_get_string
+.Fa "libfvalue_split_utf8_string_t *split_string"
+.Fa "uint8_t **utf8_string"
+.Fa "size_t *utf8_string_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_split_utf8_string_get_number_of_segments "libfvalue_split_utf8_string_t *split_string" "int *number_of_segments" "libfvalue_error_t **error"
+.Fo libfvalue_split_utf8_string_get_number_of_segments
+.Fa "libfvalue_split_utf8_string_t *split_string"
+.Fa "int *number_of_segments"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_split_utf8_string_get_segment_by_index "libfvalue_split_utf8_string_t *split_string" "int segment_index" "uint8_t **utf8_string_segment" "size_t *utf8_string_segment_size" "libfvalue_error_t **error"
+.Fo libfvalue_split_utf8_string_get_segment_by_index
+.Fa "libfvalue_split_utf8_string_t *split_string"
+.Fa "int segment_index"
+.Fa "uint8_t **utf8_string_segment"
+.Fa "size_t *utf8_string_segment_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_split_utf8_string_set_segment_by_index "libfvalue_split_utf8_string_t *split_string" "int segment_index" "uint8_t *utf8_string_segment" "size_t utf8_string_segment_size" "libfvalue_error_t **error"
+.Fo libfvalue_split_utf8_string_set_segment_by_index
+.Fa "libfvalue_split_utf8_string_t *split_string"
+.Fa "int segment_index"
+.Fa "uint8_t *utf8_string_segment"
+.Fa "size_t utf8_string_segment_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
 .Pp
 UTF-16 string functions
+.nf
 .Ft int
-.Fn libfvalue_utf16_string_split "const uint16_t *utf16_string" "size_t utf16_string_size" "uint16_t delimiter" "libfvalue_split_utf16_string_t **split_string" "libfvalue_error_t **error"
+.Fo libfvalue_utf16_string_split
+.Fa "const uint16_t *utf16_string"
+.Fa "size_t utf16_string_size"
+.Fa "uint16_t delimiter"
+.Fa "libfvalue_split_utf16_string_t **split_string"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
 .Pp
 Split UTF-16 string functions
+.nf
 .Ft int
-.Fn libfvalue_split_utf16_string_free "libfvalue_split_utf16_string_t **split_string" "libfvalue_error_t **error"
+.Fo libfvalue_split_utf16_string_free
+.Fa "libfvalue_split_utf16_string_t **split_string"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_split_utf16_string_get_string "libfvalue_split_utf16_string_t *split_string" "uint16_t **utf16_string" "size_t *utf16_string_size" "libfvalue_error_t **error"
+.Fo libfvalue_split_utf16_string_get_string
+.Fa "libfvalue_split_utf16_string_t *split_string"
+.Fa "uint16_t **utf16_string"
+.Fa "size_t *utf16_string_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_split_utf16_string_get_number_of_segments "libfvalue_split_utf16_string_t *split_string" "int *number_of_segments" "libfvalue_error_t **error"
+.Fo libfvalue_split_utf16_string_get_number_of_segments
+.Fa "libfvalue_split_utf16_string_t *split_string"
+.Fa "int *number_of_segments"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_split_utf16_string_get_segment_by_index "libfvalue_split_utf16_string_t *split_string" "int segment_index" "uint16_t **utf16_string_segment" "size_t *utf16_string_segment_size" "libfvalue_error_t **error"
+.Fo libfvalue_split_utf16_string_get_segment_by_index
+.Fa "libfvalue_split_utf16_string_t *split_string"
+.Fa "int segment_index"
+.Fa "uint16_t **utf16_string_segment"
+.Fa "size_t *utf16_string_segment_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_split_utf16_string_set_segment_by_index "libfvalue_split_utf16_string_t *split_string" "int segment_index" "uint16_t *utf16_string_segment" "size_t utf16_string_segment_size" "libfvalue_error_t **error"
+.Fo libfvalue_split_utf16_string_set_segment_by_index
+.Fa "libfvalue_split_utf16_string_t *split_string"
+.Fa "int segment_index"
+.Fa "uint16_t *utf16_string_segment"
+.Fa "size_t utf16_string_segment_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
 .Pp
 Table functions
+.nf
 .Ft int
-.Fn libfvalue_table_initialize "libfvalue_table_t **table" "int number_of_values" "libfvalue_error_t **error"
+.Fo libfvalue_table_initialize
+.Fa "libfvalue_table_t **table"
+.Fa "int number_of_values"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_table_free "libfvalue_table_t **table" "libfvalue_error_t **error"
+.Fo libfvalue_table_free
+.Fa "libfvalue_table_t **table"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_table_empty "libfvalue_table_t *table" "libfvalue_error_t **error"
+.Fo libfvalue_table_empty
+.Fa "libfvalue_table_t *table"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_table_resize "libfvalue_table_t *table" "int number_of_values" "libfvalue_error_t **error"
+.Fo libfvalue_table_resize
+.Fa "libfvalue_table_t *table"
+.Fa "int number_of_values"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_table_clone "libfvalue_table_t **destination_table" "libfvalue_table_t *source_table" "libfvalue_error_t **error"
+.Fo libfvalue_table_clone
+.Fa "libfvalue_table_t **destination_table"
+.Fa "libfvalue_table_t *source_table"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_table_get_number_of_values "libfvalue_table_t *table" "int *number_of_values" "libfvalue_error_t **error"
+.Fo libfvalue_table_get_number_of_values
+.Fa "libfvalue_table_t *table"
+.Fa "int *number_of_values"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_table_get_index_by_identifier "libfvalue_table_t *table" "const uint8_t *identifier" "size_t identifier_size" "int *value_index" "uint8_t flags" "libfvalue_error_t **error"
+.Fo libfvalue_table_get_index_by_identifier
+.Fa "libfvalue_table_t *table"
+.Fa "const uint8_t *identifier"
+.Fa "size_t identifier_size"
+.Fa "int *value_index"
+.Fa "uint8_t flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_table_get_value_by_index "libfvalue_table_t *table" "int value_index" "libfvalue_value_t **value" "libfvalue_error_t **error"
+.Fo libfvalue_table_get_value_by_index
+.Fa "libfvalue_table_t *table"
+.Fa "int value_index"
+.Fa "libfvalue_value_t **value"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_table_get_value_by_identifier "libfvalue_table_t *table" "const uint8_t *identifier" "size_t identifier_size" "libfvalue_value_t **value" "uint8_t flags" "libfvalue_error_t **error"
+.Fo libfvalue_table_get_value_by_identifier
+.Fa "libfvalue_table_t *table"
+.Fa "const uint8_t *identifier"
+.Fa "size_t identifier_size"
+.Fa "libfvalue_value_t **value"
+.Fa "uint8_t flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_table_set_value_by_index "libfvalue_table_t *table" "int value_index" "libfvalue_value_t *value" "libfvalue_error_t **error"
+.Fo libfvalue_table_set_value_by_index
+.Fa "libfvalue_table_t *table"
+.Fa "int value_index"
+.Fa "libfvalue_value_t *value"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_table_set_value "libfvalue_table_t *table" "libfvalue_value_t *value" "libfvalue_error_t **error"
+.Fo libfvalue_table_set_value
+.Fa "libfvalue_table_t *table"
+.Fa "libfvalue_value_t *value"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_table_copy_from_utf8_xml_string "libfvalue_table_t *table" "const uint8_t *utf8_string" "size_t utf8_string_size" "const uint8_t *table_name" "size_t table_name_length" "libfvalue_error_t **error"
+.Fo libfvalue_table_copy_from_utf8_xml_string
+.Fa "libfvalue_table_t *table"
+.Fa "const uint8_t *utf8_string"
+.Fa "size_t utf8_string_size"
+.Fa "const uint8_t *table_name"
+.Fa "size_t table_name_length"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
 .Pp
 Value functions
+.nf
 .Ft int
-.Fn libfvalue_value_initialize "libfvalue_value_t **value" "const char *type_string" "const char *type_description" "libfvalue_data_handle_t *data_handle" "int (*initialize_instance)( intptr_t **instance, libfvalue_error_t **error )" "int (*free_instance)( intptr_t **instance, libfvalue_error_t **error )" "int (*clone_instance)( intptr_t **destination_instance, intptr_t *source_instance, libfvalue_error_t **error )" "int (*copy_from_byte_stream)( intptr_t *instance, const uint8_t *byte_stream, size_t byte_stream_size, int encoding, libfvalue_error_t **error )" "int (*copy_to_byte_stream)( intptr_t *instance, uint8_t *byte_stream, size_t byte_stream_size, int encoding, libfvalue_error_t **error )" "int (*copy_from_integer)( intptr_t *instance, uint64_t integer_value, size_t integer_value_size, libfvalue_error_t **error )" "int (*copy_to_integer)( intptr_t *instance, uint64_t *integer_value, size_t *integer_value_size, libfvalue_error_t **error )" "int (*copy_from_floating_point)( intptr_t *instance, double floating_point_value, size_t floating_point_value_size, libfvalue_error_t **error )" "int (*copy_to_floating_point)( intptr_t *instance, double *floating_point_value, size_t *floating_point_value_size, libfvalue_error_t **error )" "int (*copy_from_utf8_string_with_index)( intptr_t *instance, const uint8_t *utf8_string, size_t utf8_string_length, size_t *utf8_string_index, uint32_t string_format_flags, libfvalue_error_t **error )" "int (*get_utf8_string_size)( intptr_t *instance, size_t *utf8_string_size, uint32_t string_format_flags, libfvalue_error_t **error )" "int (*copy_to_utf8_string_with_index)( intptr_t *instance, uint8_t *utf8_string, size_t utf8_string_size, size_t *utf8_string_index, uint32_t string_format_flags, libfvalue_error_t **error )" "int (*copy_from_utf16_string_with_index)( intptr_t *instance, const uint16_t *utf16_string, size_t utf16_string_length, size_t *utf16_string_index, uint32_t string_format_flags, libfvalue_error_t **error )" "int (*get_utf16_string_size)( intptr_t *instance, size_t *utf16_string_size, uint32_t string_format_flags, libfvalue_error_t **error )" "int (*copy_to_utf16_string_with_index)( intptr_t *instance, uint16_t *utf16_string, size_t utf16_string_size, size_t *utf16_string_index, uint32_t string_format_flags, libfvalue_error_t **error )" "int (*copy_from_utf32_string_with_index)( intptr_t *instance, const uint32_t *utf32_string, size_t utf32_string_length, size_t *utf32_string_index, uint32_t string_format_flags, libfvalue_error_t **error )" "int (*get_utf32_string_size)( intptr_t *instance, size_t *utf32_string_size, uint32_t string_format_flags, libfvalue_error_t **error )" "int (*copy_to_utf32_string_with_index)( intptr_t *instance, uint32_t *utf32_string, size_t utf32_string_size, size_t *utf32_string_index, uint32_t string_format_flags, libfvalue_error_t **error )" "uint8_t flags" "libfvalue_error_t **error"
+.Fo libfvalue_value_initialize
+.Fa "libfvalue_value_t **value"
+.Fa "const char *type_string"
+.Fa "const char *type_description"
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "int (*initialize_instance)( intptr_t **instance, \
+libfvalue_error_t **error )"
+.Fa "int (*free_instance)( intptr_t **instance, \
+libfvalue_error_t **error )"
+.Fa "int (*clone_instance)( intptr_t **destination_instance, \
+intptr_t *source_instance, libfvalue_error_t **error )"
+.Fa "int (*copy_from_byte_stream)( intptr_t *instance, \
+const uint8_t *byte_stream, size_t byte_stream_size, int encoding, \
+libfvalue_error_t **error )"
+.Fa "int (*copy_to_byte_stream)( intptr_t *instance, uint8_t *byte_stream, \
+size_t byte_stream_size, int encoding, libfvalue_error_t **error )"
+.Fa "int (*copy_from_integer)( intptr_t *instance, uint64_t integer_value, \
+size_t integer_value_size, libfvalue_error_t **error )"
+.Fa "int (*copy_to_integer)( intptr_t *instance, uint64_t *integer_value, \
+size_t *integer_value_size, libfvalue_error_t **error )"
+.Fa "int (*copy_from_floating_point)( intptr_t *instance, \
+double floating_point_value, size_t floating_point_value_size, \
+libfvalue_error_t **error )"
+.Fa "int (*copy_to_floating_point)( intptr_t *instance, \
+double *floating_point_value, size_t *floating_point_value_size, \
+libfvalue_error_t **error )"
+.Fa "int (*copy_from_utf8_string_with_index)( intptr_t *instance, \
+const uint8_t *utf8_string, size_t utf8_string_length, \
+size_t *utf8_string_index, uint32_t string_format_flags, \
+libfvalue_error_t **error )"
+.Fa "int (*get_utf8_string_size)( intptr_t *instance, \
+size_t *utf8_string_size, uint32_t string_format_flags, \
+libfvalue_error_t **error )"
+.Fa "int (*copy_to_utf8_string_with_index)( intptr_t *instance, \
+uint8_t *utf8_string, size_t utf8_string_size, size_t *utf8_string_index, \
+uint32_t string_format_flags, libfvalue_error_t **error )"
+.Fa "int (*copy_from_utf16_string_with_index)( intptr_t *instance, \
+const uint16_t *utf16_string, size_t utf16_string_length, \
+size_t *utf16_string_index, uint32_t string_format_flags, \
+libfvalue_error_t **error )"
+.Fa "int (*get_utf16_string_size)( intptr_t *instance, \
+size_t *utf16_string_size, uint32_t string_format_flags, \
+libfvalue_error_t **error )"
+.Fa "int (*copy_to_utf16_string_with_index)( intptr_t *instance, \
+uint16_t *utf16_string, size_t utf16_string_size, size_t *utf16_string_index, \
+uint32_t string_format_flags, libfvalue_error_t **error )"
+.Fa "int (*copy_from_utf32_string_with_index)( intptr_t *instance, \
+const uint32_t *utf32_string, size_t utf32_string_length, \
+size_t *utf32_string_index, uint32_t string_format_flags, \
+libfvalue_error_t **error )"
+.Fa "int (*get_utf32_string_size)( intptr_t *instance, \
+size_t *utf32_string_size, uint32_t string_format_flags, \
+libfvalue_error_t **error )"
+.Fa "int (*copy_to_utf32_string_with_index)( intptr_t *instance, \
+uint32_t *utf32_string, size_t utf32_string_size, size_t *utf32_string_index, \
+uint32_t string_format_flags, libfvalue_error_t **error )"
+.Fa "uint8_t flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_free "libfvalue_value_t **value" "libfvalue_error_t **error"
+.Fo libfvalue_value_free
+.Fa "libfvalue_value_t **value"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_clone "libfvalue_value_t **destination_value" "libfvalue_value_t *source_value" "libfvalue_error_t **error"
+.Fo libfvalue_value_clone
+.Fa "libfvalue_value_t **destination_value"
+.Fa "libfvalue_value_t *source_value"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_clear "libfvalue_value_t *value" "libfvalue_error_t **error"
+.Fo libfvalue_value_clear
+.Fa "libfvalue_value_t *value"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_type "libfvalue_value_t *value" "int *value_type" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_type
+.Fa "libfvalue_value_t *value"
+.Fa "int *value_type"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_identifier "libfvalue_value_t *value" "uint8_t **identifier" "size_t *identifier_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_identifier
+.Fa "libfvalue_value_t *value"
+.Fa "uint8_t **identifier"
+.Fa "size_t *identifier_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_set_identifier "libfvalue_value_t *value" "const uint8_t *identifier" "size_t identifier_size" "uint8_t flags" "libfvalue_error_t **error"
+.Fo libfvalue_value_set_identifier
+.Fa "libfvalue_value_t *value"
+.Fa "const uint8_t *identifier"
+.Fa "size_t identifier_size"
+.Fa "uint8_t flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_data_flags "libfvalue_value_t *value" "uint32_t *data_flags" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_data_flags
+.Fa "libfvalue_value_t *value"
+.Fa "uint32_t *data_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_set_data_flags "libfvalue_value_t *value" "uint32_t data_flags" "libfvalue_error_t **error"
+.Fo libfvalue_value_set_data_flags
+.Fa "libfvalue_value_t *value"
+.Fa "uint32_t data_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_has_data "libfvalue_value_t *value" "libfvalue_error_t **error"
+.Fo libfvalue_value_has_data
+.Fa "libfvalue_value_t *value"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_initialize_data "libfvalue_value_t *value" "size_t data_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_initialize_data
+.Fa "libfvalue_value_t *value"
+.Fa "size_t data_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_data_size "libfvalue_value_t *value" "size_t *data_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_data_size
+.Fa "libfvalue_value_t *value"
+.Fa "size_t *data_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_data "libfvalue_value_t *value" "uint8_t **data" "size_t *data_size" "int *encoding" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_data
+.Fa "libfvalue_value_t *value"
+.Fa "uint8_t **data"
+.Fa "size_t *data_size"
+.Fa "int *encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_set_data "libfvalue_value_t *value" "const uint8_t *data" "size_t data_size" "int encoding" "uint8_t flags" "libfvalue_error_t **error"
+.Fo libfvalue_value_set_data
+.Fa "libfvalue_value_t *value"
+.Fa "const uint8_t *data"
+.Fa "size_t data_size"
+.Fa "int encoding"
+.Fa "uint8_t flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_set_data_as_clone "libfvalue_value_t *value" "const uint8_t *data" "size_t data_size" "int encoding" "libfvalue_error_t **error"
+.Fo libfvalue_value_set_data_as_clone
+.Fa "libfvalue_value_t *value"
+.Fa "const uint8_t *data"
+.Fa "size_t data_size"
+.Fa "int encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_set_data_as_owned "libfvalue_value_t *value" "uint8_t **data" "size_t data_size" "int encoding" "libfvalue_error_t **error"
+.Fo libfvalue_value_set_data_as_owned
+.Fa "libfvalue_value_t *value"
+.Fa "uint8_t **data"
+.Fa "size_t data_size"
+.Fa "int encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_data "libfvalue_value_t *value" "uint8_t *data" "size_t data_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_data
+.Fa "libfvalue_value_t *value"
+.Fa "uint8_t *data"
+.Fa "size_t data_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_format_flags "libfvalue_value_t *value" "uint32_t *format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_format_flags
+.Fa "libfvalue_value_t *value"
+.Fa "uint32_t *format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_set_format_flags "libfvalue_value_t *value" "uint32_t format_flags" "libfvalue_error_t **error"
+.Fo libfvalue_value_set_format_flags
+.Fa "libfvalue_value_t *value"
+.Fa "uint32_t format_flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_number_of_value_entries "libfvalue_value_t *value" "int *number_of_value_entries" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_number_of_value_entries
+.Fa "libfvalue_value_t *value"
+.Fa "int *number_of_value_entries"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_entry "libfvalue_value_t *value" "int value_entry_index" "size_t *entry_data_offset" "size_t *entry_data_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_entry
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "size_t *entry_data_offset"
+.Fa "size_t *entry_data_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_append_entry "libfvalue_value_t *value" "int *value_entry_index" "size_t entry_data_offset" "size_t entry_data_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_append_entry
+.Fa "libfvalue_value_t *value"
+.Fa "int *value_entry_index"
+.Fa "size_t entry_data_offset"
+.Fa "size_t entry_data_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_entry_data "libfvalue_value_t *value" "int value_entry_index" "uint8_t **entry_data" "size_t *entry_data_size" "int *encoding" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_entry_data
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint8_t **entry_data"
+.Fa "size_t *entry_data_size"
+.Fa "int *encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_set_entry_data "libfvalue_value_t *value" "int value_entry_index" "const uint8_t *entry_data" "size_t entry_data_size" "int encoding" "libfvalue_error_t **error"
+.Fo libfvalue_value_set_entry_data
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "const uint8_t *entry_data"
+.Fa "size_t entry_data_size"
+.Fa "int encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_append_entry_data "libfvalue_value_t *value" "int *value_entry_index" "const uint8_t *entry_data" "size_t entry_data_size" "int encoding" "libfvalue_error_t **error"
+.Fo libfvalue_value_append_entry_data
+.Fa "libfvalue_value_t *value"
+.Fa "int *value_entry_index"
+.Fa "const uint8_t *entry_data"
+.Fa "size_t entry_data_size"
+.Fa "int encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_entry_data "libfvalue_value_t *value" "int value_entry_index" "uint8_t *entry_data" "size_t entry_data_size" "int *encoding" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_entry_data
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint8_t *entry_data"
+.Fa "size_t entry_data_size"
+.Fa "int *encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_from_boolean "libfvalue_value_t *value" "int value_entry_index" "uint8_t value_boolean" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_from_boolean
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint8_t value_boolean"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_boolean "libfvalue_value_t *value" "int value_entry_index" "uint8_t *value_boolean" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_boolean
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint8_t *value_boolean"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_from_8bit "libfvalue_value_t *value" "int value_entry_index" "uint8_t value_8bit" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_from_8bit
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint8_t value_8bit"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_8bit "libfvalue_value_t *value" "int value_entry_index" "uint8_t *value_8bit" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_8bit
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint8_t *value_8bit"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_from_16bit "libfvalue_value_t *value" "int value_entry_index" "uint16_t value_16bit" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_from_16bit
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint16_t value_16bit"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_16bit "libfvalue_value_t *value" "int value_entry_index" "uint16_t *value_16bit" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_16bit
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint16_t *value_16bit"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_from_32bit "libfvalue_value_t *value" "int value_entry_index" "uint32_t value_32bit" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_from_32bit
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint32_t value_32bit"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_32bit "libfvalue_value_t *value" "int value_entry_index" "uint32_t *value_32bit" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_32bit
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint32_t *value_32bit"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_from_64bit "libfvalue_value_t *value" "int value_entry_index" "uint64_t value_64bit" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_from_64bit
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint64_t value_64bit"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_64bit "libfvalue_value_t *value" "int value_entry_index" "uint64_t *value_64bit" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_64bit
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint64_t *value_64bit"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_from_float "libfvalue_value_t *value" "int value_entry_index" "float value_float" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_from_float
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "float value_float"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_float "libfvalue_value_t *value" "int value_entry_index" "float *value_float" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_float
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "float *value_float"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_from_double "libfvalue_value_t *value" "int value_entry_index" "double value_double" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_from_double
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "double value_double"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_double "libfvalue_value_t *value" "int value_entry_index" "double *value_double" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_double
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "double *value_double"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_from_utf8_string "libfvalue_value_t *value" "int value_entry_index" "const uint8_t *utf8_string" "size_t utf8_string_length" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_from_utf8_string
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "const uint8_t *utf8_string"
+.Fa "size_t utf8_string_length"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_utf8_string_size "libfvalue_value_t *value" "int value_entry_index" "size_t *utf8_string_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_utf8_string_size
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "size_t *utf8_string_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_utf8_string "libfvalue_value_t *value" "int value_entry_index" "uint8_t *utf8_string" "size_t utf8_string_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_utf8_string
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint8_t *utf8_string"
+.Fa "size_t utf8_string_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_utf8_string_with_index "libfvalue_value_t *value" "int value_entry_index" "uint8_t *utf8_string" "size_t utf8_string_size" "size_t *utf8_string_index" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_utf8_string_with_index
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint8_t *utf8_string"
+.Fa "size_t utf8_string_size"
+.Fa "size_t *utf8_string_index"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_from_utf16_string "libfvalue_value_t *value" "int value_entry_index" "const uint16_t *utf16_string" "size_t utf16_string_length" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_from_utf16_string
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "const uint16_t *utf16_string"
+.Fa "size_t utf16_string_length"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_utf16_string_size "libfvalue_value_t *value" "int value_entry_index" "size_t *utf16_string_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_utf16_string_size
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "size_t *utf16_string_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_utf16_string "libfvalue_value_t *value" "int value_entry_index" "uint16_t *utf16_string" "size_t utf16_string_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_utf16_string
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint16_t *utf16_string"
+.Fa "size_t utf16_string_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_utf16_string_with_index "libfvalue_value_t *value" "int value_entry_index" "uint16_t *utf16_string" "size_t utf16_string_size" "size_t *utf16_string_index" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_utf16_string_with_index
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint16_t *utf16_string"
+.Fa "size_t utf16_string_size"
+.Fa "size_t *utf16_string_index"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_from_utf32_string "libfvalue_value_t *value" "int value_entry_index" "const uint32_t *utf32_string" "size_t utf32_string_length" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_from_utf32_string
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "const uint32_t *utf32_string"
+.Fa "size_t utf32_string_length"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_get_utf32_string_size "libfvalue_value_t *value" "int value_entry_index" "size_t *utf32_string_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_get_utf32_string_size
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "size_t *utf32_string_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_utf32_string "libfvalue_value_t *value" "int value_entry_index" "uint32_t *utf32_string" "size_t utf32_string_size" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_utf32_string
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint32_t *utf32_string"
+.Fa "size_t utf32_string_size"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_copy_to_utf32_string_with_index "libfvalue_value_t *value" "int value_entry_index" "uint32_t *utf32_string" "size_t utf32_string_size" "size_t *utf32_string_index" "libfvalue_error_t **error"
+.Fo libfvalue_value_copy_to_utf32_string_with_index
+.Fa "libfvalue_value_t *value"
+.Fa "int value_entry_index"
+.Fa "uint32_t *utf32_string"
+.Fa "size_t utf32_string_size"
+.Fa "size_t *utf32_string_index"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft ssize_t
-.Fn libfvalue_value_read_from_file_stream "libfvalue_value_t *value" "FILE *file_stream" "libfvalue_error_t **error"
+.Fo libfvalue_value_read_from_file_stream
+.Fa "libfvalue_value_t *value"
+.Fa "FILE *file_stream"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft ssize_t
-.Fn libfvalue_value_write_to_file_stream "libfvalue_value_t *value" "FILE *file_stream" "libfvalue_error_t **error"
+.Fo libfvalue_value_write_to_file_stream
+.Fa "libfvalue_value_t *value"
+.Fa "FILE *file_stream"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
 .Pp
 Value type functions
+.nf
 .Ft int
-.Fn libfvalue_value_type_initialize "libfvalue_value_t **value" "int type" "libfvalue_error_t **error"
+.Fo libfvalue_value_type_initialize
+.Fa "libfvalue_value_t **value"
+.Fa "int type"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft int
-.Fn libfvalue_value_type_initialize_with_data_handle "libfvalue_value_t **value" "int type" "libfvalue_data_handle_t *data_handle" "uint8_t flags" "libfvalue_error_t **error"
+.Fo libfvalue_value_type_initialize_with_data_handle
+.Fa "libfvalue_value_t **value"
+.Fa "int type"
+.Fa "libfvalue_data_handle_t *data_handle"
+.Fa "uint8_t flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft ssize_t
-.Fn libfvalue_value_type_set_data_string "libfvalue_value_t *value" "const uint8_t *data" "size_t data_size" "int encoding" "uint8_t flags" "libfvalue_error_t **error"
+.Fo libfvalue_value_type_set_data_string
+.Fa "libfvalue_value_t *value"
+.Fa "const uint8_t *data"
+.Fa "size_t data_size"
+.Fa "int encoding"
+.Fa "uint8_t flags"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft ssize_t
-.Fn libfvalue_value_type_append_data_string "libfvalue_value_t *value" "const uint8_t *data" "size_t data_size" "int encoding" "libfvalue_error_t **error"
+.Fo libfvalue_value_type_append_data_string
+.Fa "libfvalue_value_t *value"
+.Fa "const uint8_t *data"
+.Fa "size_t data_size"
+.Fa "int encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
+.nf
 .Ft ssize_t
-.Fn libfvalue_value_type_set_data_strings_array "libfvalue_value_t *value" "const uint8_t *data" "size_t data_size" "int encoding" "libfvalue_error_t **error"
+.Fo libfvalue_value_type_set_data_strings_array
+.Fa "libfvalue_value_t *value"
+.Fa "const uint8_t *data"
+.Fa "size_t data_size"
+.Fa "int encoding"
+.Fa "libfvalue_error_t **error"
+.Fc
+.fi
 .Sh DESCRIPTION
 The
 .Fn libfvalue_get_version
 function is used to retrieve the library version.
 .Sh RETURN VALUES
-Most of the functions return NULL or \-1 on error, dependent on the return type.
-For the actual return values see "libfvalue.h".
+Most of the functions return NULL or \-1 on error, dependent on the return \
+type.
+For the actual return values see
+.In libfvalue.h .
 .Sh ENVIRONMENT
 None
 .Sh FILES
 None
+.Sh SEE ALSO
+.In libfvalue.h
+.Sh AUTHORS
+.An Joachim Metz <joachim.metz@gmail.com>
 .Sh BUGS
-Please report bugs of any kind on the project issue tracker: https://github.com/libyal/libfvalue/issues
-.Sh AUTHOR
-These man pages are generated from "libfvalue.h".
+Please report bugs of any kind on the project issue tracker: \
+https://github.com/libyal/libfvalue/issues
 .Sh COPYRIGHT
 Copyright (C) 2010-2026, Joachim Metz <joachim.metz@gmail.com>.
 .sp
 This is free software; see the source for copying conditions.
-There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-.Sh SEE ALSO
-the libfvalue.h include file
+There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A \
+PARTICULAR PURPOSE.
