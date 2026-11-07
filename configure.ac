@@ -2,7 +2,7 @@ AC_PREREQ([2.71])
 
 AC_INIT(
   [libfvalue],
-  [20261009],
+  [20261107],
   [https://github.com/libyal/libfvalue/issues])
 
 AC_CONFIG_SRCDIR(
